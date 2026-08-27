@@ -1,0 +1,30 @@
+generated: '2026-08-27'
+method: probed
+source: https://www.sigmacomputing.com/pricing -> 308 -> https://www.sigmacomputing.com/company/contact-us (200)
+plan_count: 0
+pricing_published: false
+summary: Sigma publishes no public price list, no tier table and no per-seat rate. https://www.sigmacomputing.com/pricing
+  308-redirects to the contact-us form. The only self-serve entry point is a free trial; everything else is a sales conversation.
+evidence:
+- url: https://www.sigmacomputing.com/pricing
+  status: 308
+  redirects_to: https://www.sigmacomputing.com/company/contact-us
+- url: https://www.sigmacomputing.com/company/contact-us
+  status: 200
+- url: https://www.sigmacomputing.com/go/free-trial
+  status: 200
+plans: []
+entry_points:
+- name: Free trial
+  url: https://www.sigmacomputing.com/go/free-trial
+  price: null
+  note: Self-serve trial signup; no published duration or quota on the page.
+- name: Request a demo
+  url: https://www.sigmacomputing.com/go/request-a-demo
+  price: null
+- name: Contact sales
+  url: https://www.sigmacomputing.com/company/contact-us
+  price: null
+licensing_model_note: Sigma bills on account types (licensed seats) rather than API calls — see https://help.sigmacomputing.com/docs/account-type-and-license-overview
+  and https://help.sigmacomputing.com/docs/view-license-utilization. No monetary values are published anywhere on the public
+  site, so none are recorded here.

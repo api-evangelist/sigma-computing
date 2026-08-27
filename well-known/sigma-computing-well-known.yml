@@ -1,0 +1,94 @@
+generated: '2026-08-27'
+method: probed
+source: /.well-known/* probes on 2026-08-27
+hosts:
+- host: help.sigmacomputing.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 200
+    file: well-known/sigma-computing-api-catalog.json
+    content_type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"
+    note: 'RFC 9727 API catalog linkset. Names two service-desc documents: https://help.sigmacomputing.com/openapi/sigma-rest-api.yaml
+      and https://help.sigmacomputing.com/openapi/code-representation.yaml — both fetched 200 and saved to openapi/.'
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: api.sigmacomputing.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: well-known/sigma-computing-oauth-authorization-server.json
+    note: RFC 8414 metadata for the Sigma MCP authorization server. authorization_code + refresh_token, PKCE S256, dynamic
+      client registration, scopes mcp:access and api:access.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: well-known/sigma-computing-oauth-protected-resource.json
+    note: RFC 9728 protected-resource metadata naming https://api.sigmacomputing.com/mcp as the resource.
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: aws-api.sigmacomputing.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: well-known/sigma-computing-aws-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: well-known/sigma-computing-aws-oauth-protected-resource.json
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: www.sigmacomputing.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+summary:
+  api_catalog_served: true
+  security_txt_served: false
+  security_txt_note: No RFC 9116 security.txt on any Sigma host. Sigma does publish a vulnerability disclosure policy at https://www.sigmacomputing.com/product/vdp
+    and a security contact at security@sigmacomputing.com via the SafeBase trust center — the machine-readable /.well-known/security.txt
+    is the missing piece.
+  agent_card_served: false

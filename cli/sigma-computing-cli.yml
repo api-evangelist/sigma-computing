@@ -1,0 +1,103 @@
+generated: '2026-08-27'
+method: searched
+source: https://help.sigmacomputing.com/docs/sigma-cli + https://help.sigmacomputing.com/docs/install-and-configure-the-sigma-cli
+  + https://github.com/sigmacomputing/sigma-agent-skills/blob/main/skills/sigma-cli/SKILL.md + https://github.com/sigmacomputing/homebrew-tap
+name: Sigma CLI
+binary: sigma
+status: GA
+ga_date: '2026-08-21'
+version: 1.1.0
+version_source: sigmacomputing/homebrew-tap Formula/sigma-computing-cli.rb
+language: Rust
+docs: https://help.sigmacomputing.com/docs/sigma-cli
+license_note: The CLI is an external tool governed by a separate CLI licence — see https://help.sigmacomputing.com/docs/notice-for-sigma-cli-license.
+  It is NOT open source; the repository named as its homepage (github.com/sigmacomputing/cli) returns 404 publicly.
+generated_from_openapi: true
+generation_note: 'The command tree is generated at runtime from the published OpenAPI spec: every operation in the spec
+  gets a corresponding `sigma api <group> [<sub-group>...] <operation>` command. This is the strongest form of spec-to-tooling
+  fidelity in this profile — the CLI cannot drift from the contract.'
+install:
+- method: homebrew
+  command: brew install sigmacomputing/tap/sigma-computing-cli
+  path: Homebrew bin/, added to PATH automatically
+- method: shell installer
+  command: curl --proto '=https' --tlsv1.2 -LsSf https://assets.sigmacomputing.com/sigma-cli/releases/latest/sigma-cli-installer.sh
+    | sh
+  path: ~/.sigma-cli/bin/sigma
+  note: Unpinned — resolves to whatever "latest" is at install time.
+platforms:
+- macOS (aarch64, x86_64)
+- Linux (aarch64, x86_64)
+- Windows (x86_64)
+authentication:
+  methods:
+  - OAuth browser sign-in (sigma auth login -> OAuth)
+  - API client credentials profile (sigma auth login -> API key)
+  - 'Environment variables for headless/CI: SIGMA_BASE_URL, SIGMA_CLIENT_ID, SIGMA_CLIENT_SECRET (these take precedence
+    over stored profiles)'
+  profiles: Named profiles selected with -p <profile>; credentials stored encrypted in the OS keyring, never in a plaintext
+    config file. Set SIGMA_CLI_KEYRING_BACKEND=file to fall back to ~/.sigma-cli on systems without a usable keyring.
+  permission: OAuth profiles need an account type with "Use Sigma API with OAuth"; API-key profiles need an Admin to mint
+    client credentials.
+calling_convention:
+  shape: sigma api <group> [<sub-group> ...] <operation> [--params '<JSON>'] [--json '<JSON>'] [-f json|table|yaml|csv]
+    [-p <profile>]
+  params: --params is a single JSON object bundling every path, query and header parameter.
+  body: --json carries the request body for create/update operations.
+  output_formats:
+  - json
+  - table
+  - yaml
+  - csv
+command_groups:
+- auth
+- api workbooks
+- api dataModels
+- api reports
+- api datasets
+- api connections
+- api members
+- api teams
+- api workspaces
+- api grants
+- api files
+- api tags
+- api templates
+- api tenants
+- api deploymentPolicies
+- api user-attributes
+- api accountTypes
+- api saml
+- api api-connectors
+- api api-credentials
+- api plugins
+- api shortcuts
+- api favorites
+- api translations
+- api whoami
+- api query
+command_groups_note: Group list mirrors the OpenAPI tag set; the authoritative live list is `sigma api list-prefixes`.
+discovery_commands:
+- command: sigma api list-prefixes
+  purpose: enumerate the generated command groups
+- command: sigma api <group> --help
+  purpose: list operations in a group
+- command: sigma api schema <command-path...>
+  purpose: method, path, parameters and requiredness for one operation
+- command: sigma auth status
+  purpose: active profile and API host (writes to STDERR, not stdout)
+- command: sigma auth token
+  purpose: print the bare bearer JWT on stdout
+- command: sigma api whoami get
+  purpose: confirm the authenticated identity
+known_sharp_edges:
+- Parameters the operation does not declare are silently forwarded as query parameters with exit 0 — a misspelled parameter
+  name returns a plausible wrong answer rather than an error. Verify names with `sigma api schema` before trusting a filtered
+  or paginated result.
+- '`sigma auth status` writes to stderr and prints nothing on stdout even with -f json; parsing it requires 2>&1.'
+- '`sigma auth token` emits a bare JWT, not JSON — piping it through jq empties it and produces a 401 that looks like an
+  expired credential.'
+- '`sigma auth login` is interactive and cannot be driven non-interactively; use the SIGMA_* environment variables for CI.'
+sharp_edges_source: https://github.com/sigmacomputing/sigma-agent-skills/blob/main/skills/sigma-cli/SKILL.md — Sigma documents
+  these failure modes in its own published agent skill, which is unusually candid.
+packaging: see packages/sigma-computing-packages.yml

@@ -1,0 +1,74 @@
+generated: '2026-08-27'
+method: searched
+source: https://help.sigmacomputing.com/docs/configure-action-sequences-to-run-automatically + https://help.sigmacomputing.com/docs/export-to-webhook
+  + openapi/_original/sigma-computing-public-rest-api-openapi.json
+asyncapi_published: false
+asyncapi_note: Sigma publishes no AsyncAPI document. Probed /asyncapi.json and /asyncapi.yaml on the API and docs hosts
+  on 2026-08-27 — all 404 (the /v2/ router answers 401 for any unknown path). There is a real event surface, described below
+  as a webhook catalogue instead. Never fabricated.
+summary: 'Sigma''s event surface runs in BOTH directions and neither direction is a conventional resource-change event stream.
+  INBOUND: an external system POSTs to a per-sequence Sigma webhook URL to trigger a published workbook action sequence.
+  OUTBOUND: Sigma pushes workbook or element data to a customer-supplied endpoint, ad hoc or on a schedule. There are NO
+  lifecycle events — nothing fires when a workbook is created, a member is added, or a materialization completes.'
+directions:
+- direction: inbound
+  name: Webhook-triggered action sequences
+  status: Beta
+  docs: https://help.sigmacomputing.com/docs/configure-action-sequences-to-run-automatically
+  endpoint: POST {baseURL}/v2/webhooks/{workbookId}/{sequenceId}
+  operationId: webhooks
+  operation_summary: Send to a webhook (Beta)
+  schema_discovery:
+    endpoint: GET {baseURL}/v2/webhooks/{workbookId}/{sequenceId}/schema
+    operationId: getWebhookSchema
+    description: 'Returns the expected request-body schema for a published action sequence — the JSON keys must match the
+      parameter names defined on the trigger. This is a per-sequence, runtime-discoverable payload contract, which is a
+      genuinely good pattern: the schema is authored by the workbook builder, so it cannot be baked into a static spec.'
+  authentication:
+  - method: REST API bearer token
+    default: true
+    description: The external system exchanges the organization's client ID and secret for an access token and presents
+      it in the Authorization header. The webhook trigger must be created by a user who owns a REST API key.
+  - method: HMAC signature
+    description: Configurable HMAC signature verification so the receiver can confirm the message came from a trusted party
+      and was not tampered with. Signature construction fields are configured on the trigger.
+  response: 202 Accepted with an action trace ID. Sigma validates the request, enqueues the sequence asynchronously, and
+    does NOT wait for it to finish — the caller gets no completion signal and there is no published callback or polling
+    endpoint for the trace.
+  effects: A triggered sequence can send notifications, write to input tables, call external API endpoints, run or clear
+    a Sigma agent conversation, and export data.
+- direction: outbound
+  name: Webhook exports
+  status: GA
+  docs: https://help.sigmacomputing.com/docs/export-to-webhook
+  description: 'Sigma POSTs workbook or element data to one or more customer-supplied endpoints, either ad hoc or on a recurring
+    schedule. Multiple endpoints and send conditions per schedule. Named integration targets in the docs: Marketo, Segment,
+    Airtable.'
+  payload_formats:
+  - JSON
+  - CSV
+  limits:
+    max_rows: 1000000
+    docs: https://help.sigmacomputing.com/docs/download-export-and-upload-limitations
+  permission: Account type with the "Export to webhook" permission enabled.
+  api_control: Schedules are managed over the REST API at /v2/workbooks/{workbookId}/schedules and /v2/reports/{reportId}/schedules.
+  signature_verification: 'Not documented for outbound exports — the receiver has no published way to verify a payload came
+    from Sigma. This is an asymmetry: inbound webhooks support HMAC, outbound ones do not.'
+- direction: outbound
+  name: Notification destinations
+  status: GA
+  description: Beyond raw webhooks, action sequences and scheduled exports can deliver to email, Slack, Microsoft Teams,
+    SharePoint and cloud storage.
+  docs: https://help.sigmacomputing.com/docs/create-actions-that-send-notifications-and-export-data
+event_catalog: []
+event_catalog_note: Deliberately EMPTY. Sigma publishes no named event types and no resource-lifecycle event stream. An
+  agent that needs to know when a Sigma object changed must poll — there is nothing to subscribe to. This is the largest
+  structural gap in Sigma's event surface and the reason no AsyncAPI document could be derived honestly.
+probes:
+- url: https://api.sigmacomputing.com/asyncapi.json
+  status: 404
+- url: https://help.sigmacomputing.com/asyncapi.yaml
+  status: 404
+- url: https://aws-api.sigmacomputing.com/v2/asyncapi.json
+  status: 401
+  note: auth-gated catch-all on the /v2/ router, not a document

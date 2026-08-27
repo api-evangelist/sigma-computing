@@ -1,0 +1,146 @@
+# API Evangelist enrichment overlay for the Sigma REST API.
+# generated: '2026-08-27'
+# method: generated
+# source: derived from probes + docs recorded in this repo; extends openapi/sigma-computing-rest-api-openapi.yaml
+# This overlay is ADDITIVE and NON-DESTRUCTIVE. It never mutates the provider's original spec.
+overlay: 1.0.0
+info:
+  title: Sigma REST API — API Evangelist enrichment overlay
+  version: 1.0.0
+extends: ../openapi/sigma-computing-rest-api-openapi.yaml
+actions:
+- target: $.info
+  description: >-
+    Record where each published contract actually came from, and that the two Sigma publishes are not identical.
+  update:
+    x-apievangelist-provenance:
+      harvested: '2026-08-27'
+      source_url: https://help.sigmacomputing.com/openapi/sigma-rest-api.yaml
+      discovered_via: RFC 9727 API catalog at https://help.sigmacomputing.com/.well-known/api-catalog
+      sibling_contract: https://help.sigmacomputing.com/openapi/code-representation.yaml
+      docs_download_contract:
+        title: Sigma Computing Public REST API
+        version: 2.0.0
+        note: >-
+          The "Download OpenAPI spec" button on the API reference serves a THIRD, differently-titled document from a
+          presigned Fern asset URL. It is a near-superset (203 paths / 286 operations vs 193 / 274 here) and adds the
+          /v3alpha/ surface and the workbook code-representation paths, but it also OMITS four paths this document
+          carries (/v2/dataModels/{dataModelId}/elements/{elementId}/query,
+          /v2/organizations/settings/bulkCopy, /v2/organizations/settings/licenseUpgradeRequests,
+          /v2/organizations/settings/publicEmbeds). Neither is a superset of the other.
+        saved_as: openapi/_original/sigma-computing-public-rest-api-openapi.json
+- target: $.info
+  description: Name the regional base-URL requirement that the servers[] block implies but does not explain.
+  update:
+    x-apievangelist-base-url-guidance: >-
+      There is no single base URL. Each Sigma organization is pinned to exactly one of the thirteen servers listed in
+      this document, across GCP, AWS and Azure. Customers read theirs from Administration > Developer Access >
+      API base URL. Hard-coding https://api.sigmacomputing.com will fail for most organizations.
+- target: $.info
+  description: Record the runtime semantics that are documented in prose but absent from the contract.
+  update:
+    x-apievangelist-runtime-semantics:
+      authentication:
+        flow: OAuth 2.0 client credentials
+        token_endpoint: '{baseURL}/v2/auth/token'
+        token_ttl_seconds: 3600
+      rate_limits:
+        published_in_contract: false
+        documented_at: https://help.sigmacomputing.com/reference/get-started-sigma-api
+        limits:
+        - endpoint: POST /v2/auth/token
+          limit: 1
+          window: 1s
+        - endpoint: POST /v2/workbooks/{workbookId}/export
+          limit: 400
+          window: 1m
+        - endpoint: POST /v2/reports/{reportId}/export
+          limit: 400
+          window: 1m
+        - endpoint: POST /v2/workbooks/{workbookId}/send
+          limit: 100
+          window: 1m
+        - endpoint: POST /v2/reports/{reportId}/send
+          limit: 100
+          window: 1m
+        - endpoint: GET /v2/query/{queryId}/download
+          limit: 400
+          window: 1m
+        response_headers: []
+        note: No X-RateLimit-*, RateLimit-* or Retry-After headers are defined or documented.
+      pagination:
+        default_page_size: 50
+        max_page_size: 1000
+        styles:
+        - style: offset
+          params: [page, limit]
+        - style: cursor
+          params: [pageToken, pageSize]
+      idempotency:
+        supported: false
+        note: No Idempotency-Key header anywhere in the contract or the docs.
+      error_envelope:
+        media_type: application/json
+        rfc9457: false
+        fields: [requestId, message, code]
+        note: >-
+          Every operation declares only a `default` error response. No operation declares an explicit 4xx or 5xx,
+          so a generated client cannot enumerate an operation's failure modes.
+- target: $.info
+  description: Record the reversibility posture, which nothing in the contract expresses.
+  update:
+    x-apievangelist-reversibility:
+      grade: verified
+      recoverable:
+      - surface: workbook content
+        reversal_operation: restoreWorkbookVersion
+        window: unlimited
+        window_source: https://help.sigmacomputing.com/docs/workbook-versions-and-version-history
+      partially_recoverable:
+      - surface: deployment policies
+        note: DELETE is named archiveDeployment, but no un-archive operation is published.
+      - surface: data model source bindings
+        note: swapDataModelSources is symmetric; re-issue the inverse call.
+      irreversible:
+      - DELETE /v2/members/{memberId}
+      - DELETE /v2/teams/{teamId}
+      - DELETE /v2/connections/{connectionId}
+      - DELETE /v2/grants/{grantId}
+      - DELETE /v2/workspaces/{workspaceId}
+      - DELETE /v2/api-credentials/{apiCredentialId}
+      agent_guidance: >-
+        Prefer POST /v2/members/{memberId}/revoke (revokeMemberTokens) over DELETE /v2/members/{memberId}. Identity,
+        access and connection deletes have no published restore path and no stated retention window; escalate to a
+        human before issuing one.
+- target: $.info
+  description: Point at the companion agent surfaces this contract does not mention.
+  update:
+    x-apievangelist-agent-surfaces:
+      mcp_server: https://api.sigmacomputing.com/mcp
+      mcp_auth: OAuth 2.1 authorization code + PKCE, scope mcp:access
+      agent_skills: https://github.com/sigmacomputing/sigma-agent-skills
+      cli: sigma (generated from this same OpenAPI at runtime)
+      llms_txt: https://help.sigmacomputing.com/llms.txt
+      api_catalog: https://help.sigmacomputing.com/.well-known/api-catalog
+      agent_card: none served
+- target: $.paths['/v2/auth/token']['post']
+  description: Flag the token endpoint's severe rate limit and token lifetime at the operation itself.
+  update:
+    x-apievangelist-notes:
+      rate_limit: 1 request per second
+      token_ttl_seconds: 3600
+      guidance: >-
+        Cache the bearer token for its full hour. Minting a token per request will trip the 1 rps limit almost
+        immediately in any concurrent client.
+- target: $.paths['/v2/webhooks/{workbookId}/{sequenceId}']['post']
+  description: Record the asynchronous contract of the inbound webhook trigger.
+  update:
+    x-apievangelist-notes:
+      direction: inbound
+      response: 202 Accepted with an action trace ID
+      completion_signal: none
+      guidance: >-
+        Sigma enqueues the action sequence and returns immediately. There is no published callback and no polling
+        endpoint for the trace ID, so a caller cannot confirm the sequence succeeded.
+      payload_schema_discovery: GET /v2/webhooks/{workbookId}/{sequenceId}/schema
+      authentication: REST API bearer token (default) or configurable HMAC signature verification

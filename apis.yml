@@ -1,18 +1,149 @@
 aid: sigma-computing
 name: Sigma Computing
-description: 'Sigma Computing is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Sigma Computing is a warehouse-first analytics and business-application platform. Instead of extracting data into
+  its own store, Sigma queries the customer's cloud data warehouse live — Snowflake, Databricks, BigQuery, Redshift,
+  Amazon Athena, PostgreSQL and ClickHouse — and puts a spreadsheet-style interface, governed data models, input
+  tables with write-back, pixel-perfect paginated reports, embedded white-label analytics and AI agents on top of it.
+  The developer surface is a 274-operation REST API (OpenAPI 3.1) covering workbooks, data models, reports,
+  connections, members, teams, workspaces, permissions, user attributes, tenants, templates and API connectors;
+  a first-party Rust CLI generated from that same OpenAPI; a remote OAuth-protected MCP server that lets AI
+  assistants search, describe and query governed data in natural language; JavaScript embed and plugin SDKs; and
+  three Apache-2.0 agent skills Sigma publishes for Claude Code, Cursor, Codex and Snowflake Cortex Code.
+image: https://cdn.sanity.io/images/9i48iita/production/2fcbd9fc0f6c54c2bc25877917e563fe805ad864-1200x630.png
 url: https://raw.githubusercontent.com/api-evangelist/sigma-computing/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-27'
 modified: '2026-08-27'
 tags:
-- Company
-apis: []
+- Business Intelligence
+- Analytics
+- Embedded Analytics
+- Data Modeling
+- Data Warehouse
+- Reporting
+- Spreadsheets
+- MCP
+- AI Agents
+- Snowflake
+- Databricks
+- Data Governance
+tags_raw:
+- business-intelligence
+- analytics
+- embedded-analytics
+- data-modeling
+- data-warehouse
+- reporting
+- spreadsheets
+- mcp
+- ai-agents
+- snowflake
+- databricks
+- data-governance
+apis:
+- name: Sigma REST API
+  description: >-
+    The Sigma REST API provides programmatic access to a Sigma organization over HTTP — connections, datasets, data
+    models, workbooks, reports, teams, members, workspaces, grants, tags, templates, tenants, user attributes, SAML
+    configuration, allowed IPs, API connectors and credentials. Resource-oriented URLs, JSON request and response
+    bodies, HTTP status codes for errors, and CORS support. Authentication is OAuth 2.0 client credentials exchanged
+    at /v2/auth/token for a bearer token that expires after one hour. The base URL is region-specific: Sigma runs
+    thirteen documented hosts across GCP, AWS and Azure and each organization uses exactly one.
+  humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
+  baseURL: https://api.sigmacomputing.com
+  tags:
+  - Business Intelligence
+  - Analytics
+  - Data Modeling
+  - Reporting
+  - Embedded Analytics
+  tags_raw:
+  - business-intelligence
+  - analytics
+  - data-modeling
+  - reporting
+  - embedded-analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-rest-api-openapi.yaml
+  - type: OpenAPI
+    url: openapi/sigma-computing-code-representation-openapi.yaml
+  - type: Documentation
+    url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
+  - type: APIReference
+    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
+  - type: GettingStarted
+    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
+  - type: Examples
+    url: https://help.sigmacomputing.com/recipes
+  - type: Authentication
+    url: authentication/sigma-computing-authentication.yml
+  - type: OAuthScopes
+    url: scopes/sigma-computing-scopes.yml
+  - type: Conventions
+    url: conventions/sigma-computing-conventions.yml
+  - type: ErrorCatalog
+    url: errors/sigma-computing-problem-types.yml
+  - type: DataModel
+    url: data-model/sigma-computing-data-model.yml
+  - type: Overlay
+    url: overlays/sigma-computing-rest-api-overlay.yaml
+  - type: RateLimits
+    url: rate-limits/sigma-computing-rate-limits.yml
+  - type: Webhooks
+    url: asyncapi/sigma-computing-webhooks.yml
+  - type: Conformance
+    url: conformance/sigma-computing-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/sigma-computing-lifecycle.yml
+- name: Sigma MCP Server
+  description: >-
+    Sigma's first-party remote Model Context Protocol server. AI assistants such as Claude, ChatGPT, Codex, Cursor
+    and Snowflake Cortex Code connect over HTTP with OAuth and can then search a Sigma organization for workbooks,
+    data models, reports and warehouse tables, describe their columns and semantics, and run governed queries in
+    natural language. Permissions are inherited from the caller's own Sigma account rather than a service identity,
+    and MCP-issued warehouse queries are tagged "kind":"mcp" so their cost can be attributed.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - MCP
+  - AI Agents
+  - Analytics
+  tags_raw:
+  - mcp
+  - ai-agents
+  - analytics
+  properties:
+  - type: MCPServer
+    url: mcp/sigma-computing-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/sigma-computing-tool-crosswalk.yml
+  - type: Documentation
+    url: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+- name: Sigma Embed API
+  description: >-
+    Secure embedding of Sigma workbooks, pages and individual elements into a host application. Embed URLs are signed
+    with JSON Web Tokens carrying the viewing user's identity, team and user attributes so row-level and column-level
+    security follow the end user into the embed. Driven from the browser with the @sigmacomputing/embed-sdk and
+    @sigmacomputing/react-embed-sdk packages.
+  humanURL: https://help.sigmacomputing.com/docs/create-an-embed-api-with-json-web-tokens
+  baseURL: https://app.sigmacomputing.com
+  tags:
+  - Embedded Analytics
+  - Business Intelligence
+  tags_raw:
+  - embedded-analytics
+  - business-intelligence
+  properties:
+  - type: Documentation
+    url: https://help.sigmacomputing.com/docs/create-an-embed-api-with-json-web-tokens
+  - type: SourceCode
+    url: https://github.com/sigmacomputing/embed-sdk
+  - type: Components
+    url: components/sigma-computing-components.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +151,97 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://www.sigmacomputing.com/
+- type: DeveloperPortal
+  url: https://help.sigmacomputing.com/
+- type: Documentation
+  url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
+- type: APIReference
+  url: https://help.sigmacomputing.com/reference/get-started-sigma-api
+- type: GettingStarted
+  url: https://help.sigmacomputing.com/reference/get-started-sigma-api
+- type: Support
+  url: https://help.sigmacomputing.com/docs/sigma-support
+- type: HelpCenter
+  url: https://community.sigmacomputing.com/
+- type: Blog
+  url: https://www.sigmacomputing.com/blog
+- type: GitHubOrganization
+  url: https://github.com/sigmacomputing
+- type: SignUp
+  url: https://www.sigmacomputing.com/go/free-trial
+- type: Login
+  url: https://app.sigmacomputing.com/login
+- type: Pricing
+  url: https://www.sigmacomputing.com/company/contact-us
+- type: Plans
+  url: plans/sigma-computing-plans-pricing.yml
+- type: TermsOfService
+  url: https://www.sigmacomputing.com/legal/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.sigmacomputing.com/legal/privacy-policy
+- type: StatusPage
+  url: https://status.sigmacomputing.com
+- type: Deprecation
+  url: lifecycle/sigma-computing-lifecycle.yml
+- type: Lifecycle
+  url: lifecycle/sigma-computing-lifecycle.yml
+- type: ChangeLog
+  url: https://help.sigmacomputing.com/changelog
+- type: ChangeLog
+  url: changelog/sigma-computing-changelog.yml
+- type: Security
+  url: https://www.sigmacomputing.com/product/vdp
+- type: VulnerabilityDisclosure
+  url: security/sigma-computing-vulnerability-disclosure.yml
+- type: TrustCenter
+  url: security/sigma-computing-trust-center.yml
+- type: Compliance
+  url: security/sigma-computing-trust-center.yml
+- type: DomainSecurity
+  url: security/sigma-computing-domain-security.yml
+- type: Authentication
+  url: authentication/sigma-computing-authentication.yml
+- type: OAuthScopes
+  url: scopes/sigma-computing-scopes.yml
+- type: Conventions
+  url: conventions/sigma-computing-conventions.yml
+- type: Idempotency
+  url: conventions/sigma-computing-conventions.yml
+- type: Packages
+  url: packages/sigma-computing-packages.yml
+- type: SDKs
+  url: packages/sigma-computing-packages.yml
+- type: CLI
+  url: cli/sigma-computing-cli.yml
+- type: Components
+  url: components/sigma-computing-components.yml
+- type: MCPServer
+  url: mcp/sigma-computing-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: WellKnown
+  url: well-known/sigma-computing-well-known.yml
+- type: APICatalog
+  url: well-known/sigma-computing-api-catalog.json
+- type: LLMsTxt
+  url: llms/sigma-computing-llms.txt
+- type: Conformance
+  url: conformance/sigma-computing-conformance.yml
+- type: ErrorCatalog
+  url: errors/sigma-computing-problem-types.yml
+- type: RateLimits
+  url: rate-limits/sigma-computing-rate-limits.yml
+- type: Webhooks
+  url: asyncapi/sigma-computing-webhooks.yml
+- type: Sandbox
+  url: sandbox/sigma-computing-sandbox.yml
+- type: DataModel
+  url: data-model/sigma-computing-data-model.yml
+- type: Overlay
+  url: overlays/sigma-computing-rest-api-overlay.yaml
+x-enrichment:
+  date: '2026-08-27'
+  status: enriched
+  artifacts_added: 35
+  pass: local-v1

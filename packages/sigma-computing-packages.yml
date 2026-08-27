@@ -1,0 +1,70 @@
+generated: '2026-08-27'
+method: searched
+source: https://registry.npmjs.org/ + https://github.com/sigmacomputing + https://help.sigmacomputing.com/docs/install-and-configure-the-sigma-cli
+name: Sigma Computing client libraries and distributions
+note: Sigma publishes no first-party Python, Java, Go, Ruby, PHP or Rust SDK for the REST API; PyPI has no sigma-computing/sigmacomputing
+  package (both 404). The published client surface is the JavaScript embed/plugin family on npm plus the Rust-built Sigma
+  CLI distributed as signed binaries and a Homebrew tap.
+packages:
+- name: '@sigmacomputing/embed-sdk'
+  registry: npm
+  official: true
+  language: JavaScript/TypeScript
+  url: https://www.npmjs.com/package/@sigmacomputing/embed-sdk
+  repository: https://github.com/sigmacomputing/embed-sdk
+  version: 0.7.1
+  published: '2026-05-01'
+  description: JavaScript SDK to interact with Sigma Computing's Embed API
+  covers: embedding
+- name: '@sigmacomputing/react-embed-sdk'
+  registry: npm
+  official: true
+  language: TypeScript/React
+  url: https://www.npmjs.com/package/@sigmacomputing/react-embed-sdk
+  repository: https://github.com/sigmacomputing/embed-sdk
+  version: 0.7.1
+  published: '2026-05-01'
+  description: React bindings for the Sigma Computing Embed API
+  covers: embedding
+- name: '@sigmacomputing/plugin'
+  registry: npm
+  official: true
+  language: JavaScript/TypeScript
+  url: https://www.npmjs.com/package/@sigmacomputing/plugin
+  repository: https://github.com/sigmacomputing/sigma-sample-plugins
+  version: 1.3.2
+  published: '2026-08-20'
+  description: Sigma Computing Plugin Client SDK — build custom workbook plugin elements
+  covers: custom-plugins
+- name: sigma-computing-cli
+  registry: homebrew
+  official: true
+  language: Rust
+  url: https://github.com/sigmacomputing/homebrew-tap
+  install: brew install sigmacomputing/tap/sigma-computing-cli
+  version: 1.1.0
+  published: null
+  note: 'Homebrew formula in sigmacomputing/homebrew-tap pins v1.1.0 with per-platform tarballs on assets.sigmacomputing.com.
+    Homebrew taps expose no release-date metadata endpoint, so published is null: the version is read from the formula, the
+    date is not published. Binaries also available via the shell installer at https://assets.sigmacomputing.com/sigma-cli/releases/latest/sigma-cli-installer.sh
+    (unpinned "latest").'
+  covers: rest-api-cli
+- name: sigcli
+  registry: homebrew
+  official: true
+  language: Rust
+  url: https://github.com/sigmacomputing/homebrew-tap
+  install: brew install sigmacomputing/tap/sigcli
+  version: 0.1.0
+  published: null
+  note: Superseded pre-GA formula name for the same CLI; sigma-computing-cli is the current formula. Retained here because
+    the tap still ships it.
+  covers: rest-api-cli
+absent:
+- registry: pypi
+  probed: https://pypi.org/pypi/sigma-computing/json
+  status: 404
+- registry: pypi
+  probed: https://pypi.org/pypi/sigmacomputing/json
+  status: 404
+official_sdk_count: 4

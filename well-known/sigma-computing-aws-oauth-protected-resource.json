@@ -1,0 +1,1 @@
+{"resource":"https://aws-api.sigmacomputing.com/mcp","authorization_servers":["https://aws-api.sigmacomputing.com"],"scopes_supported":["mcp:access"],"bearer_methods_supported":["header"]}

@@ -1,0 +1,92 @@
+generated: '2026-08-27'
+method: probed
+source: https://help.sigmacomputing.com/docs/use-sigma-mcp-server + https://api.sigmacomputing.com/.well-known/oauth-protected-resource
+  + POST https://api.sigmacomputing.com/mcp
+name: Sigma MCP Server
+status: published
+description: Sigma ships a first-party remote MCP server that lets an AI assistant search the organization for workbooks,
+  data models and warehouse tables, describe their columns and semantics, and run governed queries against them in natural
+  language. Permissions are inherited from the caller's Sigma account; queries are tagged "kind":"mcp" in the warehouse so
+  cost can be attributed.
+deployment:
+  mode: remote
+  endpoint: https://api.sigmacomputing.com/mcp
+  auth: oauth
+  verified: probed
+  note: 'The endpoint is per-organization: Sigma tells each customer to read their own Sigma MCP URL from Profile > Integrations
+    > "Connect Sigma to AI tools". https://api.sigmacomputing.com/mcp is the GCP (US) cloud form and is the value Sigma itself
+    advertises in /.well-known/oauth-protected-resource on that host; every regional API host serves the same shape (probed
+    https://aws-api.sigmacomputing.com/mcp for AWS US-West). Transport HTTP, not stdio — there is no npx/pip package for this
+    server.'
+transport: http
+protocol_version: unknown — server refuses initialize without a token
+evidence:
+- url: https://api.sigmacomputing.com/mcp
+  method: POST tools/list
+  http_status: 401
+  body: '{"error":{"errorCode":"unauthorized","code":"EACCES","message":"Token missing or malformed"}}'
+  www_authenticate: Bearer resource_metadata="https://api.sigmacomputing.com/mcp/.well-known/oauth-protected-resource", scope="mcp:access"
+  note: A conformant RFC 9728 challenge. The live tool list and inputSchemas require an authenticated OAuth session, so the
+    capability list below is transcribed from Sigma's own MCP documentation, not from tools/list.
+- url: https://api.sigmacomputing.com/.well-known/oauth-authorization-server
+  http_status: 200
+- url: https://api.sigmacomputing.com/.well-known/oauth-protected-resource
+  http_status: 200
+authorization:
+  scheme: OAuth 2.1 authorization code + PKCE (S256)
+  issuer: https://api.sigmacomputing.com
+  authorization_endpoint: https://api.sigmacomputing.com/mcp/authorize
+  token_endpoint: https://api.sigmacomputing.com/mcp/token
+  registration_endpoint: https://api.sigmacomputing.com/mcp/register
+  dynamic_client_registration: true
+  scopes:
+  - mcp:access
+  - api:access
+  required_sigma_permission: Account type with "Use Sigma MCP with OAuth" enabled, plus the same view/use permissions the
+    operation would need in the Sigma UI.
+capabilities:
+- name: search
+  summary: Search the whole Sigma organization for documents and data sources — workbooks, data models, reports, warehouse
+    tables, elements — filtered by name, type, owner or connection.
+  source: docs
+- name: describe
+  summary: 'Explore a data source or document: column names, definitions, descriptions, data types, keys and column attributes.'
+  source: docs
+- name: query
+  summary: Run a governed query against a connection, data model or workbook and return results, without the caller writing
+    SQL. Follow-up refinement supported.
+  source: docs
+capabilities_note: Named capability groups as documented at https://help.sigmacomputing.com/docs/use-sigma-mcp-server. These
+  are Sigma's feature headings, NOT verbatim MCP tool names — the real tool names and inputSchemas need an authenticated tools/list
+  and have not been observed.
+limitations:
+- Custom window frames, ordered window aggregates and dynamic intervals are not supported in MCP-issued queries.
+- Organizations with an IP allowlist must allowlist the AI assistant's outbound IPs with Scope=API.
+distribution:
+- client: Claude
+  path: Connectors Directory
+  url: https://claude.com/connectors/sigma
+  status: 200
+- client: ChatGPT
+  path: ChatGPT plugin marketplace — search "Sigma"
+- client: OpenAI Codex
+  path: codex mcp add sigma --url <Sigma MCP URL>
+- client: Snowflake Cortex Code
+  path: cortex mcp add sigma <Sigma MCP URL> --transport http
+- client: Cursor
+  path: mcp.json custom server entry
+other_mcp_servers:
+- name: Sigma documentation MCP server
+  endpoint: https://help.sigmacomputing.com/_mcp/server
+  auth: none
+  verified: probed
+  server_info:
+    name: fern-docs-mcp-server
+    version: 1.0.0
+    protocolVersion: '2025-06-18'
+  tools:
+  - name: searchDocs
+    description: Search the documentation at https://help.sigmacomputing.com. Returns relevant doc passages with source URLs.
+  note: Anonymous, live, and returns a real tools/list. This is the Fern docs-search server that ships with Sigma's documentation
+    platform, advertised by Sigma in its own llms.txt — it reads documentation, it does not reach the Sigma product. Recorded
+    separately from the product MCP server above so the two are not conflated.

@@ -1,0 +1,50 @@
+generated: '2026-08-27'
+method: searched
+source: https://www.sigmacomputing.com/go/free-trial + https://help.sigmacomputing.com/reference/get-started-sigma-api +
+  https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+sandbox_published: false
+summary: 'Sigma publishes NO API sandbox: there is no test mode, no test-vs-live key prefix, no synthetic fixtures, no time
+  simulation and no throwaway credential. Every API call runs against a real Sigma organization backed by a real cloud data
+  warehouse. The nearest thing to a sandbox is a free-trial organization plus the Sample Data connection Sigma provisions
+  inside it.'
+test_mode:
+  exists: false
+  key_prefixes: null
+  note: Client credentials carry no environment discriminator. A production credential and a trial credential are indistinguishable
+    by shape — the only separator is which regional base URL and organization they belong to.
+test_data:
+  fixtures: null
+  sample_connection: Trial and demo organizations ship a "Sample Data" connection, referenced throughout the docs and in
+    Sigma's own MCP example prompts. It is warehouse data, not a fixture set, and its contents are not published.
+  note: NO test card numbers, magic identifiers or hosted test tokens exist — this is not a payments or messaging API.
+time_simulation:
+  exists: false
+dry_run:
+  exists: partial
+  mechanisms:
+  - operationId: migrateDatasetToDataModel
+    path: POST /v2/datasets/{datasetId}/migrate
+    flag: dryRun
+    description: Rehearse a dataset-to-data-model migration without applying it.
+  - operationId: verifyWorkbookSpec
+    path: POST /v2/workbooks/spec/verify
+    description: Validate a workbook code representation without creating or updating a workbook.
+  - operationId: testConnection
+    path: GET /v2/connections/{connectionId}/test
+    description: Test warehouse connectivity without changing anything.
+self_serve_environment:
+- name: Free trial
+  url: https://www.sigmacomputing.com/go/free-trial
+  status: 200
+  note: The only self-serve way to get a callable Sigma organization. Duration and quota are not published on the page.
+- name: Sigma Public
+  url: https://www.sigmacomputing.com/
+  note: A public gallery of Sigma content launched 2026-05-22. Read-only showcase, not an API environment.
+interactive_console:
+  exists: true
+  url: https://help.sigmacomputing.com/reference/get-started-sigma-api
+  description: 'The Fern-generated API reference ships an interactive console: every endpoint page lets you fill parameters
+    and issue a live request, with generated code samples in Node.js, Python, Ruby, curl and others. It calls the real API
+    with real credentials — it is a console, not a sandbox.'
+gap: For an API whose destructive operations (DELETE on members, teams, grants, connections) have no published reversal
+  path, the absence of any test environment is a genuine risk for agent-driven automation. An agent has nowhere to rehearse.

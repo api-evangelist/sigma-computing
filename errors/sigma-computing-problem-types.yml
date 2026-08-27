@@ -1,0 +1,70 @@
+generated: '2026-08-27'
+method: derived
+source: openapi/_original/sigma-computing-public-rest-api-openapi.json + https://help.sigmacomputing.com/reference/get-started-sigma-api
+  (derived from the spec response model and the documented 401 example; enriched from a live probe)
+format: custom-json
+rfc9457: false
+media_type: application/json
+envelope:
+  fields:
+  - name: requestId
+    type: string
+    description: Server-generated UUID identifying this request. Quote it to Sigma Support.
+  - name: message
+    type: string
+    description: Human-readable failure description.
+  - name: code
+    type: string
+    description: Machine-readable error slug, e.g. "unauthorized".
+  schema_ref: components.responses.ApiError
+spec_coverage:
+  operations: 286
+  with_default_response: 286
+  with_200: 272
+  with_201: 9
+  with_204: 4
+  with_202: 1
+  with_explicit_4xx: 0
+  with_explicit_5xx: 0
+  finding: Sigma models every failure as a single `default` response pointing at one ApiError schema. No operation declares
+    an explicit 4xx or 5xx. The envelope is consistent and machine-parseable, but the CATALOGUE of what can go wrong per
+    operation is not published — an agent cannot enumerate an operation's failure modes from the contract.
+problem_types:
+- code: unauthorized
+  http_status: 401
+  title: Token missing, malformed, or expired
+  observed_messages:
+  - Token missing or malformed
+  - We cannot verify your identity. Please try again later.
+  remediation: Sigma bearer tokens expire after 1 hour. Re-POST client credentials to {baseURL}/v2/auth/token and retry.
+    Also verify you are calling the correct regional base URL — a valid token presented to the wrong regional host also
+    fails here.
+  evidence:
+    url: https://aws-api.sigmacomputing.com/v2/openapi.json
+    http_status: 401
+    observed: '2026-08-27'
+    body: '{"requestId":"5dc74b1f-9f2a-4ef8-a676-ad7cefeb6060","message":"Token missing or malformed","code":"unauthorized"}'
+  source: probed + https://help.sigmacomputing.com/reference/get-started-sigma-api#api-errors
+- code: unauthorized
+  http_status: 401
+  title: MCP request without an OAuth token
+  scope: mcp
+  observed_messages:
+  - Token missing or malformed
+  remediation: Complete the OAuth authorization-code + PKCE flow against https://api.sigmacomputing.com/mcp/authorize and
+    present the resulting token with scope mcp:access.
+  evidence:
+    url: https://api.sigmacomputing.com/mcp
+    http_status: 401
+    observed: '2026-08-27'
+    body: '{"error":{"errorCode":"unauthorized","code":"EACCES","message":"Token missing or malformed"}}'
+    note: The MCP surface uses a DIFFERENT, nested envelope ({"error":{errorCode,code,message},"requestId"}) from the REST
+      surface ({requestId,message,code}). Two envelopes, one product.
+  source: probed
+undocumented:
+  note: Sigma publishes no consolidated error-code reference page. The only error documented in prose is the expired-token
+    401. Codes for validation, permission, not-found, conflict and rate-limit failures exist on the wire but are not catalogued
+    by the provider, and this file deliberately does not invent them.
+  gap_to_report: A published error-code registry, plus explicit 4xx/5xx responses in the OpenAPI, would be the single highest-value
+    contract improvement for agent consumers.
+ip_restriction_note: Requests from outside a configured IP allowlist are rejected before reaching the resource. See https://help.sigmacomputing.com/docs/restrict-access-to-sigma-by-ip-address

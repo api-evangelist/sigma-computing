@@ -1,0 +1,132 @@
+generated: '2026-08-27'
+method: derived
+source: mcp/sigma-computing-mcp.yml + openapi/_original/sigma-computing-public-rest-api-openapi.json + https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+confidence_caveat: The live Sigma MCP server requires OAuth (probed 401 with an RFC 9728 challenge), so tools/list and the
+  real inputSchemas have NOT been observed. The rows below bind Sigma's three DOCUMENTED MCP capability groups to the REST
+  operations that back them, by semantics. Confidence is set honestly and no tool name is asserted as verbatim.
+surfaces:
+  openapi:
+  - file: openapi/sigma-computing-rest-api-openapi.yaml
+    operations: 274
+    gated: false
+  - file: openapi/sigma-computing-code-representation-openapi.yaml
+    operations: 3
+    gated: false
+  mcp:
+    url: https://api.sigmacomputing.com/mcp
+    gated: true
+    auth: OAuth 2.1 + PKCE, scope mcp:access
+    tools_list_observed: false
+  graphql: null
+  cli:
+    binary: sigma
+    gated: false
+    note: 'The Sigma CLI is a THIRD projection of the same core and it is the only one with a provably 1:1 binding — its
+      command tree is generated at runtime from the published OpenAPI, so every REST operation has exactly one CLI command.
+      Recorded here because it makes the REST/MCP divergence below unambiguous: the gap is MCP-vs-REST, not tooling-vs-REST.'
+crosswalk:
+- tool: search
+  category: discovery
+  rest:
+  - listWorkbooks
+  - listDataModels
+  - listReports
+  - listConnections
+  - filesList
+  - listVersionTag
+  binding: composite
+  confidence: medium
+  note: 'Sigma documents MCP search as spanning the WHOLE organization — workbooks, data models, reports, warehouse tables
+    and elements — filtered by name, type, owner and connection. No single REST operation does that: a REST client must
+    fan out across the listing endpoints (each of which accepts a `search` parameter) and merge. The MCP tool is a genuine
+    composite, not a rename.'
+- tool: search (documents by folder)
+  category: discovery
+  rest:
+  - filesList
+  binding: direct
+  confidence: medium
+  note: '"Browse and list collections of documents" maps cleanly onto GET /v2/files, the inode listing that underlies the
+    Sigma document tree.'
+- tool: describe (data source columns)
+  category: introspection
+  rest:
+  - getWorkbookColumns
+  - getElementColumns
+  - getDataModelColumns
+  - listReportColumns
+  - listConnectionTableColumns
+  binding: composite
+  confidence: medium
+  note: Column names, types and descriptions are exposed by different REST operations depending on whether the source is
+    a workbook element, a data model, a report or a raw warehouse table. MCP presents one describe surface over all four.
+- tool: describe (document structure)
+  category: introspection
+  rest:
+  - getWorkbook
+  - listWorkbookElements
+  - listWorkbookPages
+  - getDataModel
+  - listDataModelElements
+  - listLineageTree
+  binding: composite
+  confidence: medium
+- tool: query
+  category: analysis
+  rest:
+  - getElementQuery
+  - getReportElementQuery
+  - exportWorkbook
+  - downloadQuery
+  binding: partial
+  confidence: low
+  note: 'This is the row where MCP and REST genuinely diverge. The REST API can return the SQL BEHIND an existing element
+    (getElementQuery) and can EXPORT an element''s data (exportWorkbook -> downloadQuery), but it has no ad-hoc natural-language
+    or free-form query endpoint. MCP query answers questions the REST API cannot be asked. Confidence deliberately low:
+    the binding is directional, not equivalent.'
+mcp_only:
+- tool: query (natural language over governed data)
+  reason: No REST equivalent. There is no endpoint that accepts a question, resolves it against a data model, generates
+    SQL and returns an answer. This capability exists only through MCP and through Sigma Assistant in the product UI.
+- tool: cross-resource search
+  reason: REST listing endpoints are per-resource-type. A single query spanning workbooks, data models, reports and warehouse
+    tables has no REST operation.
+rest_only:
+- area: writes and administration
+  operations_approx: 180
+  reason: The MCP server is documented as search / describe / query only. Nothing in Sigma's MCP documentation describes
+    creating, updating or deleting anything. Every write operation — createWorkbook, createMember, createTeam, createGrant,
+    createConnection, createApiCredential, updateDataModelSpec, restoreWorkbookVersion, exportWorkbook, sendWorkbook, and
+    the whole tenants / deploymentPolicies / saml / user-attributes surface — is REST-only.
+  examples:
+  - createWorkbook
+  - createMember
+  - createTeam
+  - createGrant
+  - createConnection
+  - updateDataModelSpec
+  - restoreWorkbookVersion
+  - exportWorkbook
+  - sendWorkbook
+  - createVersionTag
+  - archiveDeployment
+  - createTenant
+- area: code representation
+  operations: 6
+  reason: Workbook and data model specs (getWorkbookSpec, updateWorkbookSpec, createWorkbookSpec, getDataModelSpec, updateDataModelSpec,
+    createDataModelSpec) are REST-only. Sigma covers this gap with the sigma-data-models agent skill, which drives the REST
+    API directly rather than going through MCP.
+- area: scheduling and materialization
+  operations_approx: 25
+  reason: Schedules, materializations and their new Beta schedule endpoints have no MCP representation.
+coverage:
+  rest_operations: 286
+  mcp_capability_groups_documented: 3
+  mcp_tools_observed: 0
+  rest_operations_reachable_via_mcp_estimate: roughly 25-30 read operations, inferred from the documented capability groups
+  read_write_asymmetry: The MCP server is read-only. Every one of Sigma's ~180 write operations is REST-only. An agent can
+    ASK Sigma anything through MCP and CHANGE nothing — which is a deliberate and defensible safety posture, and worth recording
+    as a design choice rather than a coverage gap.
+  observed: false
+  observation_blocker: OAuth-gated tools/list. Re-run this crosswalk with an authenticated session to replace the semantic
+    bindings with real inputSchemas.

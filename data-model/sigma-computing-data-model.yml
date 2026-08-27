@@ -1,0 +1,277 @@
+generated: '2026-08-27'
+method: derived
+source: openapi/_original/sigma-computing-public-rest-api-openapi.json — entity graph derived from URL path hierarchy and
+  the id-typed path parameters across 203 paths
+summary: Sigma's object graph is a governed document store over a customer warehouse. Files (inodes) are the filesystem
+  spine; workbooks, data models, reports and datasets are documents inside it; grants attach access to documents, folders
+  and connections; members, teams and user attributes carry identity and row-level context; connections bind everything
+  to the warehouse.
+entities:
+- name: Organization
+  id: null
+  root: /v2/organizations/settings
+  note: Singleton. Settings, translations, allowed IPs and SAML service providers hang off it.
+- name: Member
+  id: memberId
+  root: /v2/members
+  operations: 12
+- name: Team
+  id: teamId
+  root: /v2/teams
+  operations: 10
+- name: AccountType
+  id: accountTypeId
+  root: /v2/accountTypes
+  operations: 4
+- name: UserAttribute
+  id: userAttributeId
+  root: /v2/user-attributes
+  operations: 16
+- name: File
+  id: inodeId
+  root: /v2/files
+  operations: 5
+  note: The generic inode. Workbooks, data models, reports and folders are all files.
+- name: Workspace
+  id: workspaceId
+  root: /v2/workspaces
+  operations: 9
+- name: Workbook
+  id: workbookId
+  root: /v2/workbooks
+  operations: 60
+- name: WorkbookElement
+  id: elementId
+  root: /v2/workbooks/{workbookId}/elements
+- name: WorkbookPage
+  id: pageId
+  root: /v2/workbooks/{workbookId}/pages
+- name: Bookmark
+  id: bookmarkId
+  root: /v2/workbooks/{workbookId}/bookmarks
+- name: Report
+  id: reportId
+  root: /v2/reports
+  operations: 29
+- name: DataModel
+  id: dataModelId
+  root: /v2/dataModels
+  operations: 23
+- name: ColumnSecurityRule
+  id: columnSecurityRuleId
+  root: /v2/dataModels/{dataModelId}/elements/{elementId}/columnSecurityRules
+- name: Dataset
+  id: datasetId
+  root: /v2/datasets
+  operations: 9
+  status: superseded by DataModel
+- name: Connection
+  id: connectionId
+  root: /v2/connections
+  operations: 22
+- name: Grant
+  id: grantId
+  root: /v2/grants
+  operations: 4
+  note: Polymorphic — the same grant shape is mounted under workbooks, reports, datasets, workspaces, connections and connection
+    paths.
+- name: Tag
+  id: tagId
+  root: /v2/tags
+  operations: 5
+  note: Version tags plus document tags.
+- name: Schedule
+  id: scheduleId
+  root: /v2/workbooks/{workbookId}/schedules
+- name: Materialization
+  id: materializationId
+  root: /v2/workbooks/{workbookId}/materializations
+- name: Template
+  id: templateId
+  root: /v2/templates
+  operations: 4
+- name: Tenant
+  id: tenantOrganizationId
+  root: /v2/tenants
+  operations: 9
+- name: DeploymentPolicy
+  id: deploymentPolicyId
+  root: /v2/deploymentPolicies
+  operations: 12
+- name: SourceSwapPolicy
+  id: policyId
+  root: /v2/sourceSwapPolicies
+  operations: 5
+- name: Plugin
+  id: pluginId
+  root: /v2/plugins
+  operations: 5
+- name: ApiConnector
+  id: apiConnectorId
+  root: /v2/api-connectors
+  operations: 5
+- name: ApiCredential
+  id: apiCredentialId
+  root: /v2/api-credentials
+  operations: 5
+- name: SamlServiceProvider
+  id: samlServiceProviderId
+  root: /v2/saml/service-providers
+  operations: 7
+- name: Embed
+  id: embedId
+  root: /v2/workbooks/{workbookId}/embeds
+- name: Query
+  id: queryId
+  root: /v2/query/{queryId}/download
+  note: An export job handle returned by the export endpoints.
+relationships:
+- from: Workbook
+  to: WorkbookElement
+  type: has_many
+  via: /v2/workbooks/{workbookId}/elements
+- from: Workbook
+  to: WorkbookPage
+  type: has_many
+  via: /v2/workbooks/{workbookId}/pages
+- from: WorkbookPage
+  to: WorkbookElement
+  type: has_many
+  via: /v2/workbooks/{workbookId}/pages/{pageId}/elements
+- from: Workbook
+  to: Bookmark
+  type: has_many
+  via: /v2/workbooks/{workbookId}/bookmarks
+- from: Workbook
+  to: Grant
+  type: has_many
+  via: /v2/workbooks/{workbookId}/grants
+- from: Workbook
+  to: Schedule
+  type: has_many
+  via: /v2/workbooks/{workbookId}/schedules
+- from: Workbook
+  to: Materialization
+  type: has_many
+  via: /v2/workbooks/{workbookId}/materializations
+- from: Workbook
+  to: Tag
+  type: has_many
+  via: /v2/workbooks/tag
+- from: Workbook
+  to: Embed
+  type: has_many
+  via: /v2/workbooks/{workbookId}/embeds
+- from: Workbook
+  to: DataModel
+  type: belongs_to
+  via: /v2/workbooks/{workbookId}/sources
+- from: Workbook
+  to: Report
+  type: has_one
+  via: POST /v2/workbooks/{workbookId}/convertToReport
+- from: Workbook
+  to: Template
+  type: has_one
+  via: POST /v2/workbooks/{workbookId}/saveTemplate
+- from: DataModel
+  to: WorkbookElement
+  type: has_many
+  via: /v2/dataModels/{dataModelId}/elements
+- from: DataModel
+  to: ColumnSecurityRule
+  type: has_many
+  via: /v2/dataModels/{dataModelId}/elements/{elementId}/columnSecurityRules
+- from: DataModel
+  to: Connection
+  type: belongs_to
+  via: /v2/dataModels/{dataModelId}/sources
+- from: Report
+  to: Grant
+  type: has_many
+  via: /v2/reports/{reportId}/grants
+- from: Report
+  to: Schedule
+  type: has_many
+  via: /v2/reports/{reportId}/schedules
+- from: Report
+  to: WorkbookElement
+  type: has_many
+  via: /v2/reports/{reportId}/elements
+- from: Dataset
+  to: Grant
+  type: has_many
+  via: /v2/datasets/{datasetId}/grants
+- from: Dataset
+  to: DataModel
+  type: has_one
+  via: POST /v2/datasets/{datasetId}/migrate
+- from: Connection
+  to: Grant
+  type: has_many
+  via: /v2/connections/{connectionId}/grants
+- from: Workspace
+  to: Grant
+  type: has_many
+  via: /v2/workspaces/{workspaceId}/grants
+- from: Member
+  to: Team
+  type: has_many
+  via: /v2/members/{memberId}/teams
+- from: Team
+  to: Member
+  type: has_many
+  via: /v2/teams/{teamId}/members
+- from: Team
+  to: UserAttribute
+  type: has_many
+  via: /v2/teams/{teamId}/user-attributes
+- from: UserAttribute
+  to: Team
+  type: has_many
+  via: /v2/user-attributes/{userAttributeId}/teams
+- from: UserAttribute
+  to: Member
+  type: has_many
+  via: /v2/user-attributes/{userAttributeId}/users
+- from: UserAttribute
+  to: Tenant
+  type: has_many
+  via: /v2/user-attributes/{userAttributeId}/tenants
+- from: Member
+  to: File
+  type: has_many
+  via: /v2/members/{memberId}/files
+- from: Member
+  to: Schedule
+  type: has_many
+  via: /v2/members/{memberId}/schedules
+- from: DeploymentPolicy
+  to: File
+  type: has_many
+  via: /v2/deploymentPolicies/{deploymentPolicyId}/files
+- from: DeploymentPolicy
+  to: Tenant
+  type: has_many
+  via: /v2/deploymentPolicies/{deploymentPolicyId}/tenants
+- from: Tenant
+  to: Workbook
+  type: has_many
+  via: /v2/tenants/{tenantOrganizationId}/workbooks
+- from: SamlServiceProvider
+  to: Certificate
+  type: has_many
+  via: /v2/saml/service-providers/{samlServiceProviderId}/certificates
+id_conventions:
+  style: opaque UUID-shaped strings, no type prefixes
+  note: 'Sigma ids carry no visible type discriminator (unlike Stripe''s cus_/ch_). The docs ship a dedicated page for finding
+    them: https://help.sigmacomputing.com/reference/identify-unique-ids-in-sigma'
+  lineage: GET /v2/workbooks/{workbookId}/lineage and /v2/dataModels/{dataModelId}/lineage return the dependency graph between
+    documents and their warehouse sources.
+code_representation:
+  note: 'Workbooks and data models have a full code representation — a JSON/YAML spec that round-trips the whole document.
+    GET/POST /v2/workbooks/{workbookId}/spec and /v2/dataModels/{dataModelId}/spec, with POST /v2/workbooks/spec/verify
+    to validate before applying. This is where Sigma''s schema mass lives: the CommonElement schema alone is 2.5MB of compact
+    JSON.'
+  spec: openapi/sigma-computing-code-representation-openapi.yaml
+  docs: https://help.sigmacomputing.com/docs/manage-data-models-as-code

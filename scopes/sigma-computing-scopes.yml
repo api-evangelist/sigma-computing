@@ -1,0 +1,34 @@
+generated: '2026-08-27'
+method: searched
+source: https://api.sigmacomputing.com/.well-known/oauth-authorization-server + https://help.sigmacomputing.com/reference/get-started-sigma-api
+docs: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+summary: 'Sigma runs two distinct OAuth surfaces and only one of them uses scopes. The REST API clientCredentials flow declares
+  an EMPTY scopes object in the OpenAPI: authorization is carried entirely by the Sigma account type and object-level grants
+  attached to the member the credentials belong to. The MCP server, by contrast, advertises real scopes in RFC 8414 metadata.'
+surfaces:
+- surface: REST API (clientCredentials)
+  scope_model: none
+  scopes: []
+  note: components.securitySchemes.oauth2.flows.clientCredentials.scopes == {} in both published specs. Not an omission
+    we can fill — Sigma genuinely does not scope REST tokens.
+- surface: MCP server (authorization_code + PKCE)
+  scope_model: declared
+  metadata_url: https://api.sigmacomputing.com/.well-known/oauth-authorization-server
+  scopes:
+  - name: mcp:access
+    description: Access the Sigma MCP server. Named as the required scope in the RFC 9728 WWW-Authenticate challenge returned
+      by POST https://api.sigmacomputing.com/mcp.
+  - name: api:access
+    description: Access the Sigma REST API through the same authorization server. Advertised in scopes_supported; not required
+      by the MCP protected-resource metadata.
+authorization_model:
+  primary: Sigma account types (Admin, Creator, Explorer, Viewer and custom types) gate which API operations a member may
+    call at all.
+  object_level: Folder and document permissions (Can view / Can explore / Can edit / Owner) and connection permissions (Can
+    use / Can annotate / Can write) gate which objects those operations may touch.
+  row_and_column: User attributes drive row-level security; column-level security rules are set per data model element.
+  docs:
+  - https://help.sigmacomputing.com/docs/account-type-and-license-overview
+  - https://help.sigmacomputing.com/docs/folder-and-document-permissions
+  - https://help.sigmacomputing.com/docs/user-attributes
+  - https://help.sigmacomputing.com/docs/column-level-security

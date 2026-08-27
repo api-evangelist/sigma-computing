@@ -1,0 +1,77 @@
+generated: '2026-08-27'
+method: searched
+source: https://help.sigmacomputing.com/reference/get-started-sigma-api + https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  + openapi/sigma-computing-rest-api-openapi.yaml
+docs: https://help.sigmacomputing.com/reference/get-started-sigma-api
+summary:
+  types:
+  - oauth2
+  - http
+  primary: OAuth 2.0 client credentials -> short-lived bearer token
+  token_lifetime: 1 hour
+  refresh: re-POST /v2/auth/token; a refresh_token grant is also accepted
+schemes:
+- name: oauth2
+  type: oauth2
+  flow: clientCredentials
+  token_url: /v2/auth/token (relative to the organization's regional base URL)
+  refresh_url: /v2/auth/token
+  scopes: {}
+  note: The published spec declares the clientCredentials flow with an EMPTY scopes object. Sigma does not expose per-scope
+    OAuth authorization on the REST API — authorization is carried by the Sigma account type and object-level grants of
+    the member the client credentials belong to, not by token scopes.
+  sources:
+  - openapi/sigma-computing-rest-api-openapi.yaml
+  - openapi/sigma-computing-code-representation-openapi.yaml
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  note: 'Authorization: Bearer <access_token> on every call after the token exchange.'
+  sources:
+  - openapi/_original/sigma-computing-public-rest-api-openapi.json
+- name: basicAuth
+  type: http
+  scheme: basic
+  note: Declared in the combined download spec; client_id/client_secret may be presented as HTTP Basic at the token endpoint.
+  sources:
+  - openapi/_original/sigma-computing-public-rest-api-openapi.json
+credentials:
+  issuance: An Admin generates a client ID and client secret in the Sigma Administration portal (Developer Access). See
+    https://help.sigmacomputing.com/reference/generate-client-credentials
+  exchange: POST {baseURL}/v2/auth/token with grant_type=client_credentials, client_id, client_secret -> access_token
+  expiry: access_token expires after 1 hour; expired tokens return HTTP 401 with code "unauthorized"
+  account_type_required: Admin to mint credentials; the credential inherits the account type it is created against
+additional_surfaces:
+- surface: Sigma MCP server
+  scheme: OAuth 2.1 authorization code + PKCE (S256), dynamic client registration
+  scopes:
+  - mcp:access
+  - api:access
+  metadata: https://api.sigmacomputing.com/.well-known/oauth-authorization-server
+  permission: Account type with "Use Sigma MCP with OAuth" enabled
+- surface: Sigma CLI
+  scheme: either an OAuth browser login (sigma auth login -> OAuth) or a stored API client credential profile
+  docs: https://help.sigmacomputing.com/docs/install-and-configure-the-sigma-cli
+- surface: Embed API
+  scheme: JSON Web Token signed with an embed client secret, carrying the viewing user identity and user attributes
+  docs: https://help.sigmacomputing.com/docs/create-an-embed-api-with-json-web-tokens
+- surface: Organization sign-in
+  scheme: SAML, OAuth/OIDC SSO, or password
+  docs: https://help.sigmacomputing.com/docs/organization-authentication-methods
+network_controls:
+  ip_allowlist: Admins can restrict API access by source IP, scoped separately for API traffic. https://help.sigmacomputing.com/docs/restrict-access-to-sigma-by-ip-address
+  mtls: Mutual TLS is supported for outbound API connectors Sigma calls, not for inbound REST API auth. https://help.sigmacomputing.com/docs/configure-mutual-transport-layer-security-for-api-connectors-in-sigma
+regional_hosts:
+- https://api.sigmacomputing.com
+- https://api.sa.gcp.sigmacomputing.com
+- https://aws-api.sigmacomputing.com
+- https://api.us-a.aws.sigmacomputing.com
+- https://api.ca.aws.sigmacomputing.com
+- https://api.eu.aws.sigmacomputing.com
+- https://api.au.aws.sigmacomputing.com
+- https://api.uk.aws.sigmacomputing.com
+- https://api.us.azure.sigmacomputing.com
+- https://api.eu.azure.sigmacomputing.com
+- https://api.ca.azure.sigmacomputing.com
+- https://api.uk.azure.sigmacomputing.com
+- https://api.au.azure.sigmacomputing.com

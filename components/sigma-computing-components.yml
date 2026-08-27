@@ -1,0 +1,53 @@
+generated: '2026-08-27'
+method: searched
+source: https://help.sigmacomputing.com/docs/create-an-embed-api-with-json-web-tokens + https://github.com/sigmacomputing/embed-sdk
+  + https://github.com/sigmacomputing/plugin + npm
+summary: 'Sigma ships two distinct client-side extension surfaces: an EMBED family for putting Sigma content inside a host
+  application, and a PLUGIN family for putting custom code inside a Sigma workbook. They point in opposite directions and
+  use different SDKs.'
+families:
+- name: Embedded analytics
+  direction: Sigma content inside your application
+  docs: https://help.sigmacomputing.com/docs/create-an-embed-api-with-json-web-tokens
+  loader_libraries:
+  - package: '@sigmacomputing/embed-sdk'
+    version: 0.7.1
+    published: '2026-05-01'
+    registry: npm
+    repository: https://github.com/sigmacomputing/embed-sdk
+  - package: '@sigmacomputing/react-embed-sdk'
+    version: 0.7.1
+    published: '2026-05-01'
+    registry: npm
+    repository: https://github.com/sigmacomputing/embed-sdk
+  surfaces:
+  - name: Workbook embed
+    description: A whole Sigma workbook rendered in an iframe in the host app.
+  - name: Page embed
+    description: A single workbook page.
+  - name: Element embed
+    description: One individual element (table, chart, control) from a workbook.
+  - name: Embed user
+    description: A synthetic viewing identity carried in the signed JWT, with team membership and user attributes attached
+      so row-level and column-level security follow the end user.
+  security: Embed URLs are signed with a JSON Web Token using an embed client secret generated in the Sigma Administration
+    portal. The API surface for managing embeds is GET/POST /v2/workbooks/{workbookId}/embeds and DELETE /v2/workbooks/{workbookId}/embeds/{embedId}.
+  signing_helpers: https://github.com/sigmacomputing/embed-signing-packages (Go)
+- name: Custom plugins
+  direction: your code inside a Sigma workbook
+  docs: https://help.sigmacomputing.com/llms.txt (Sigma has no single canonical plugin landing page; the plugin surface is documented across the developer section and the sigma-sample-plugins repository)
+  loader_libraries:
+  - package: '@sigmacomputing/plugin'
+    version: 1.3.2
+    published: '2026-08-20'
+    registry: npm
+    description: Sigma Computing Plugin Client SDK
+  surfaces:
+  - name: Custom plugin element
+    description: A developer-authored element rendered inside a Sigma workbook, receiving column data from the workbook
+      through the plugin client SDK. Managed over the API with GET/POST /v2/plugins and GET/PATCH/DELETE /v2/plugins/{pluginId}
+      (Beta).
+  examples: https://github.com/sigmacomputing/sigma-sample-plugins
+  recent_change: Incremental plugin data fetching shipped 2026-08-21.
+not_components: The Sigma workbook itself, reports and data models are server-side product surfaces, not client-side component
+  libraries, and are deliberately excluded here.

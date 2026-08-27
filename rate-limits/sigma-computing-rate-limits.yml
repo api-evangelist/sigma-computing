@@ -1,0 +1,58 @@
+generated: '2026-08-27'
+method: searched
+source: https://help.sigmacomputing.com/reference/get-started-sigma-api#api-limits
+docs: https://help.sigmacomputing.com/reference/get-started-sigma-api
+limit_count: 4
+summary: Sigma documents per-endpoint rate limits for the four endpoints most likely to be hammered (token minting, exports,
+  sends, downloads) and does not publish a global request-per-minute ceiling. It publishes NO rate-limit response headers
+  and no documented 429 semantics — an agent gets the number from the docs but has no runtime signal from the wire.
+limits:
+- scope: per-endpoint
+  endpoint: POST /v2/auth/token
+  limit: 1
+  window: 1 second
+  burst: null
+  note: Token minting. Cache the bearer token for its full 1-hour lifetime rather than minting per request.
+- scope: per-endpoint
+  endpoint: POST /v2/workbooks/{workbookId}/export
+  limit: 400
+  window: 1 minute
+  burst: null
+- scope: per-endpoint
+  endpoint: POST /v2/reports/{reportId}/export
+  limit: 400
+  window: 1 minute
+  burst: null
+- scope: per-endpoint
+  endpoint: POST /v2/workbooks/{workbookId}/send
+  limit: 100
+  window: 1 minute
+  burst: null
+- scope: per-endpoint
+  endpoint: POST /v2/reports/{reportId}/send
+  limit: 100
+  window: 1 minute
+  burst: null
+- scope: per-endpoint
+  endpoint: GET /v2/query/{queryId}/download
+  limit: 400
+  window: 1 minute
+  burst: null
+pagination_limits:
+  default_page_size: 50
+  max_page_size: 1000
+  note: 'Applies to every endpoint that supports pagination. Two paging idioms coexist: offset paging (page + limit, 61
+    operations) and cursor paging (pageToken + pageSize, 26 operations).'
+response_headers:
+  published: []
+  probed: The published OpenAPI contains no X-RateLimit-*, RateLimit-* or Retry-After header definitions (0 occurrences
+    across all 286 operations), and the docs name no header.
+  exhaustion_status: not documented
+  gap: A client cannot discover remaining quota or a retry delay from a Sigma response. This is the single clearest agent-readiness
+    gap in an otherwise strong developer surface.
+other_controls:
+- control: IP allowlist
+  note: Admins may restrict API access by source IP with Scope=API.
+  docs: https://help.sigmacomputing.com/docs/restrict-access-to-sigma-by-ip-address
+- control: CSV upload size
+  note: Default CSV upload limit is raisable to 1GB (changelog 2026-05-01).

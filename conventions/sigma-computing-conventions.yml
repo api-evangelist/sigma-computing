@@ -1,0 +1,167 @@
+generated: '2026-08-27'
+method: searched
+source: https://help.sigmacomputing.com/reference/get-started-sigma-api + openapi/sigma-computing-rest-api-openapi.yaml
+  + openapi/_original/sigma-computing-public-rest-api-openapi.json
+docs: https://help.sigmacomputing.com/reference/get-started-sigma-api
+auth:
+  style: 'OAuth 2.0 client credentials -> Authorization: Bearer <token>'
+  token_ttl: 1 hour
+  see: authentication/sigma-computing-authentication.yml
+base_url:
+  style: region-specific host, path-versioned
+  current: /v2/
+  hosts: 13
+  note: There is no single canonical base URL. Each organization is pinned to one of thirteen documented regional hosts
+    across GCP, AWS and Azure and must read its own from Administration > Developer Access > API base URL. An agent that
+    hard-codes api.sigmacomputing.com will fail for most customers — this is the most common integration mistake the docs
+    call out.
+content_type:
+  request: application/json
+  response: application/json
+  exceptions: GET /v2/query/{queryId}/download returns CSV, XLSX, PDF, PNG or JSON depending on the export requested.
+idempotency:
+  supported: false
+  header: null
+  evidence: 0 occurrences of "Idempotency" or "idempoten" across all 286 operations in openapi/_original/sigma-computing-public-rest-api-openapi.json;
+    the docs name no idempotency key.
+  natural_idempotence: GET, PUT and DELETE operations are naturally idempotent. POST creates (createWorkbook, createTeam,
+    createApiConnector...) are NOT — a retried create yields a duplicate object.
+  mitigations:
+  - Many creates accept a caller-supplied name that collides on the server, giving de-facto conflict detection.
+  - POST /v2/datasets/{datasetId}/migrate accepts a dryRun flag so the effect can be rehearsed before it is committed.
+  grade: absent
+dry_run_mode:
+  supported: partial
+  operations:
+  - operationId: migrateDatasetToDataModel
+    path: /v2/datasets/{datasetId}/migrate
+    flag: dryRun
+  note: One operation out of 286 offers a rehearsal flag. There is also POST /v2/workbooks/spec/verify, which validates
+    a workbook code representation without applying it — a dry run in everything but name.
+reversibility:
+  applicability: applicable — the API has a large write surface (creates, updates, deletes across workbooks, data models,
+    reports, members, teams, connections, grants).
+  grade: verified
+  grade_basis: A reversal path exists AND the retention window is stated in Sigma's own documentation.
+  surfaces:
+  - write_surface: Workbook edits and publishes
+    reversal: Restore a workbook to a previous published version or to a specific change in the edit history.
+    operationId: restoreWorkbookVersion
+    path: POST /v2/workbooks/{workbookId}/restoreVersion
+    window: unlimited — "There is no limit to the retention period of workbook version history."
+    window_docs: https://help.sigmacomputing.com/docs/workbook-versions-and-version-history
+    caveat: Edit history is not available for changes made before 2022-12-13, or for organizations before Live Edit was
+      enabled.
+    confidence: high
+  - write_surface: Report versions
+    reversal: Version history is exposed read-only over the API.
+    operationId: getReportVersionHistory
+    path: GET /v2/reports/{reportId}/version-history
+    window: null
+    note: The API lists report version history but publishes no restore operation for reports; restoring is a UI action.
+      Recorded honestly as a partial path.
+    confidence: medium
+  - write_surface: Deployment policies
+    reversal: Deleting a deployment policy archives it rather than destroying it (operationId archiveDeployment on DELETE
+      /v2/deploymentPolicies/{deploymentPolicyId}).
+    operationId: archiveDeployment
+    path: DELETE /v2/deploymentPolicies/{deploymentPolicyId}
+    window: null
+    note: Sigma names the delete "archive" but publishes no un-archive operation and no stated retention window.
+    confidence: medium
+  - write_surface: Data model source swaps
+    reversal: swapSources is symmetric — swapping back restores the prior source binding.
+    operationId: swapDataModelSources
+    path: POST /v2/dataModels/{dataModelId}/swapSources
+    window: n/a — reversible by re-issuing the inverse call
+    confidence: medium
+  - write_surface: Member deletion
+    reversal: none published
+    operationId: null
+    path: DELETE /v2/members/{memberId}
+    window: null
+    note: No restore-member operation and no stated recovery window. Sigma also ships POST /v2/members/{memberId}/revoke
+      as a softer alternative that revokes the member's OAuth tokens without deleting the member (operationId revokeMemberTokens) — an agent should prefer revoke over delete.
+    confidence: high
+  - write_surface: Connection, team, workspace, tag, grant and API-credential deletes
+    reversal: none published
+    window: null
+    note: These DELETEs are documented as terminal. No trash, no restore endpoint, no stated retention.
+    confidence: high
+  agent_guidance: Workbook content is the one surface an agent can safely mutate knowing it is fully recoverable, with no
+    time limit. Identity and access objects (members, teams, grants, credentials) and connections are NOT recoverable through
+    the API — treat every DELETE on those as irreversible and escalate to a human.
+pagination:
+  styles:
+  - style: offset
+    params:
+    - page
+    - limit
+    operations: 61
+    note: The older idiom. Present on the workbook/report/member/team listing families.
+  - style: cursor
+    params:
+    - pageToken
+    - pageSize
+    operations: 26
+    note: The newer idiom. Newer resources (files, tenants, deploymentPolicies, shortcuts, materialization schedules) use
+      it.
+  default_page_size: 50
+  max_page_size: 1000
+  response_fields: Paginated responses carry an `entries` array; cursor-paginated responses additionally carry a `nextPage`
+    token.
+  gap: Two incompatible paging idioms coexist across one API with no published rule for which resource uses which. A generic
+    client must inspect each operation's parameters rather than apply one pagination strategy.
+filtering_and_search:
+  params:
+  - search
+  - name
+  - tagName
+  - type
+  - ownerId
+  - connectionId
+  note: Listing endpoints accept a `search` free-text parameter plus resource-specific filters. No published filter grammar
+    or operator syntax.
+field_expansion:
+  supported: false
+  note: No `expand`, `fields` or sparse-fieldset parameter anywhere in the spec. Related objects are fetched through sub-resource
+    paths (/v2/workbooks/{id}/elements, /pages, /sources, /lineage).
+metadata:
+  supported: partial
+  mechanism: Version tags and document tags (POST /v2/workbooks/tag, /v2/tags) provide a governed labelling layer; there
+    is no free-form key/value metadata bag on objects.
+request_id_tracing:
+  supported: true
+  field: requestId
+  note: 'EVERY error response carries a server-generated requestId (observed live: {"requestId":"5dc74b1f-9f2a-4ef8-a676-ad7cefeb6060","message":"Token
+    missing or malformed","code":"unauthorized"}). This is the value to quote to Sigma Support. No X-Request-Id request
+    header is documented, so the client cannot supply its own correlation id.'
+  evidence: Live 401 from https://aws-api.sigmacomputing.com/v2/openapi.json, 2026-08-27
+versioning:
+  style: URL path
+  current: v2
+  minor_paths: A handful of operations are published under /v2.1/ (members, teams, workbooks/{id}/schedules, workbooks/{id}/materialization-schedules,
+    workspaces) alongside their /v2/ predecessors — a per-resource minor bump inside the major.
+  alpha: /v3alpha/ exists in the docs download spec only. See lifecycle/sigma-computing-lifecycle.yml.
+error_envelope:
+  shape: '{"requestId": string, "message": string, "code": string}'
+  media_type: application/json
+  rfc9457: false
+  note: A consistent, well-formed custom envelope — but not RFC 9457 problem+json, and the spec models it ONLY as a `default`
+    response. 286 operations declare `default` and 272 declare `200`; NOT ONE declares an explicit 4xx or 5xx status. A
+    client generated from this spec cannot tell which failures a given operation can produce.
+  see: errors/sigma-computing-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: not documented
+  note: Limits are published in prose only; no runtime headers. See rate-limits/sigma-computing-rate-limits.yml.
+cors:
+  supported: true
+  note: Sigma explicitly documents cross-origin support, with the standard warning never to expose client credentials in
+    browser code.
+cross_links:
+  errors: errors/sigma-computing-problem-types.yml
+  lifecycle: lifecycle/sigma-computing-lifecycle.yml
+  authentication: authentication/sigma-computing-authentication.yml
+  rate_limits: rate-limits/sigma-computing-rate-limits.yml
+  scopes: scopes/sigma-computing-scopes.yml

@@ -1,0 +1,123 @@
+generated: '2026-08-27'
+method: searched
+source: https://security.sigmacomputing.com/ + openapi/sigma-computing-rest-api-openapi.yaml + /.well-known probes
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: 'Both published contracts declare openapi: 3.1.0 — help.sigmacomputing.com/openapi/sigma-rest-api.yaml (193
+    paths, 274 operations) and code-representation.yaml (2 paths, 3 operations). Every operation carries a summary, description,
+    operationId and tag.'
+- id: oauth2
+  conforms: true
+  evidence: 'REST API: clientCredentials flow declared in components.securitySchemes with tokenUrl /v2/auth/token. MCP:
+    authorization_code + refresh_token with PKCE S256, advertised at /.well-known/oauth-authorization-server on every regional
+    API host.'
+- id: rfc8414
+  conforms: true
+  title: OAuth 2.0 Authorization Server Metadata
+  evidence: https://api.sigmacomputing.com/.well-known/oauth-authorization-server returns 200 with issuer, authorization_endpoint,
+    token_endpoint, registration_endpoint, scopes_supported, response_types_supported, grant_types_supported, code_challenge_methods_supported,
+    token_endpoint_auth_methods_supported.
+- id: rfc9728
+  conforms: true
+  title: OAuth 2.0 Protected Resource Metadata
+  evidence: 'https://api.sigmacomputing.com/.well-known/oauth-protected-resource returns 200 naming resource https://api.sigmacomputing.com/mcp,
+    and the MCP endpoint returns a conformant WWW-Authenticate: Bearer resource_metadata="..." scope="mcp:access" challenge
+    on an unauthenticated POST.'
+- id: rfc7591
+  conforms: true
+  title: OAuth 2.0 Dynamic Client Registration
+  evidence: registration_endpoint https://api.sigmacomputing.com/mcp/register advertised in the authorization-server metadata.
+- id: rfc7636
+  conforms: true
+  title: PKCE
+  evidence: 'code_challenge_methods_supported: ["S256"].'
+- id: rfc9727
+  conforms: true
+  title: API Catalog (/.well-known/api-catalog)
+  evidence: https://help.sigmacomputing.com/.well-known/api-catalog returns 200 with Content-Type application/linkset+json;
+    profile="https://www.rfc-editor.org/info/rfc9727", carrying two service-desc entries pointing at real, fetchable OpenAPI
+    documents. This is a rare and genuinely conformant implementation — only a small minority of catalogued providers serve
+    one at all.
+- id: mcp
+  conforms: true
+  title: Model Context Protocol
+  evidence: First-party remote MCP server at https://api.sigmacomputing.com/mcp (HTTP transport, OAuth). A second, anonymous
+    documentation MCP server at https://help.sigmacomputing.com/_mcp/server answers initialize with protocolVersion 2025-06-18
+    and serverInfo fern-docs-mcp-server/1.0.0.
+- id: llmstxt
+  conforms: true
+  title: llms.txt
+  evidence: 'https://help.sigmacomputing.com/llms.txt (200, text/plain, ~100KB) and https://www.sigmacomputing.com/llms.txt
+    (200, ~31KB). Sigma goes further than the convention requires: every doc page is available as clean Markdown by appending
+    .md, and every section has its own /llms.txt.'
+- id: rfc9457
+  conforms: false
+  title: Problem Details for HTTP APIs
+  evidence: Errors use a consistent custom envelope {requestId, message, code} served as application/json, not application/problem+json.
+    See errors/sigma-computing-problem-types.yml.
+- id: idempotency
+  conforms: false
+  evidence: No Idempotency-Key header in the spec or the docs (0 occurrences across 286 operations). See conventions/sigma-computing-conventions.yml.
+- id: pagination
+  conforms: true
+  partial: true
+  evidence: 'Two idioms coexist: offset (page + limit, 61 operations) and cursor (pageToken + pageSize, 26 operations).
+    Documented default page size 50, max 1000. Consistent within each family but not across the API.'
+- id: rfc8594
+  conforms: false
+  title: Sunset / Deprecation HTTP headers
+  evidence: '0 occurrences of Sunset or Deprecation headers in the spec. Deprecation is signalled with the OpenAPI `deprecated:
+    true` flag on 2 operations and in the weekly changelog, with no stated sunset window.'
+- id: ratelimit-headers
+  conforms: false
+  evidence: No X-RateLimit-*, RateLimit-* or Retry-After definitions anywhere in the spec; limits are published in prose
+    only.
+- id: saml2
+  conforms: true
+  title: SAML 2.0
+  evidence: 7 operations under /v2/saml/service-providers manage SAML service providers and their signing certificates,
+    including certificate activate/deactivate. https://help.sigmacomputing.com/docs/organization-authentication-methods
+- id: oidc
+  conforms: partial
+  evidence: Sigma supports OAuth/OIDC SSO for organization sign-in and for warehouse connections (Snowflake, Databricks,
+    BigQuery), but serves no /.well-known/openid-configuration on any probed host (404 on www, help, api, aws-api).
+- id: scim
+  conforms: false
+  evidence: No SCIM schema URNs and no /scim/v2 surface in the contract. User and group provisioning is done through the
+    native /v2/members and /v2/teams endpoints rather than the standard. For a BI platform selling into enterprise IT this
+    is the most conspicuous domain-standard absence — a buyer with an IdP-driven provisioning estate needs a bespoke connector.
+- id: odata
+  conforms: false
+  evidence: No $metadata surface and no OData query options. Not expected for this API style.
+domain_standard_conformance:
+  market: Business intelligence / analytics on cloud data warehouses
+  declared_in_contract: false
+  assessment: 'No domain interchange standard is declared by the contract. The BI/analytics market has no widely adopted
+    machine-readable API standard of the kind SCIM is for provisioning or FHIR is for health — the closest analogues are
+    vendor semantic-layer formats. Sigma instead publishes its OWN code representation (openapi/sigma-computing-code-representation-openapi.yaml)
+    as the interchange format for workbooks and data models, which is a proprietary schema rather than an industry one.
+    REWARD-ONLY dimension: recorded as not applicable rather than as a failure.'
+  adjacent_ecosystem_bindings:
+  - name: dbt
+    evidence: GET /v2/connections/{connectionId}/dbtArtifacts — Sigma consumes dbt artifacts (manifest/catalog) from a connection,
+      binding to the dbt semantic layer as a de-facto ecosystem standard.
+    operationId_note: Confirmed present in the published spec.
+  - name: Snowflake / Databricks query tagging
+    evidence: MCP-issued queries carry a "kind":"mcp" query tag so warehouse cost can be attributed per Snowflake QUERY_TAG
+      and Databricks query tags conventions.
+compliance:
+  certifications:
+  - SOC 1
+  - SOC 2
+  - SOC 3
+  - ISO/IEC 27001
+  - ISO/IEC 27017:2015
+  - ISO/IEC 27018:2019
+  - ISO/IEC 27701
+  - HIPAA
+  - GDPR
+  - CCPA
+  - EU-US Data Privacy Framework
+  trust_center: https://security.sigmacomputing.com/
+  see: security/sigma-computing-trust-center.yml

@@ -1,0 +1,72 @@
+generated: '2026-08-27'
+method: searched
+source: https://help.sigmacomputing.com/changelog + https://help.sigmacomputing.com/changelog/llms.txt
+url: https://help.sigmacomputing.com/changelog
+machine_readable: https://help.sigmacomputing.com/changelog/llms.txt
+markdown_form: Append .md to any changelog URL, e.g. https://help.sigmacomputing.com/changelog/2026-08-21.md
+scheme: date-based weekly release notes (Fridays), grouped by product area (AI, API, Admin, Data modeling, Workbook features,
+  Templates, Embedding, Bug fixes)
+current_api_version: v2
+cadence: weekly
+covers_api: true
+note: 'Sigma runs a genuinely useful API changelog: entries name the exact endpoint, HTTP method and path for each change
+  and link to the reference page. It is a release-notes stream, not a versioned API changelog — there is no per-version
+  diff, and breaking changes are not called out under a separate heading.'
+entries:
+- date: '2026-08-21'
+  breaking: false
+  highlights:
+  - Sigma CLI reaches GA — programmatic access to the REST API from the terminal.
+  - GET /v2/connections and GET /v2/connections/{connectionId} now return httpPath for Databricks connections.
+  - 'Six new materialization-schedule endpoints (Beta) for workbook and data model elements: POST/PATCH/DELETE on /v2/workbooks/{workbookId}/elements/{elementId}/materializationSchedules
+    and the /v2/dataModels equivalents.'
+  - New POST /v2/shortcuts for creating shortcuts to documents.
+  - Column-level security can now hide an entire data model element (Beta).
+  additions: 9
+  url: https://help.sigmacomputing.com/changelog/2026-08-21
+- date: '2026-08-14'
+  breaking: false
+  highlights:
+  - GET /v2/workbooks/{workbookId} gains an includeTaggedSourceUrlId query parameter, returning taggedSourceUrlId for version-tagged
+    workbooks deployed from a parent or another tenant.
+  - Gemini 3.6 Flash becomes the model behind the Gemini and BigQuery AI providers.
+  - Organization formatting region setting (Beta).
+  - Ad hoc email burst exports (Beta).
+  additions: 1
+  url: https://help.sigmacomputing.com/changelog/2026-08-14
+- date: '2026-08-07'
+  breaking: false
+  highlights:
+  - The sigma-cli agent skill ships — AI assistants can drive the REST API through the CLI.
+  - Sigma Assistant build mode can generate multi-page dashboards (Beta).
+  - Embed users can interact across tenant organizations (Beta).
+  - Warehouse views are carried through dataset-to-data-model migration.
+  url: https://help.sigmacomputing.com/changelog/2026-08-07
+- date: '2026-07-31'
+  breaking: false
+  highlights:
+  - Sigma plugin for ChatGPT.
+  - Amazon Bedrock AI provider GA.
+  - Sigma Tenants GA.
+  - Migrate-a-dataset-to-data-model API.
+  - BusinessDays function.
+  url: https://help.sigmacomputing.com/changelog/2026-07-31
+- date: '2026-06-26'
+  breaking: false
+  highlights:
+  - MCP query monitoring — MCP-issued warehouse queries carry a "kind":"mcp" query tag.
+  - Sigma Assistant plan and build modes in the workbook.
+  url: https://help.sigmacomputing.com/changelog/2026-06-26
+- date: '2026-06-12'
+  breaking: false
+  highlights:
+  - 'Sigma agents: build and interact with agents inside workbooks.'
+  - Configure MCP tools for use with Sigma agents.
+  url: https://help.sigmacomputing.com/changelog/2026-06-12
+- date: '2026-05-08'
+  breaking: false
+  highlights:
+  - Agent skills for Sigma published.
+  - New API endpoints for managing API credentials and API connectors.
+  url: https://help.sigmacomputing.com/changelog/2026-05-08
+window: 2026-05-08 through 2026-08-21 (recent window; the published changelog goes back further)

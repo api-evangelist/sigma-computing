@@ -1,0 +1,62 @@
+generated: '2026-08-27'
+method: searched
+source: https://help.sigmacomputing.com/changelog + https://help.sigmacomputing.com/reference/get-started-sigma-api + openapi/
+versioning:
+  scheme: URL path major version
+  current: v2
+  path_prefix: /v2/
+  note: Every stable operation sits under /v2/. The combined download spec additionally exposes a /v3alpha/ prefix (allowedIps,
+    connections, swapSources) — an alpha channel, not a released major.
+  alpha_channel:
+    prefix: /v3alpha/
+    operations:
+    - /v3alpha/allowedIps
+    - /v3alpha/allowedIps:batchCreate
+    - /v3alpha/allowedIps:batchDelete
+    - /v3alpha/connections
+    - /v3alpha/connections/{connectionId}
+    - /v3alpha/dataModels/{dataModelId}:swapSources
+    - /v3alpha/workbooks/{workbookId}:swapSources
+    note: Present in openapi/_original/sigma-computing-public-rest-api-openapi.json (the docs "Download OpenAPI spec" artifact)
+      but ABSENT from the RFC 9727 api-catalog spec at help.sigmacomputing.com/openapi/sigma-rest-api.yaml. The two published
+      specs disagree about the alpha surface.
+  beta_labelling: Beta operations are marked in the summary text rather than with a machine-readable flag — e.g. "Send to
+    a webhook (Beta)", "List custom plugins (Beta)", "Migrate a dataset to a data model (Beta)".
+deprecation:
+  policy_published: false
+  policy_note: 'Sigma publishes no standalone API deprecation policy page and no deprecation window. Deprecations are announced
+    in the weekly changelog and marked in the OpenAPI with the standard `deprecated: true` flag, which is a real machine-readable
+    signal — but with no stated sunset date and no RFC 8594 Sunset/Deprecation response headers (0 occurrences in the spec).'
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations:
+  - operationId: updateConnectionDeprecated
+    method: PATCH
+    path: /v2/connections/{connectionId}
+    replacement: PATCH /v2/connections/{connectionId} (non-deprecated variant) — see the connections reference
+  - operationId: getWorkbookSchema
+    method: GET
+    path: /v2/workbooks/{workbookId}/schema
+  deprecated_resource_family: The whole `datasets` tag (9 operations) is superseded by `dataModels`; Sigma ships POST /v2/datasets/{datasetId}/migrate
+    (Beta, supports dryRun) as the migration path.
+  source: openapi/_original/sigma-computing-public-rest-api-openapi.json
+status_page:
+  url: https://status.sigmacomputing.com
+  platform: Atlassian Statuspage
+  machine_readable: https://status.sigmacomputing.com/api/v2/status.json
+  probed:
+    url: https://status.sigmacomputing.com/api/v2/status.json
+    status: 200
+    observed: '{"status":{"indicator":"none","description":"All Systems Operational"}}'
+  components_note: Statuspage exposes the full component and incident history at /api/v2/summary.json and /api/v2/incidents.json
+    on the same host.
+changelog:
+  url: https://help.sigmacomputing.com/changelog
+  cadence: weekly, dated
+  machine_readable: https://help.sigmacomputing.com/changelog/llms.txt
+sla:
+  published: false
+  note: No public SLA document. Availability commitments sit inside the customer agreement at https://www.sigmacomputing.com/legal/terms-of-service.
+support:
+  url: https://help.sigmacomputing.com/docs/sigma-support
+  community: https://community.sigmacomputing.com/

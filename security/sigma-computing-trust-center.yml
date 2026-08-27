@@ -1,0 +1,52 @@
+generated: '2026-08-27'
+method: searched
+source: https://security.sigmacomputing.com/
+trust_center:
+  url: https://security.sigmacomputing.com/
+  platform: SafeBase (Drata)
+  name: Sigma Trust Center
+  access: public landing page; individual reports gated behind an NDA request form
+  probe_note: A raw curl with a browser User-Agent is met with a Cloudflare interstitial (HTTP 403, "Just a moment...").
+    The page is live and renders for a normal browser — this is an ordinary edge bot policy, not a dead link. Certification
+    list below was read from the rendered page.
+certifications:
+- name: SOC 1
+  type: attestation
+- name: SOC 2
+  type: attestation
+- name: SOC 3
+  type: attestation
+  note: SOC 3 is the publicly distributable form of the SOC 2 report.
+- name: ISO/IEC 27001
+  type: certification
+- name: ISO/IEC 27017:2015
+  type: certification
+  scope: cloud security controls
+- name: ISO/IEC 27018:2019
+  type: certification
+  scope: PII in public cloud
+- name: ISO/IEC 27701
+  type: certification
+  scope: privacy information management
+- name: HIPAA
+  type: regulatory alignment
+- name: GDPR
+  type: regulatory alignment
+- name: CCPA
+  type: regulatory alignment
+- name: EU-US Data Privacy Framework
+  type: transfer mechanism
+documents_offered:
+- BC/DR Report
+- Network Diagram
+- Penetration Test Report
+- HIPAA Report
+- Unified Security Policy
+- Information Security Policy
+contacts:
+  security: security@sigmacomputing.com
+  grc: GRC@sigmacomputing.com
+subprocessors: https://www.sigmacomputing.com/legal/subprocessors
+dpa: https://www.sigmacomputing.com/legal/dpa
+note: The ISO 27017/27018/27701 trio alongside 27001 plus all three SOC reports is an unusually complete set for a company
+  of this size, and it is what an enterprise BI buyer's procurement team asks for first.
