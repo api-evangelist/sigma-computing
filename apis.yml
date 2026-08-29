@@ -10,6 +10,18 @@ description: >-
   a first-party Rust CLI generated from that same OpenAPI; a remote OAuth-protected MCP server that lets AI
   assistants search, describe and query governed data in natural language; JavaScript embed and plugin SDKs; and
   three Apache-2.0 agent skills Sigma publishes for Claude Code, Cursor, Codex and Snowflake Cortex Code.
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 image: https://cdn.sanity.io/images/9i48iita/production/2fcbd9fc0f6c54c2bc25877917e563fe805ad864-1200x630.png
 url: https://raw.githubusercontent.com/api-evangelist/sigma-computing/refs/heads/main/apis.yml
 x-type: company
