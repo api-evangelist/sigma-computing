@@ -1,0 +1,249 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Auth API
+  version: '1.0'
+  description: 'Operations tagged auth across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: auth
+paths:
+  /v2/auth/token:
+    post:
+      summary: Get access token
+      description: "Use your Sigma client ID and secret with this endpoint to generate an access token valid for one hour, or to refresh your token. You can then use the access token to authenticate requests made to the Sigma API.\n\nTo make any API call with the Sigma API, including calls from the API documentation, you must have a valid bearer token. To generate a token, you must have a valid **Client ID** and **Secret**. See [Generate Sigma API client credentials](generate-client-credentials).\n\nYou make all API calls to a specific URL that corresponds to the cloud where your Sigma environment is hosted. Set the **Base URL** to the relevant URL for your environment. For details, see [Identify your API request URL](get-started-sigma-api#identify-your-api-request-url).\n\nGenerate a token by sending a POST request to this `/v2/auth/token` endpoint, or use the **Try It!** option on this page.\n\n### Usage notes\n\n- The API token is valid for 1 hour. When the token expires, an endpoint response returns an unauthorized error.\n- Refresh your access token before it expires using the `refresh_token` option.\n- If your client credentials are owned by a user assigned the Admin account type, you can generate an access token as a specific user using impersonation.\n  "
+      parameters: []
+      operationId: postToken
+      requestBody:
+        description: The request body.
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              oneOf:
+              - type: object
+                required:
+                - grant_type
+                properties:
+                  grant_type:
+                    type: string
+                    enum:
+                    - client_credentials
+                    description: Set to `client_credentials` to retrieve an access token.
+                description: ''
+                title: Access token
+              - type: object
+                required:
+                - grant_type
+                - refresh_token
+                properties:
+                  grant_type:
+                    type: string
+                    enum:
+                    - refresh_token
+                    description: 'Set to `refresh_token` to refresh your access token. '
+                  refresh_token:
+                    type: string
+                description: ''
+                title: Refresh token
+              - type: object
+                required:
+                - grant_type
+                - subject_token
+                - subject_token_type
+                - actor_token
+                - actor_token_type
+                properties:
+                  grant_type:
+                    type: string
+                    enum:
+                    - urn:ietf:params:oauth:grant-type:token-exchange
+                    description: Set to `urn:ietf:params:oauth:grant-type:token-exchange` to get an impersonated token.
+                  subject_token:
+                    type: string
+                    description: 'A self-signed JWT token with the following claims: `kid` (the client ID), and either `sub` (the email of the user to impersonate), `tenant` (the organization ID of the tenant to impersonate), or both. When `tenant` is provided without `sub`, the tenant admin user will be impersonated. When both are provided, the specified user will be impersonated within the context of that tenant organization.'
+                    title: Subject token
+                  subject_token_type:
+                    type: string
+                    enum:
+                    - urn:ietf:params:oauth:token-type:jwt
+                  actor_token:
+                    type: string
+                    description: An access token owned by a Sigma user assigned the Admin account type. This token must match the bearer token in the request authorization header.
+                    title: Actor token
+                  actor_token_type:
+                    type: string
+                    enum:
+                    - urn:ietf:params:oauth:token-type:access_token
+                description: (Beta) Generate an access token as a specific user using a JSON Web Token (JWT).
+                title: (Beta) Impersonation
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  required:
+                  - access_token
+                  - refresh_token
+                  - token_type
+                  - expires_in
+                  properties:
+                    access_token:
+                      type: string
+                      description: Token used to access the API and make requests.
+                    refresh_token:
+                      type: string
+                      description: Refresh token used to refresh access token.
+                    token_type:
+                      type: string
+                      enum:
+                      - bearer
+                    expires_in:
+                      type: number
+                      description: Number of seconds in which the token expires.
+                  description: ''
+                  title: Access / Refresh token
+                - type: object
+                  required:
+                  - access_token
+                  - issued_token_type
+                  - token_type
+                  - expires_in
+                  properties:
+                    access_token:
+                      type: string
+                      description: Access token used to access the API and make requests as the impersonated user.
+                    issued_token_type:
+                      type: string
+                      enum:
+                      - urn:ietf:params:oauth:token-type:access_token
+                    token_type:
+                      type: string
+                      enum:
+                      - Bearer
+                    expires_in:
+                      type: number
+                      description: Number of seconds in which the token expires.
+                  description: ''
+                  title: (Beta) Impersonation
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - auth
+      security:
+      - basicAuth: []
+      - bearerAuth: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    auth_postToken_Response_200:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: Token used to access the API and make requests.
+        refresh_token:
+          type: string
+          description: Refresh token used to refresh the access token.
+        token_type:
+          type: string
+          description: The type of token issued.
+        expires_in:
+          type: integer
+          description: The number of seconds until the access token expires.
+      required:
+      - access_token
+      - token_type
+      - expires_in
+      title: auth_postToken_Response_200
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

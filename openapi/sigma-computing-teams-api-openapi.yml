@@ -1,0 +1,1542 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Teams API
+  version: '1.0'
+  description: 'Operations tagged teams across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: teams
+paths:
+  /v2/teams:
+    get:
+      summary: List teams
+      description: "\n  **Attention**: This endpoint will return only paginated responses starting June 2, 2026. To start returning paginated responses before that date, include the query parameter `limit` in your request.\n\n  List all teams in Sigma.\n  "
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      - name: name
+        schema:
+          type: string
+        in: query
+      - name: description
+        schema:
+          type: string
+        in: query
+      - name: visibility
+        schema:
+          type: string
+          enum:
+          - public
+          - private
+        in: query
+      operationId: listTeams
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: array
+                  items:
+                    allOf:
+                    - type: object
+                      required:
+                      - teamId
+                      - createdBy
+                      - updatedBy
+                      - createdAt
+                      - updatedAt
+                      - name
+                      - description
+                      - visibility
+                      properties:
+                        teamId:
+                          type: string
+                        createdBy:
+                          type: string
+                        updatedBy:
+                          type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                        name:
+                          type: string
+                        description:
+                          type:
+                          - string
+                          - 'null'
+                        visibility:
+                          type:
+                          - string
+                          - 'null'
+                          enum:
+                          - public
+                          - private
+                    - type: object
+                      properties:
+                        isArchived:
+                          type: boolean
+                  description: One page of results
+                  title: Single page
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - teamId
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          - name
+                          - description
+                          - visibility
+                          properties:
+                            teamId:
+                              type: string
+                            createdBy:
+                              type: string
+                            updatedBy:
+                              type: string
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type: string
+                              format: date-time
+                            name:
+                              type: string
+                            description:
+                              type:
+                              - string
+                              - 'null'
+                            visibility:
+                              type:
+                              - string
+                              - 'null'
+                              enum:
+                              - public
+                              - private
+                        - type: object
+                          properties:
+                            isArchived:
+                              type: boolean
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                  description: Multiple pages of results
+                  title: Paginated results
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    post:
+      summary: Create a team
+      description: "Create a Sigma team.\n\n  ### Usage notes\n  - Specify members to add to the team by userId or memberId.\n  - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n    "
+      parameters: []
+      operationId: createTeam
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - name
+                properties:
+                  name:
+                    type: string
+              - type: object
+                properties:
+                  description:
+                    type: string
+                  members:
+                    type: array
+                    items:
+                      type: string
+                    description: Specify memberIds
+                  createTeamFolder:
+                    type: boolean
+                  visibility:
+                    type: string
+                    enum:
+                    - public
+                    - private
+                    description: Whether to make a public or private team. Defaults to private.
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - allOf:
+                  - allOf:
+                    - type: object
+                      required:
+                      - teamId
+                      - createdBy
+                      - updatedBy
+                      - createdAt
+                      - updatedAt
+                      - name
+                      - description
+                      - visibility
+                      properties:
+                        teamId:
+                          type: string
+                        createdBy:
+                          type: string
+                        updatedBy:
+                          type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+                        name:
+                          type: string
+                        description:
+                          type:
+                          - string
+                          - 'null'
+                        visibility:
+                          type:
+                          - string
+                          - 'null'
+                          enum:
+                          - public
+                          - private
+                    - type: object
+                      properties:
+                        isArchived:
+                          type: boolean
+                  - type: object
+                    required:
+                    - members
+                    properties:
+                      members:
+                        type: array
+                        items:
+                          type: string
+                - type: object
+                  required:
+                  - workspaceId
+                  properties:
+                    workspaceId:
+                      type:
+                      - string
+                      - 'null'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/teams/{teamId}:
+    get:
+      summary: Get a team
+      description: "Returns details about a team based on team ID. The response includes an array of member IDs that identify the users in the team.\n\n  ### Usage notes\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n  "
+      parameters:
+      - name: teamId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: getTeam
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - allOf:
+                  - type: object
+                    required:
+                    - teamId
+                    - createdBy
+                    - updatedBy
+                    - createdAt
+                    - updatedAt
+                    - name
+                    - description
+                    - visibility
+                    properties:
+                      teamId:
+                        type: string
+                      createdBy:
+                        type: string
+                      updatedBy:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                      name:
+                        type: string
+                      description:
+                        type:
+                        - string
+                        - 'null'
+                      visibility:
+                        type:
+                        - string
+                        - 'null'
+                        enum:
+                        - public
+                        - private
+                  - type: object
+                    properties:
+                      isArchived:
+                        type: boolean
+                - type: object
+                  required:
+                  - members
+                  properties:
+                    members:
+                      type: array
+                      items:
+                        type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    patch:
+      summary: Update a team
+      description: "Update the name, description, and visibility of a team.\n\n  ### Usage notes\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n  "
+      parameters:
+      - name: teamId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: updateTeam
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                visibility:
+                  type: string
+                  enum:
+                  - public
+                  - private
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - teamId
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  - name
+                  - description
+                  - visibility
+                  properties:
+                    teamId:
+                      type: string
+                    createdBy:
+                      type: string
+                    updatedBy:
+                      type: string
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+                    name:
+                      type: string
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                    visibility:
+                      type:
+                      - string
+                      - 'null'
+                      enum:
+                      - public
+                      - private
+                - type: object
+                  properties:
+                    isArchived:
+                      type: boolean
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    delete:
+      summary: Delete a team
+      description: "Delete a specific team.\n\n  ### Usage notes\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n  "
+      parameters:
+      - name: teamId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: deleteTeam
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/teams/{teamId}/assignedUserAttributes:
+    post:
+      summary: Assign user attributes to a team
+      description: "Assign one or more user attributes to a specific team.\n\n  ### Usage notes\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n  - Retrieve a list of available user attributes by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Maximum 100 assignments per request.\n  "
+      parameters:
+      - name: teamId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: assignUserAttributesToTeam
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - assignments
+              properties:
+                assignments:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - userAttributeId
+                    - value
+                    properties:
+                      userAttributeId:
+                        type: string
+                        description: Unique identifier of the user attribute.
+                      value:
+                        type: object
+                        required:
+                        - type
+                        - val
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - string
+                            description: Type of user attribute.
+                          val:
+                            type: string
+                            description: Value of the user attribute.
+                        description: The value of the user attribute
+                        title: Attribute value
+            examples:
+              Request Example:
+                value:
+                  assignments:
+                  - userAttributeId: 00000000-0000-0000-0000-000000000000
+                    value:
+                      val: South
+                      type: string
+                  - userAttributeId: 00000000-0000-0000-0000-000000000001
+                    value:
+                      val: Sales
+                      type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/teams/{teamId}/members:
+    get:
+      summary: List team members
+      description: "Get a paginated list of team members in a specific team.\n\n  ### Usage notes\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n  - Returns the members of the team by `userId`.\n\n  ### Usage scenarios\n  - Identify the admin of a team.\n  "
+      parameters:
+      - name: teamId
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: getTeamMembers
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - userId
+                        - isTeamAdmin
+                        - addedBy
+                        properties:
+                          userId:
+                            type: string
+                            description: User ID, equivalent to Member ID
+                          isTeamAdmin:
+                            type: boolean
+                          addedBy:
+                            type: string
+                            description: User ID of the user who added this member to the team
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    patch:
+      summary: Update team members
+      description: "Update the members of a specific team.\n\n  ### Usage notes\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n  - Inactive members cannot be added or removed from a team.\n  "
+      parameters:
+      - name: teamId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: updateTeamMembers
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                add:
+                  type: array
+                  items:
+                    type: string
+                  description: Members to add by memberId
+                remove:
+                  type: array
+                  items:
+                    type: string
+                  description: Members to remove by memberId
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/teams/{teamId}/user-attributes:
+    get:
+      summary: Get team user attributes
+      description: "Get a list of user attributes assigned to a team.\n\n  ### Usage notes\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n  "
+      parameters:
+      - name: teamId
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: getTeamUserAttributeAssignments
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - userAttributeId
+                        - userAttributeName
+                        - value
+                        properties:
+                          userAttributeId:
+                            type: string
+                            description: ID of the user attribute.
+                          userAttributeName:
+                            type: string
+                            description: Name of the user attribute.
+                          value:
+                            type: object
+                            required:
+                            - type
+                            - val
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - string
+                                description: Type of user attribute.
+                              val:
+                                type: string
+                                description: Value of the user attribute.
+                            description: Value for the user attribute assigned to the team.
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                - type: object
+                  properties:
+                    total:
+                      type: number
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2.1/teams:
+    get:
+      summary: List teams (Paginated)
+      description: "\n  **Attention:** This API endpoint uses pagination by default.\n\n  List all teams in Sigma.\n  "
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      - name: name
+        schema:
+          type: string
+        in: query
+      - name: description
+        schema:
+          type: string
+        in: query
+      - name: visibility
+        schema:
+          type: string
+          enum:
+          - public
+          - private
+        in: query
+      operationId: v2_1_listTeams
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - teamId
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          - name
+                          - description
+                          - visibility
+                          properties:
+                            teamId:
+                              type: string
+                            createdBy:
+                              type: string
+                            updatedBy:
+                              type: string
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type: string
+                              format: date-time
+                            name:
+                              type: string
+                            description:
+                              type:
+                              - string
+                              - 'null'
+                            visibility:
+                              type:
+                              - string
+                              - 'null'
+                              enum:
+                              - public
+                              - private
+                        - type: object
+                          properties:
+                            isArchived:
+                              type: boolean
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - teams
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    teams_updateTeam_Response_200:
+      type: object
+      properties:
+        teamId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          $ref: '#/components/schemas/V2TeamsTeamIdPatchResponsesContentApplicationJsonSchemaVisibility'
+        isArchived:
+          type: boolean
+      required:
+      - teamId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - visibility
+      title: teams_updateTeam_Response_200
+    V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
+    V2TeamsPostRequestBodyContentApplicationJsonSchemaVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      description: Whether to make a public or private team. Defaults to private.
+      title: V2TeamsPostRequestBodyContentApplicationJsonSchemaVisibility
+    V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        teamId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          $ref: '#/components/schemas/V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItemsVisibility'
+        isArchived:
+          type: boolean
+      required:
+      - teamId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - visibility
+      title: V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TeamsGetParametersVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsGetParametersVisibility
+    V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
+      type: object
+      properties:
+        userAttributeId:
+          type: string
+          description: Unique identifier of the user attribute.
+        value:
+          $ref: '#/components/schemas/V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
+          description: The value of the user attribute
+      required:
+      - userAttributeId
+      - value
+      title: V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
+    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItemsVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItemsVisibility
+    TeamsListTeamsResponse2001:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+      required:
+      - entries
+      - nextPage
+      description: Multiple pages of results
+      title: TeamsListTeamsResponse2001
+    V2TeamsTeamIdGetResponsesContentApplicationJsonSchemaVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsTeamIdGetResponsesContentApplicationJsonSchemaVisibility
+    teams_getTeamMembers_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TeamsTeamIdMembersGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: teams_getTeamMembers_Response_200
+    V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: The value of the user attribute
+      title: V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
+    V21TeamsGetParametersVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V21TeamsGetParametersVisibility
+    teams_getTeamUserAttributeAssignments_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: teams_getTeamUserAttributeAssignments_Response_200
+    teams_v2_1_listTeams_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: teams_v2_1_listTeams_Response_200
+    teams_createTeam_Response_200:
+      type: object
+      properties:
+        teamId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          $ref: '#/components/schemas/V2TeamsPostResponsesContentApplicationJsonSchemaVisibility'
+        isArchived:
+          type: boolean
+        members:
+          type: array
+          items:
+            type: string
+        workspaceId:
+          type:
+          - string
+          - 'null'
+      required:
+      - teamId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - visibility
+      - members
+      - workspaceId
+      title: teams_createTeam_Response_200
+    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems:
+      type: object
+      properties:
+        teamId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItemsVisibility'
+        isArchived:
+          type: boolean
+      required:
+      - teamId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - visibility
+      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems
+    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0Items:
+      type: object
+      properties:
+        teamId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0ItemsVisibility'
+        isArchived:
+          type: boolean
+      required:
+      - teamId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - visibility
+      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0Items
+    teams_getTeam_Response_200:
+      type: object
+      properties:
+        teamId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          $ref: '#/components/schemas/V2TeamsTeamIdGetResponsesContentApplicationJsonSchemaVisibility'
+        isArchived:
+          type: boolean
+        members:
+          type: array
+          items:
+            type: string
+      required:
+      - teamId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - visibility
+      - members
+      title: teams_getTeam_Response_200
+    V2TeamsTeamIdMembersGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: User ID, equivalent to Member ID
+        isTeamAdmin:
+          type: boolean
+        addedBy:
+          type: string
+          description: User ID of the user who added this member to the team
+      required:
+      - userId
+      - isTeamAdmin
+      - addedBy
+      title: V2TeamsTeamIdMembersGetResponsesContentApplicationJsonSchemaEntriesItems
+    TeamsListTeamsResponse2000:
+      type: array
+      items:
+        $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0Items'
+      description: One page of results
+      title: TeamsListTeamsResponse2000
+    teams_updateTeamMembers_Response_200:
+      type: object
+      properties: {}
+      title: teams_updateTeamMembers_Response_200
+    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0ItemsVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0ItemsVisibility
+    V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
+    teams_assignUserAttributesToTeam_Response_200:
+      type: object
+      properties: {}
+      title: teams_assignUserAttributesToTeam_Response_200
+    V2TeamsPostResponsesContentApplicationJsonSchemaVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsPostResponsesContentApplicationJsonSchemaVisibility
+    teams_deleteTeam_Response_200:
+      type: object
+      properties: {}
+      title: teams_deleteTeam_Response_200
+    V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        userAttributeId:
+          type: string
+          description: ID of the user attribute.
+        userAttributeName:
+          type: string
+          description: Name of the user attribute.
+        value:
+          $ref: '#/components/schemas/V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
+          description: Value for the user attribute assigned to the team.
+      required:
+      - userAttributeId
+      - userAttributeName
+      - value
+      title: V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems
+    teams_listTeams_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/TeamsListTeamsResponse2000'
+      - $ref: '#/components/schemas/TeamsListTeamsResponse2001'
+      title: teams_listTeams_Response_200
+    V2TeamsTeamIdPatchResponsesContentApplicationJsonSchemaVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsTeamIdPatchResponsesContentApplicationJsonSchemaVisibility
+    V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItemsVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItemsVisibility
+    V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Value for the user attribute assigned to the team.
+      title: V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValue
+    V2TeamsTeamIdPatchRequestBodyContentApplicationJsonSchemaVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsTeamIdPatchRequestBodyContentApplicationJsonSchemaVisibility
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

@@ -1,0 +1,176 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Public REST Allowed Ips\:batch Create API
+  version: 2.0.0
+  summary: The Sigma REST API provides developers access to resources programmatically, using HTTP.
+  description: "The Sigma REST API provides developers access to resources programmatically,\n    using HTTP. The API allows secure access to all the commonly used resources\n    like connections, datasets, teams, workbooks and more. It is designed to have\n    predictable, resource-oriented URLs and to use HTTP response codes to\n    indicate API errors. It uses built-in HTTP features, like HTTP\n    authentication and HTTP verbs, which are understood by off-the-shelf HTTP\n    clients. It supports cross-origin resource sharing, allowing you to interact\n    securely with the API from a client-side web application (though you should\n    never expose your client credentials or API token in any public website's client-side code).\n    JSON is returned by all API responses, including errors.\n    Some useful links:\n        - [API Reference Help](https://help.sigmacomputing.com/reference)\n        - [API QuickStart with Postman](https://quickstarts.sigmacomputing.com/guide/sigma_api_with_postman/index.html?index=..%2F..index#0)"
+  termsOfService: Contact Sigma
+  contact:
+    email: support@sigmacomputing.com
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+security:
+- oauth2: []
+tags:
+- name: allowedIps\:batchCreate
+paths:
+  /v3alpha/allowedIps:batchCreate:
+    post:
+      summary: Create IP allowlist entries (Beta)
+      description: "Add new IP address entries to your organization's IP allowlist.\n\n**Beta**: This documentation describes a private beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.\n\n  ### Usage notes\n  - Supports IPv4, IPv6, and CIDR ranges (e.g., `192.168.1.0/24`, `2001:db8::/32`).\n  - Maximum of 200 total IP entries allowed per organization.\n  - Duplicate IP addresses are not allowed. If a request contains an IP address already on the list, the request fails.\n\n  ### Usage scenarios\n  - Add IP ranges for new locations or employees.\n  - Bulk import IP addresses from a list.\n  "
+      parameters: []
+      operationId: v3alpha_createIpAllowlistEntries
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - entries
+              properties:
+                entries:
+                  type: array
+                  items:
+                    allOf:
+                    - type: object
+                      required:
+                      - ip
+                      - scope
+                      properties:
+                        ip:
+                          type: string
+                          description: IPv4/IPv6 address or CIDR range
+                        scope:
+                          type: string
+                          enum:
+                          - public-api
+                          - ui
+                          - both
+                    - type: object
+                      properties:
+                        description:
+                          type: string
+                          description: Description for this IP allowlist entry (max 255 characters)
+                  description: Array of IP allowlist entries to add (max 200 per organization)
+      responses:
+        '201':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - entries
+                properties:
+                  entries:
+                    type: array
+                    items:
+                      allOf:
+                      - type: object
+                        required:
+                        - ipAllowlistEntryId
+                        - ip
+                        - scope
+                        properties:
+                          ipAllowlistEntryId:
+                            type: string
+                            description: Unique ID for this IP allowlist entry
+                          ip:
+                            type: string
+                            description: IPv4/IPv6 address or CIDR range
+                          scope:
+                            type: string
+                            enum:
+                            - public-api
+                            - ui
+                            - both
+                            description: Scope for which this IP allowlist entry applies
+                      - type: object
+                        properties:
+                          description:
+                            type: string
+                            description: Description for this IP allowlist entry
+                      - type: object
+                        required:
+                        - createdBy
+                        - updatedBy
+                        - createdAt
+                        - updatedAt
+                        properties:
+                          createdBy:
+                            type: string
+                            description: The identifier of the user who created this object.
+                          updatedBy:
+                            type: string
+                            description: The identifier of the user or process that last updated this object.
+                          createdAt:
+                            type: string
+                            format: date-time
+                            description: When the object was created.
+                          updatedAt:
+                            type: string
+                            format: date-time
+                            description: When the object was last updated.
+                    description: Array of created IP allowlist entries
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - allowedIps\:batchCreate
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}

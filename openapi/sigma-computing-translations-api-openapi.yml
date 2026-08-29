@@ -1,0 +1,652 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Translations API
+  version: '1.0'
+  description: 'Operations tagged translations across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: translations
+paths:
+  /v2/translations/organization:
+    get:
+      summary: List organization translation files
+      description: "This paginated endpoint lists all the translation files that have been defined at the organization level.\n\n### Usage notes\nThis endpoint requires no parameters for basic requests but supports query parameters for pagination and response limit.\n\n#### Pagination\n\nThis endpoint supports pagination, which lets you retrieve large sets of data in manageable segments. The response includes pagination details as follows:\n\n- hasMore: A boolean value indicating whether there are more pages of data available beyond the current page.\n- total: The total number of entries available across all pages.\n- nextPage: An identifier or token that you can use in a subsequent request to retrieve the next page of data.\n\n#### Example response for pagination\n{\n  \"hasMore\": true,\n  \"total\": 104,\n  \"nextPage\": \"50\"\n}\n\nTo request additional pages, include the `nextPage` option in your followup request according to the endpoint's parameter requirements. This process can be repeated until `nextPage` is `null`.\n    "
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: listOrgLocales
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - lng
+                        - locale
+                        - lng_variant
+                        - createdBy
+                        - updatedBy
+                        - createdAt
+                        - updatedAt
+                        properties:
+                          lng:
+                            type: string
+                            description: The locale identifier corresponding to the language of the translation.
+                            title: Locale identifier
+                          locale:
+                            type: string
+                            description: The corrected locale identifier corresponding to the language of the translation. This identifier can be used in Sigma's query parameters (ex. `:lng=en-gb`)
+                            title: Locale identifier
+                          lng_variant:
+                            type:
+                            - string
+                            - 'null'
+                            description: The name of the custom translation variant, if applicable
+                            title: Variant name
+                          createdBy:
+                            type: string
+                            description: The user ID of the creator
+                          updatedBy:
+                            type: string
+                            description: The user ID of the last updater
+                          createdAt:
+                            type: string
+                            format: date-time
+                            description: The creation timestamp
+                          updatedAt:
+                            type: string
+                            format: date-time
+                            description: The last update timestamp
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - translations
+      security:
+      - oauth2: []
+    post:
+      summary: Create organization translation file
+      description: 'This endpoint creates a new organization translation file for the specified locale, containing the translation key-value pairs, if provided. You can also use this endpoint to create custom translations for a locale.
+
+        Entering common phrases and their translations used in workbooks across your organization ensures consistent translations for all users.
+
+
+        ### Usage Notes
+
+        - Retrieve the supported locale identifiers to use for **lng** from [Supported languages and locales](/docs/manage-workbook-localization#supported-languages-and-locales).
+
+        '
+      parameters: []
+      operationId: createOrgTranslation
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - lng
+                properties:
+                  lng:
+                    type: string
+                    description: The locale identifier corresponding to the language of the translation.
+                    title: Locale identifier
+              - type: object
+                properties:
+                  lng_variant:
+                    type:
+                    - string
+                    - 'null'
+                    description: The name of the custom translation variant, if applicable
+                    title: Variant name
+                  translations:
+                    type: object
+                    additionalProperties:
+                      type: string
+                    description: A JSON object with phrases as keys and their translations as values
+                    title: Translation file
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - translations
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/translations/organization/{lng}:
+    get:
+      summary: Get organization translation file
+      description: "This endpoint returns a JSON file containing the translations for a specified locale (**lng**) without custom translations.\n\n### Usage notes\n- Retrieve the **lng** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      parameters:
+      - name: lng
+        schema:
+          type: string
+          description: The locale identifier corresponding to the language of the translation.
+          title: Locale identifier
+        in: path
+        required: true
+      operationId: getOrgTranslations
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - translations
+                properties:
+                  translations:
+                    type: object
+                    additionalProperties:
+                      type: string
+                    description: A JSON object with phrases as keys and their translations as values
+                    title: Translation file
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - translations
+      security:
+      - oauth2: []
+    put:
+      summary: Update organization translation file
+      description: "This endpoint updates the translation file for a specified locale (**lng**) without custom translations.\n\n### Usage notes\n- Retrieve the **lng** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      parameters:
+      - name: lng
+        schema:
+          type: string
+          description: The locale identifier corresponding to the language of the translation.
+          title: Locale identifier
+        in: path
+        required: true
+      operationId: updateOrgTranslation
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - translations
+              properties:
+                translations:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  description: A JSON object with phrases as keys and their translations as values
+                  title: Translation file
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - translations
+      security:
+      - oauth2: []
+    delete:
+      summary: Delete organization translation file
+      description: "This endpoint deletes the translation file for the specified locale (**lng**) without any custom translations.\n\n### Usage notes\n- Retrieve the **lng** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      parameters:
+      - name: lng
+        schema:
+          type: string
+          description: The locale identifier corresponding to the language of the translation.
+          title: Locale identifier
+        in: path
+        required: true
+      operationId: deleteOrgTranslation
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - translations
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/translations/organization/{lng}/{lng_variant}:
+    get:
+      summary: Get organization translation file with variant
+      description: "This endpoint returns a JSON file containing the translations and custom translations (**lng_variant**) for a locale (**lng**).\n\n### Usage notes\n- Retrieve the **lng** and **lng_variant** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      parameters:
+      - name: lng
+        schema:
+          type: string
+          description: The locale identifier corresponding to the language of the translation.
+          title: Locale identifier
+        in: path
+        required: true
+      - name: lng_variant
+        schema:
+          type: string
+          description: The name of the custom translation variant
+          title: Variant name
+        in: path
+        required: true
+      operationId: getOrgTranslationsWithVariant
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - translations
+                properties:
+                  translations:
+                    type: object
+                    additionalProperties:
+                      type: string
+                    description: A JSON object with phrases as keys and their translations as values
+                    title: Translation file
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - translations
+      security:
+      - oauth2: []
+    put:
+      summary: Update organization translation file with variant
+      description: "This endpoint updates the translation file for the specified custom translation (**lng_variant**) for a locale (**lng**).\n\n### Usage notes\n- Retrieve the **lng** and **lng_variant** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      parameters:
+      - name: lng
+        schema:
+          type: string
+          description: The locale identifier corresponding to the language of the translation.
+          title: Locale identifier
+        in: path
+        required: true
+      - name: lng_variant
+        schema:
+          type: string
+          description: The name of the custom translation variant
+          title: Variant name
+        in: path
+        required: true
+      operationId: updateOrgTranslationWithVariant
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - translations
+              properties:
+                translations:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  description: A JSON object with phrases as keys and their translations as values
+                  title: Translation file
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - translations
+      security:
+      - oauth2: []
+    delete:
+      summary: Delete organization translation file with variant
+      description: "This endpoint deletes the translation file for the specified custom translation (**lng_variant**) for a locale (**lng**).\n\n### Usage notes\n- Retrieve the **lng** and **lng_variant** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      parameters:
+      - name: lng
+        schema:
+          type: string
+          description: The locale identifier corresponding to the language of the translation.
+          title: Locale identifier
+        in: path
+        required: true
+      - name: lng_variant
+        schema:
+          type: string
+          description: The name of the custom translation variant
+          title: Variant name
+        in: path
+        required: true
+      operationId: deleteOrgTranslationWithVariant
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - translations
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    translations_deleteOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_deleteOrgTranslation_Response_200
+    translations_deleteOrgTranslationWithVariant_Response_200:
+      type: object
+      properties: {}
+      title: translations_deleteOrgTranslationWithVariant_Response_200
+    translations_listOrgLocales_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: translations_listOrgLocales_Response_200
+    V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        lng:
+          type: string
+          description: The locale identifier corresponding to the language of the translation.
+        locale:
+          type: string
+          description: The corrected locale identifier corresponding to the language of the translation. This identifier can be used in Sigma's query parameters (ex. `:lng=en-gb`)
+        lng_variant:
+          type:
+          - string
+          - 'null'
+          description: The name of the custom translation variant, if applicable
+        createdBy:
+          type: string
+          description: The user ID of the creator
+        updatedBy:
+          type: string
+          description: The user ID of the last updater
+        createdAt:
+          type: string
+          format: date-time
+          description: The creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: The last update timestamp
+      required:
+      - lng
+      - locale
+      - lng_variant
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems
+    translations_getOrgTranslations_Response_200:
+      type: object
+      properties:
+        translations:
+          type: object
+          additionalProperties:
+            type: string
+          description: A JSON object with phrases as keys and their translations as values
+      required:
+      - translations
+      title: translations_getOrgTranslations_Response_200
+    translations_getOrgTranslationsWithVariant_Response_200:
+      type: object
+      properties:
+        translations:
+          type: object
+          additionalProperties:
+            type: string
+          description: A JSON object with phrases as keys and their translations as values
+      required:
+      - translations
+      title: translations_getOrgTranslationsWithVariant_Response_200
+    translations_updateOrgTranslationWithVariant_Response_200:
+      type: object
+      properties: {}
+      title: translations_updateOrgTranslationWithVariant_Response_200
+    translations_createOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_createOrgTranslation_Response_200
+    translations_updateOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_updateOrgTranslation_Response_200
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

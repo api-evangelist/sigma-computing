@@ -1,0 +1,1423 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Workspaces API
+  version: '1.0'
+  description: 'Operations tagged workspaces across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: workspaces
+paths:
+  /v2/workspaces:
+    get:
+      summary: List workspaces
+      description: "\n  **Attention**: This endpoint will return only paginated responses starting June 2, 2026. To start returning paginated responses before that date, include the query parameter `limit` in your request.\n\n  This endpoint returns a list of all workspaces. You can use pagination and optionally filter by name to manage large sets of data. See [Manage Workspaces](/docs/manage-workspaces) for more details about workspaces in Sigma.\n  ### Usage notes\n  - **Filtering by name**: Optionally, use the `name` parameter to filter workspaces by a case-insensitive substring match.\n  - **Filtering by exact name**: Optionally, use the `exactName` parameter to filter workspaces by an exact name match (also case-insensitive). When provided, `exactName` takes precedence over `name` and uses an indexed equality lookup, which is significantly faster than substring search.\n\n  ### Usage scenarios\n  - **Pagination**: Use the `page` and `limit` parameters to control the size and segment of the workspace list returned.\n  - **User interface display**: Populate a user interface with a list of all available workspaces, using pagination to efficiently load data and filtering to quickly find specific workspaces.\n  - **Administrative overview**: Provide system administrators with an overview of all workspaces for management and monitoring purposes, with the ability to browse through pages and search by name.\n\n  ### Best practices\n  - Use caching to reduce load times and server demand when frequently accessing workspace lists.\n  - Regularly update and synchronize workspace lists to ensure that displayed information is current and accurate."
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      - name: name
+        schema:
+          type: string
+          description: Filter workspaces by name (substring match, case-insensitive).
+          title: Workspace Name Filter
+        in: query
+      - name: exactName
+        schema:
+          type: string
+          description: Filter workspaces by exact name match (case-insensitive, like `name`). When set, this takes precedence over `name` and uses an indexed equality lookup instead of a substring search.
+          title: Workspace Exact Name Filter
+        in: query
+      operationId: listWorkspaces
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: array
+                  items:
+                    type: object
+                    required:
+                    - workspaceId
+                    - workspaceUrlId
+                    - name
+                    - createdBy
+                    - updatedBy
+                    - createdAt
+                    - updatedAt
+                    properties:
+                      workspaceId:
+                        type: string
+                      workspaceUrlId:
+                        type: string
+                        description: Base62-encoded identifier used in Sigma workspace URLs.
+                        title: Workspace URL ID
+                      name:
+                        type: string
+                      createdBy:
+                        type: string
+                      updatedBy:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                    title: Workspace details
+                  description: ''
+                  title: Single page
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - workspaceId
+                        - workspaceUrlId
+                        - name
+                        - createdBy
+                        - updatedBy
+                        - createdAt
+                        - updatedAt
+                        properties:
+                          workspaceId:
+                            type: string
+                          workspaceUrlId:
+                            type: string
+                            description: Base62-encoded identifier used in Sigma workspace URLs.
+                            title: Workspace URL ID
+                          name:
+                            type: string
+                          createdBy:
+                            type: string
+                          updatedBy:
+                            type: string
+                          createdAt:
+                            type: string
+                            format: date-time
+                          updatedAt:
+                            type: string
+                            format: date-time
+                        title: Workspace details
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                  description: ''
+                  title: Paginated results
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - workspaces
+      security:
+      - oauth2: []
+    post:
+      summary: Create a workspace
+      description: 'This endpoint allows clients to create a workspace with specific characteristics.
+
+
+        ### Usage notes
+
+        - Set **NoDuplicates** to **true** to prevent the creation of a workspace with a name that already exists.
+
+
+        ### Usage scenarios
+
+        - **Initial setup**: Useful for users setting up a new workspace after signing up.
+
+        - **Project separation**: Helps in creating separate workspaces for different projects or teams.
+
+
+        ### Best practices
+
+        - **Check for existing names**: Before setting `noDuplicates` to true, make sure to search for existing workspace names to avoid conflicts.
+
+        - **Consistent naming conventions**: Adopt a consistent naming convention for workspaces to ensure clarity and avoid confusion.'
+      parameters: []
+      operationId: createWorkspace
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - name
+                properties:
+                  name:
+                    type: string
+                    description: Name of the new workspace.
+                    title: Workspace Name
+              - type: object
+                properties:
+                  noDuplicates:
+                    type: boolean
+                    description: Set to true to avoid creating a workspace with a duplicate name.
+                    title: No Duplicates Flag
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  required:
+                  - workspaceId
+                  - workspaceUrlId
+                  - name
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  properties:
+                    workspaceId:
+                      type: string
+                    workspaceUrlId:
+                      type: string
+                      description: Base62-encoded identifier used in Sigma workspace URLs.
+                      title: Workspace URL ID
+                    name:
+                      type: string
+                    createdBy:
+                      type: string
+                    updatedBy:
+                      type: string
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+                  title: Workspace details
+                - type: object
+                  required:
+                  - workspaceIds
+                  - workspaceUrlIds
+                  properties:
+                    workspaceIds:
+                      type: array
+                      items:
+                        type: string
+                    workspaceUrlIds:
+                      type: array
+                      items:
+                        type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - workspaces
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/workspaces/{workspaceId}:
+    get:
+      summary: Get a workspace
+      description: 'This endpoint retrieves the details of a specific workspace by its workspaceId.
+
+
+        ### Usage notes
+
+        - Retrieve the **workspaceId** by calling the [/v2/workspaces](https://help.sigmacomputing.com/reference/list-workspaces) endpoint.
+
+
+        ### Usage scenarios
+
+        - **Workspace management**: Useful for administrators or users who need to view the details of a specific workspace.
+
+        - **Integration checks**: Can be used by external systems to verify the existence and status of a workspace as part of integration workflows.
+
+
+        ### Best practices
+
+        - **Validate workspaceId**: Ensure the workspaceId provided is valid and corresponds to an existing workspace. Handle any errors gracefully.
+
+        - **Access controls**: Implement proper authorization checks to ensure that only entitled users can access workspace details.'
+      parameters:
+      - name: workspaceId
+        schema:
+          type: string
+          description: Unique identifier of the workspace.
+          title: Workspace ID
+        in: path
+        required: true
+      operationId: getWorkspace
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - workspaceId
+                - workspaceUrlId
+                - name
+                - createdBy
+                - updatedBy
+                - createdAt
+                - updatedAt
+                properties:
+                  workspaceId:
+                    type: string
+                  workspaceUrlId:
+                    type: string
+                    description: Base62-encoded identifier used in Sigma workspace URLs.
+                    title: Workspace URL ID
+                  name:
+                    type: string
+                  createdBy:
+                    type: string
+                  updatedBy:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+                title: Workspace details
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - workspaces
+      security:
+      - oauth2: []
+    patch:
+      summary: Update a workspace
+      description: 'This endpoint updates the name of an existing workspace identified by its workspaceId.
+
+
+        ### Usage notes
+
+        - Set `NoDuplicates` to `true` to prevent the creation of a duplicate workspace.
+
+        - Retrieve the **workspaceId** by calling the [/v2/workspaces](https://help.sigmacomputing.com/reference/list-workspaces) endpoint.
+
+
+        ### Usage scenarios
+
+        - **Configuration change**: Allows users to update workspace settings or names as projects evolve or requirements change.
+
+        - **Access control adjustments**: Update workspace details in response to organizational changes or policy updates.
+
+
+        ### Best practices
+
+        - **Partial updates**: Use PATCH to support partial updates, only sending the fields that need to be updated.
+
+        - **Validation**: Validate input data to ensure it adheres to expected formats and constraints. Handle errors gracefully and inform the user of any constraints.'
+      parameters:
+      - name: workspaceId
+        schema:
+          type: string
+          description: Unique identifier of the workspace.
+          title: Workspace ID
+        in: path
+        required: true
+      operationId: updateWorkspace
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - name
+                properties:
+                  name:
+                    type: string
+                    description: Name of the new workspace.
+                    title: Workspace Name
+              - type: object
+                properties:
+                  noDuplicates:
+                    type: boolean
+                    description: Set to true to avoid creating a workspace with a duplicate name.
+                    title: No Duplicates Flag
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - workspaceId
+                - workspaceUrlId
+                - name
+                - createdBy
+                - updatedBy
+                - createdAt
+                - updatedAt
+                properties:
+                  workspaceId:
+                    type: string
+                  workspaceUrlId:
+                    type: string
+                    description: Base62-encoded identifier used in Sigma workspace URLs.
+                    title: Workspace URL ID
+                  name:
+                    type: string
+                  createdBy:
+                    type: string
+                  updatedBy:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+                title: Workspace details
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - workspaces
+      security:
+      - oauth2: []
+    delete:
+      summary: Delete a workspace
+      description: 'You can use this endpoint to delete an existing workspace by its workspaceId. **Caution:** Deleted workspaces cannot be recovered.
+
+
+        ### Usage notes
+
+        - Retrieve the **workspaceId** by calling the [/v2/workspaces](https://help.sigmacomputing.com/reference/list-workspaces) endpoint.
+
+
+        ### Usage scenarios
+
+        - **Cleanup operations**: Useful for removing workspaces that are no longer needed or relevant.
+
+        - **Resource management**: Helps in managing the overall resource allocation by removing unused workspaces.
+
+
+        ### Best practices
+
+        - **Confirm before deletion**: Always ensure that deletion operations are preceded by explicit user confirmations to prevent accidental loss of data.
+
+        - **Audit and logging**: Maintain audit logs for deletion actions to track who deleted the workspace and when.'
+      parameters:
+      - name: workspaceId
+        schema:
+          type: string
+          description: Unique identifier of the workspace.
+          title: Workspace ID
+        in: path
+        required: true
+      operationId: deleteWorkspace
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - workspaces
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/workspaces/{workspaceId}/grants:
+    post:
+      summary: Grant permissions to the workspace for users or teams
+      description: "This endpoint allows creating a grant which specifies permissions for one or more users or teams to access a workspace.\n\n### Usage notes\n- **Grants**: An array of grant objects. Each object specifies a grantee and the permission level assigned to them.\n- Retrieve the **workspaceId** by calling the [/v2/workspaces](https://help.sigmacomputing.com/reference/list-workspaces) endpoint.\n- Do not set both **memberId** and **teamId** in the same **grantee** object. Instead, choose one based on the target of the grant.\n\n  - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n\n### Usage scenarios\n- **Access control setup**: Use this endpoint to set up or modify access controls for a workspace, specifying which users or teams can access and what actions they can perform.\n\n### Best practices\n- **Clear permission definitions**: Ensure that the permissions granted are well understood by both the grantor and the grantee to avoid misuse of access rights."
+      parameters:
+      - name: workspaceId
+        schema:
+          type: string
+          description: Unique identifier of the workspace.
+          title: Workspace ID
+        in: path
+        required: true
+      operationId: createWorkspaceGrant
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - grants
+              properties:
+                grants:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - grantee
+                    - permission
+                    properties:
+                      grantee:
+                        oneOf:
+                        - type: object
+                          required:
+                          - memberId
+                          properties:
+                            memberId:
+                              type: string
+                          description: The UUID of the member receiving the grant
+                          title: Member
+                        - type: object
+                          required:
+                          - teamId
+                          properties:
+                            teamId:
+                              type: string
+                          description: The UUID of the team receiving the grant
+                          title: Team
+                      permission:
+                        type: string
+                        enum:
+                        - view
+                        - explore
+                        - organize
+                        - edit
+                        description: Defines the level of access that is granted. Each permission level allows different types of operations.
+                        title: Permission Level
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - workspaces
+      security:
+      - oauth2: []
+    get:
+      summary: List grants for a workspace
+      description: 'This endpoint retrieves a list of all permission grants associated with a specific workspace, identified by its workspaceId.
+
+
+        ### Usage notes
+
+        - Retrieve the **workspaceId** by calling the [/v2/workspaces](https://help.sigmacomputing.com/reference/list-workspaces) endpoint.
+
+        - Optionally use the `page` and `limit` parameters to manage the size of the returned data and navigate through large sets of data.
+
+
+        ### Usage scenarios
+
+        - **Access control management**: Useful for administrators to review and manage who has what access to the workspace.
+
+        - **Audit and compliance**: Assists in compliance checks and audits by providing a clear view of the permissions granted to different users and teams.
+
+
+        ### Best practices
+
+        - **Use pagination**: Especially important for workspaces with a large number of grants to ensure performance and usability.
+
+        - **Regular review**: Regularly review and update the workspace grants to ensure they align with current organizational policies and user roles.'
+      parameters:
+      - name: workspaceId
+        schema:
+          type: string
+          description: Unique identifier of the workspace.
+          title: Workspace ID
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: listWorkspaceGrants
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - grantId
+                        - inodeId
+                        - organizationId
+                        - memberId
+                        - teamId
+                        - permission
+                        - createdBy
+                        - updatedBy
+                        - createdAt
+                        - updatedAt
+                        properties:
+                          grantId:
+                            type: string
+                            description: The unique identifier of the grant
+                          inodeId:
+                            type: string
+                            description: The unique identifier of the inode
+                          organizationId:
+                            type: string
+                            description: The unique identifier of the organization
+                          memberId:
+                            type:
+                            - string
+                            - 'null'
+                            description: The unique identifier of the member
+                          teamId:
+                            type:
+                            - string
+                            - 'null'
+                            description: The unique identifier of the team
+                          permission:
+                            oneOf:
+                            - type: string
+                              enum:
+                              - admin
+                              - annotate
+                              - update
+                              - usage
+                              - writeback
+                              description: 'Valid inode types: table, connection database, and connection schema.'
+                              title: Connection Permission
+                            - type: string
+                              enum:
+                              - create
+                              - annotate
+                              - organize
+                              - explore
+                              - view
+                              - edit
+                              - apply
+                              description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
+                              title: Inode Permission
+                            - type: string
+                              enum:
+                              - view
+                              - edit
+                              - apply
+                              description: 'Valid inode types: version tag.'
+                              title: Version Tag Permission
+                            description: The permission granted to the member
+                          createdBy:
+                            type: string
+                            description: The identifier of the user who created this grant
+                          updatedBy:
+                            type: string
+                            description: The identifier of the user or process that last updated this grant
+                          createdAt:
+                            type: string
+                            format: date-time
+                            description: When the grant was created
+                          updatedAt:
+                            type: string
+                            format: date-time
+                            description: When the grant was last updated
+                        title: Connection grant response
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - workspaces
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/workspaces/{workspaceId}/grants/{grantId}:
+    delete:
+      summary: Delete a workspace grant
+      description: "Delete a specific grant of permissions granted on a workspace to a user or team.\n\n  ### Usage notes\n  - Retrieve the **workspaceId** by calling the [/v2/workspaces](https://help.sigmacomputing.com/reference/list-workspaces) endpoint.\n  - Retrieve the **grantId** by calling the [/v2/workspaces/{workspaceId}/grants](https://help.sigmacomputing.com/reference/list-workspace-grants) endpoint.\n  "
+      parameters:
+      - name: workspaceId
+        schema:
+          type: string
+          description: Unique identifier of the workspace.
+          title: Workspace ID
+        in: path
+        required: true
+      - name: grantId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: deleteWorkspaceGrant
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - workspaces
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2.1/workspaces:
+    get:
+      summary: List workspaces (Paginated)
+      description: "\n  **Attention:** This API endpoint uses pagination by default.\n\n  This endpoint returns all workspaces. See [Manage Workspaces](/docs/manage-workspaces) for more details about workspaces in Sigma.\n\n  ### Usage notes\n  - **Pagination**: Use the `page` and `limit` parameters to control the size and segment of the workspace list returned.\n  - **Filtering by name**: Optionally, use the `name` parameter to filter workspaces by a case-insensitive substring match.\n  - **Filtering by exact name**: Optionally, use the `exactName` parameter to filter workspaces by an exact name match (also case-insensitive). When provided, `exactName` takes precedence over `name` and uses an indexed equality lookup, which is significantly faster than substring search.\n\n  ### Usage scenarios\n  - **User interface display**: Populate a user interface with a list of all available workspaces, using pagination to efficiently load data and filtering to quickly find specific workspaces.\n  - **Administrative overview**: Provide system administrators with an overview of all workspaces for management and monitoring purposes, with the ability to browse through pages and search by name.\n\n  ### Best practices\n  - Use caching to reduce load times and server demand when frequently accessing workspace lists.\n  - Regularly update and synchronize workspace lists to ensure that displayed information is current and accurate.\n"
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      - name: name
+        schema:
+          type: string
+          description: Filter workspaces by name (substring match, case-insensitive).
+          title: Workspace Name Filter
+        in: query
+      - name: exactName
+        schema:
+          type: string
+          description: Filter workspaces by exact name match (case-insensitive, like `name`). When set, this takes precedence over `name` and uses an indexed equality lookup instead of a substring search.
+          title: Workspace Exact Name Filter
+        in: query
+      operationId: v2_1_listWorkspaces
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - workspaceId
+                        - workspaceUrlId
+                        - name
+                        - createdBy
+                        - updatedBy
+                        - createdAt
+                        - updatedAt
+                        properties:
+                          workspaceId:
+                            type: string
+                          workspaceUrlId:
+                            type: string
+                            description: Base62-encoded identifier used in Sigma workspace URLs.
+                            title: Workspace URL ID
+                          name:
+                            type: string
+                          createdBy:
+                            type: string
+                          updatedBy:
+                            type: string
+                          createdAt:
+                            type: string
+                            format: date-time
+                          updatedAt:
+                            type: string
+                            format: date-time
+                        title: Workspace details
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - workspaces
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems:
+      type: object
+      properties:
+        grantee:
+          $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee'
+        permission:
+          $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission'
+          description: Defines the level of access that is granted. Each permission level allows different types of operations.
+      required:
+      - grantee
+      - permission
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems
+    workspaces_getWorkspace_Response_200:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        workspaceUrlId:
+          type: string
+          description: Base62-encoded identifier used in Sigma workspace URLs.
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - workspaceId
+      - workspaceUrlId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: workspaces_getWorkspace_Response_200
+    workspaces_v2_1_listWorkspaces_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V21WorkspacesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: workspaces_v2_1_listWorkspaces_Response_200
+    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
+      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission:
+      type: string
+      enum:
+      - view
+      - explore
+      - organize
+      - edit
+      description: Defines the level of access that is granted. Each permission level allows different types of operations.
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission
+    workspaces_createWorkspaceGrant_Response_200:
+      type: object
+      properties: {}
+      title: workspaces_createWorkspaceGrant_Response_200
+    WorkspacesListWorkspacesResponse2001:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+      required:
+      - entries
+      - nextPage
+      title: WorkspacesListWorkspacesResponse2001
+    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0:
+      type: string
+      enum:
+      - admin
+      - annotate
+      - update
+      - usage
+      - writeback
+      description: 'Valid inode types: table, connection database, and connection schema.'
+      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0
+    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2:
+      type: string
+      enum:
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: version tag.'
+      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2
+    V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        workspaceUrlId:
+          type: string
+          description: Base62-encoded identifier used in Sigma workspace URLs.
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - workspaceId
+      - workspaceUrlId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems
+    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        grantId:
+          type: string
+          description: The unique identifier of the grant
+        inodeId:
+          type: string
+          description: The unique identifier of the inode
+        organizationId:
+          type: string
+          description: The unique identifier of the organization
+        memberId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the member
+        teamId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the team
+        permission:
+          $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
+          description: The permission granted to the member
+        createdBy:
+          type: string
+          description: The identifier of the user who created this grant
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this grant
+        createdAt:
+          type: string
+          format: date-time
+          description: When the grant was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the grant was last updated
+      required:
+      - grantId
+      - inodeId
+      - organizationId
+      - memberId
+      - teamId
+      - permission
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V21WorkspacesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        workspaceUrlId:
+          type: string
+          description: Base62-encoded identifier used in Sigma workspace URLs.
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - workspaceId
+      - workspaceUrlId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V21WorkspacesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
+      oneOf:
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0'
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1'
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2'
+      description: The permission granted to the member
+      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
+    WorkspacesCreateWorkspaceResponse2001:
+      type: object
+      properties:
+        workspaceIds:
+          type: array
+          items:
+            type: string
+        workspaceUrlIds:
+          type: array
+          items:
+            type: string
+      required:
+      - workspaceIds
+      - workspaceUrlIds
+      title: WorkspacesCreateWorkspaceResponse2001
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee:
+      oneOf:
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0'
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1'
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee
+    workspaces_listWorkspaces_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/WorkspacesListWorkspacesResponse2000'
+      - $ref: '#/components/schemas/WorkspacesListWorkspacesResponse2001'
+      title: workspaces_listWorkspaces_Response_200
+    V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf0Items:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        workspaceUrlId:
+          type: string
+          description: Base62-encoded identifier used in Sigma workspace URLs.
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - workspaceId
+      - workspaceUrlId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf0Items
+    WorkspacesCreateWorkspaceResponse2000:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        workspaceUrlId:
+          type: string
+          description: Base62-encoded identifier used in Sigma workspace URLs.
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - workspaceId
+      - workspaceUrlId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: WorkspacesCreateWorkspaceResponse2000
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1:
+      type: object
+      properties:
+        teamId:
+          type: string
+      required:
+      - teamId
+      description: The UUID of the team receiving the grant
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1
+    workspaces_updateWorkspace_Response_200:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        workspaceUrlId:
+          type: string
+          description: Base62-encoded identifier used in Sigma workspace URLs.
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - workspaceId
+      - workspaceUrlId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: workspaces_updateWorkspace_Response_200
+    workspaces_listWorkspaceGrants_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: workspaces_listWorkspaceGrants_Response_200
+    workspaces_deleteWorkspaceGrant_Response_200:
+      type: object
+      properties: {}
+      title: workspaces_deleteWorkspaceGrant_Response_200
+    workspaces_createWorkspace_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/WorkspacesCreateWorkspaceResponse2000'
+      - $ref: '#/components/schemas/WorkspacesCreateWorkspaceResponse2001'
+      title: workspaces_createWorkspace_Response_200
+    workspaces_deleteWorkspace_Response_200:
+      type: object
+      properties: {}
+      title: workspaces_deleteWorkspace_Response_200
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0:
+      type: object
+      properties:
+        memberId:
+          type: string
+      required:
+      - memberId
+      description: The UUID of the member receiving the grant
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0
+    WorkspacesListWorkspacesResponse2000:
+      type: array
+      items:
+        $ref: '#/components/schemas/V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf0Items'
+      title: WorkspacesListWorkspacesResponse2000
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

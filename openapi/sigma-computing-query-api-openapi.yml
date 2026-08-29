@@ -1,0 +1,286 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Query API
+  version: '1.0'
+  description: 'Operations tagged query across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: query
+paths:
+  /v2/query/{queryId}/download:
+    get:
+      summary: Download an exported file
+      description: 'After making a request to the [/v2/workbooks/{workbookId}/export](https://help.sigmacomputing.com/reference/export-workbook) or [/v2/reports/{reportId}/export](https://help.sigmacomputing.com/reference/export-report) endpoint, you can use this endpoint to download the exported file using the queryId returned in the response.
+
+
+        ### Usage notes
+
+
+        - This endpoint is rate limited to 400 requests per minute.
+
+        - The export must be ready to download before you can download the results. The endpoint returns an error if the query is still processing or if the `queryId` is invalid or expired. Query results are typically available for a limited time, so make sure to download query results while they are available.
+
+        - Retrieve the **queryId** by making a request to the [/v2/workbooks/{workbookId}/export](https://help.sigmacomputing.com/reference/export-workbook) or [/v2/reports/{reportId}/export](https://help.sigmacomputing.com/reference/export-report) endpoint.
+
+        - Specify the file format when you make the export request. You cannot specify the file format when you download the file.
+
+
+        ### Usage scenarios
+
+        - **Scheduled reporting**: Automate the downloading of reports generated on a scheduled basis.
+
+        - **Data analysis**: Retrieve large sets of data for local analysis in external tools not integrated directly with Sigma.
+
+
+        ### Best practices
+
+        - Monitor the status of the export query before attempting a download to make sure it is ready. For a code example, see [Export to CSV with Date Range Parameters](https://help.sigmacomputing.com/recipes/workbook-export-to-csv-with-date-range-parameters).
+
+        - Handle errors gracefully in your application, providing users with clear messages regarding the status of their requested downloads.'
+      parameters:
+      - name: queryId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: downloadQuery
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  required:
+                  - status
+                  - download
+                  properties:
+                    status:
+                      type: number
+                      enum:
+                      - 200
+                      description: Success
+                      title: Success
+                    download:
+                      type: object
+                      required:
+                      - stream
+                      - contentType
+                      - filename
+                      properties:
+                        stream: {}
+                        contentType:
+                          type: string
+                        filename:
+                          type: string
+                      description: Download results
+                - type: object
+                  required:
+                  - status
+                  properties:
+                    status:
+                      type: number
+                      enum:
+                      - 204
+                      description: Queued or running
+                      title: Running
+                - type: object
+                  required:
+                  - status
+                  - message
+                  properties:
+                    status:
+                      type: number
+                      enum:
+                      - 500
+                      description: Internal server error
+                      title: Error
+                    message:
+                      type: string
+                      description: Error message
+                      title: Error
+              examples:
+                Success:
+                  value:
+                    status: 200
+                    download:
+                      stream: '[Object NodeJS.ReadableStream]'
+                      contentType: application/octet-stream
+                      filename: string
+                Running:
+                  value:
+                    status: 204
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - query
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    QueryDownloadQueryResponse2000:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status'
+          description: Success
+        download:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download'
+          description: Download results
+      required:
+      - status
+      - download
+      title: QueryDownloadQueryResponse2000
+    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status:
+      type: string
+      enum:
+      - '200'
+      description: Success
+      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status
+    query_downloadQuery_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/QueryDownloadQueryResponse2000'
+      - $ref: '#/components/schemas/QueryDownloadQueryResponse2001'
+      - $ref: '#/components/schemas/QueryDownloadQueryResponse2002'
+      title: query_downloadQuery_Response_200
+    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status:
+      type: string
+      enum:
+      - '500'
+      description: Internal server error
+      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status
+    QueryDownloadQueryResponse2001:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status'
+          description: Queued or running
+      required:
+      - status
+      title: QueryDownloadQueryResponse2001
+    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download:
+      type: object
+      properties:
+        stream:
+          description: Any type
+        contentType:
+          type: string
+        filename:
+          type: string
+      required:
+      - stream
+      - contentType
+      - filename
+      description: Download results
+      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download
+    QueryDownloadQueryResponse2002:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status'
+          description: Internal server error
+        message:
+          type: string
+          description: Error message
+      required:
+      - status
+      - message
+      title: QueryDownloadQueryResponse2002
+    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status:
+      type: string
+      enum:
+      - '204'
+      description: Queued or running
+      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

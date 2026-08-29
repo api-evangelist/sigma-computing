@@ -1,0 +1,268 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Public REST Shared Templates API
+  version: 2.0.0
+  summary: The Sigma REST API provides developers access to resources programmatically, using HTTP.
+  description: "The Sigma REST API provides developers access to resources programmatically,\n    using HTTP. The API allows secure access to all the commonly used resources\n    like connections, datasets, teams, workbooks and more. It is designed to have\n    predictable, resource-oriented URLs and to use HTTP response codes to\n    indicate API errors. It uses built-in HTTP features, like HTTP\n    authentication and HTTP verbs, which are understood by off-the-shelf HTTP\n    clients. It supports cross-origin resource sharing, allowing you to interact\n    securely with the API from a client-side web application (though you should\n    never expose your client credentials or API token in any public website's client-side code).\n    JSON is returned by all API responses, including errors.\n    Some useful links:\n        - [API Reference Help](https://help.sigmacomputing.com/reference)\n        - [API QuickStart with Postman](https://quickstarts.sigmacomputing.com/guide/sigma_api_with_postman/index.html?index=..%2F..index#0)"
+  termsOfService: Contact Sigma
+  contact:
+    email: support@sigmacomputing.com
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+security:
+- oauth2: []
+tags:
+- name: shared_templates
+paths:
+  /v2/shared_templates/{shareId}:
+    delete:
+      summary: Delete a template share
+      description: "Remove a template shared with your organization.\n\n  **Usage notes**\n  - Retrieve the **shareId** by calling the [/v2/shared_templates/shared_with_you](https://help.sigmacomputing.com/reference/list-templates-shared-with-you) endpoint and using the `shareId` included in the response.\n  "
+      parameters:
+      - name: shareId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: deleteExternalShare
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - shared_templates
+  /v2/shared_templates/accept:
+    post:
+      summary: Accept a pending template share
+      description: "If a workbook template has been shared with your organization but not yet accepted, accept the template share.\n  \n  ### Usage notes\n  - Retrieve pending template shares by calling the [/v2/shared_templates/shared_with_you](https://help.sigmacomputing.com/reference/list-templates-shared-with-you) endpoint and specifying `pending` as `true`.\n  - Retrieve the **shareId** by calling the [/v2/shared_templates/shared_with_you](https://help.sigmacomputing.com/reference/list-templates-shared-with-you) endpoint and using the `shareId` included in the response.\n  - Retrieve the **connectionId** by calling the [/v2/connections](https://help.sigmacomputing.com/reference/list-connections) endpoint.\n  - Retrieve the **inodeId** for a table by calling the [/v2/connections/{connectionId}/lookup](https://help.sigmacomputing.com/reference/lookup-connection) endpoint.\n\n  - The key of the **sourceSwaps** object is the original id of the table, dataset, or connection in the organization that shared the template\n  "
+      parameters: []
+      operationId: acceptTemplateShare
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - shareId
+                properties:
+                  shareId:
+                    type: string
+              - type: object
+                properties:
+                  sourceSwaps:
+                    type: object
+                    additionalProperties:
+                      oneOf:
+                      - type: object
+                        required:
+                        - type
+                        - newInodeId
+                        - columns
+                        - metrics
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - table
+                          newInodeId:
+                            type: string
+                          columns:
+                            type: object
+                            additionalProperties:
+                              type: string
+                            description: Mapping from old column names to new column names. Leave blank to keep the same column names.
+                          metrics:
+                            type: object
+                            additionalProperties:
+                              type: string
+                            description: Mapping from old metric names to new metric names. Leave blank to keep the same metric names.
+                        description: ''
+                        title: Table swap
+                      - allOf:
+                        - type: object
+                          required:
+                          - type
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                              - connection
+                        - oneOf:
+                          - type: object
+                            required:
+                            - newConnectionId
+                            properties:
+                              newConnectionId:
+                                type: string
+                          - type: object
+                            required:
+                            - newConnectionName
+                            properties:
+                              newConnectionName:
+                                type: string
+                        description: ''
+                        title: Connection swap
+                      description: ''
+                      title: Old source id
+                      type: object
+                    description: ''
+                    title: Source swaps
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - shared_templates
+  /v2/shared_templates/shared_with_you:
+    get:
+      summary: List templates shared with your organization
+      description: "Lists all workbook templates shared with your organization.\n  \n  ### Usage notes\n  - Use the `pending` parameter to identify templates that have been shared but not yet accepted.\n  "
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      - name: pending
+        schema:
+          type: boolean
+        in: query
+      operationId: listTemplatesSharedWithYou
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - providerOrganizationId
+                          - name
+                          - shareId
+                          - createdAt
+                          properties:
+                            providerOrganizationId:
+                              type: string
+                            name:
+                              type: string
+                            shareId:
+                              type: string
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the template was shared with your organization.
+                        - type: object
+                          properties:
+                            description:
+                              type: string
+                            pending:
+                              type: boolean
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - shared_templates
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}

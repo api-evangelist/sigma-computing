@@ -1,0 +1,525 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Favorites API
+  version: '1.0'
+  description: 'Operations tagged favorites across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: favorites
+paths:
+  /v2/favorites:
+    post:
+      summary: Favorite a document
+      description: "Favorite a folder or document for a specific user.\n\n  ### Usage notes\n  - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n  - Retrieve the **inodeId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and using the `id` included in the response.\n      "
+      parameters: []
+      operationId: addFavorite
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - memberId
+              - inodeId
+              properties:
+                memberId:
+                  type: string
+                  description: Unique identifier of the member.
+                inodeId:
+                  type: string
+                  description: Unique identifier of the document or folder.
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - favorites
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/favorites/member/{memberId}:
+    get:
+      summary: Get favorite documents for a user
+      description: "Get the favorite documents for a specific user. This endpoint has the same functionality as the [List all favorite documents of a member](https://help.sigmacomputing.com/reference/listfavoriteinodes) endpoint.\n\n  ### Usage notes\n  - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n    "
+      parameters:
+      - name: memberId
+        schema:
+          type: string
+          description: Unique identifier of the member.
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: listFavorites
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - id
+                          - urlId
+                          - name
+                          - type
+                          - parentId
+                          - parentUrlId
+                          - permission
+                          - path
+                          - badge
+                          - isArchived
+                          properties:
+                            id:
+                              type: string
+                            urlId:
+                              type: string
+                            name:
+                              type: string
+                            type:
+                              type: string
+                              enum:
+                              - workspace
+                              - folder
+                              - workbook
+                              - dataset
+                              - data-model
+                              - sql
+                              - worksheet
+                              - dashboard
+                              - template
+                              - table
+                              - symlink
+                              - report
+                            parentId:
+                              type: string
+                            parentUrlId:
+                              type: string
+                            permission:
+                              type: string
+                              enum:
+                              - create
+                              - annotate
+                              - organize
+                              - explore
+                              - view
+                              - edit
+                              - apply
+                            path:
+                              type: string
+                            badge:
+                              type:
+                              - string
+                              - 'null'
+                            isArchived:
+                              type: boolean
+                        - type: object
+                          properties:
+                            description:
+                              type: string
+                            ownerId:
+                              type:
+                              - string
+                              - 'null'
+                            parentSourceUrlId:
+                              type: string
+                              description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+                              title: Parent Source URL ID
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+              examples:
+                Response Example:
+                  value:
+                    entries:
+                    - id: 00000000-0000-0000-0000-000000000000
+                      urlId: 57a96EMo3GVJG73179MV2l
+                      name: Examples
+                      description: Examples description
+                      type: folder
+                      parentId: 00000000-0000-0000-0000-000000000001
+                      parentUrlId: 57a96EMo3GVJG73179MV2G
+                      permission: edit
+                      path: My Documents/Examples
+                      badge: Endorsed
+                      ownerId: <memberId>
+                      createdBy: <memberId>
+                      updatedBy: <memberId>
+                      createdAt: '2022-11-22T22:33:47.323Z'
+                      updatedAt: '2022-11-22T22:33:47.323Z'
+                      isArchived: false
+                    hasMore: false
+                    total: 1
+                    nextPage: null
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: https://sigma.bi/member-api
+        description: 'Sigma API documentation:'
+      tags:
+      - favorites
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/favorites/member/{memberId}/file/{inodeId}:
+    delete:
+      summary: Unfavorite a document
+      description: "Unfavorite a folder or document for a specific user.\n\n  ### Usage notes\n  - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n  - Retrieve the **inodeId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and using the **id** included in the response.\n    "
+      parameters:
+      - name: memberId
+        schema:
+          type: string
+          description: Unique identifier of the member.
+        in: path
+        required: true
+      - name: inodeId
+        schema:
+          type: string
+          description: Unique identifier of the document or folder.
+        in: path
+        required: true
+      operationId: removeFavorite
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - favorites
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    favorites_removeFavorite_Response_200:
+      type: object
+      properties: {}
+      title: favorites_removeFavorite_Response_200
+    V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsType:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsType
+    favorites_listFavorites_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: favorites_listFavorites_Response_200
+    V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
+    favorites_addFavorite_Response_200:
+      type: object
+      properties: {}
+      title: favorites_addFavorite_Response_200
+    V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        id:
+          type: string
+        urlId:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsType'
+        parentId:
+          type: string
+        parentUrlId:
+          type: string
+        permission:
+          $ref: '#/components/schemas/V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
+        path:
+          type: string
+        badge:
+          type:
+          - string
+          - 'null'
+        isArchived:
+          type: boolean
+        description:
+          type: string
+        ownerId:
+          type:
+          - string
+          - 'null'
+        parentSourceUrlId:
+          type: string
+          description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+      required:
+      - id
+      - urlId
+      - name
+      - type
+      - parentId
+      - parentUrlId
+      - permission
+      - path
+      - badge
+      - isArchived
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItems
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

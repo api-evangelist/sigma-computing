@@ -1,0 +1,1304 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Deployment Policies API
+  version: '1.0'
+  description: 'Operations tagged deploymentPolicies across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: deploymentPolicies
+paths:
+  /v2/deploymentPolicies:
+    post:
+      summary: Create a deployment policy
+      description: "Create a deployment policy to define what documents to deploy to a tenant organization and how to swap sources for those documents.\n\n### Usage notes\n- Retrieve the **versionTagId** by calling the [/v2/tags](https://help.sigmacomputing.com/reference/list-version-tag) endpoint.\n- Retrieve the identifier for `sourceSwapPolicies` by calling the [/v2/sourceSwapPolicies](https://help.sigmacomputing.com/reference/list-source-swap-policies) endpoint and using the `policyId` in the response.\n    "
+      parameters: []
+      operationId: createDeployment
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - name
+                properties:
+                  name:
+                    type: string
+                    description: Name of the deployment policy.
+              - type: object
+                properties:
+                  versionTagId:
+                    type: string
+                  sourceSwapPolicies:
+                    type: array
+                    items:
+                      type: string
+                    description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
+                  nameInTenant:
+                    type: string
+                    description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+                  copyInputTableData:
+                    type: boolean
+                    description: Whether to copy input table data to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode. Defaults to false.
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - deploymentPolicyId
+                properties:
+                  deploymentPolicyId:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    get:
+      summary: List deployment policies
+      description: "List all deployment policies set up for an organization.\n    "
+      parameters:
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 500. Defaults to 50.
+          title: Page size
+        in: query
+      operationId: listDeployments
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - deploymentPolicyId
+                        - name
+                        - nameInTenant
+                        - versionTagId
+                        - sourceSwapPolicies
+                        - copyInputTableData
+                        properties:
+                          deploymentPolicyId:
+                            type: string
+                          name:
+                            type: string
+                            description: Name of the deployment policy
+                          nameInTenant:
+                            type: string
+                            description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+                          versionTagId:
+                            oneOf:
+                            - type: string
+                            - type: 'null'
+                          sourceSwapPolicies:
+                            type: array
+                            items:
+                              type: string
+                            description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
+                          copyInputTableData:
+                            type: boolean
+                            description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/deploymentPolicies/{deploymentPolicyId}:
+    get:
+      summary: Get a deployment policy
+      description: "Get details for a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n    "
+      parameters:
+      - name: deploymentPolicyId
+        schema:
+          type: string
+          description: Unique identifier of the deployment policy.
+        in: path
+        required: true
+      operationId: getDeployment
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - deploymentPolicyId
+                - name
+                - nameInTenant
+                - versionTagId
+                - sourceSwapPolicies
+                - copyInputTableData
+                properties:
+                  deploymentPolicyId:
+                    type: string
+                  name:
+                    type: string
+                    description: Name of the deployment policy
+                  nameInTenant:
+                    type: string
+                    description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+                  versionTagId:
+                    oneOf:
+                    - type: string
+                    - type: 'null'
+                  sourceSwapPolicies:
+                    type: array
+                    items:
+                      type: string
+                    description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
+                  copyInputTableData:
+                    type: boolean
+                    description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    patch:
+      summary: Update a deployment policy
+      description: "Update a deployment policy. Only the fields included in the request are changed.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- Retrieve the identifier for `sourceSwapPolicies` by calling the [/v2/sourceSwapPolicies](https://help.sigmacomputing.com/reference/list-source-swap-policies) endpoint and using the `policyId` in the response.\n- The version tag cannot be changed after a deployment policy is created.\n    "
+      parameters:
+      - name: deploymentPolicyId
+        schema:
+          type: string
+          description: Unique identifier of the deployment policy.
+        in: path
+        required: true
+      operationId: updateDeployment
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the deployment policy.
+                nameInTenant:
+                  type: string
+                  description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+                sourceSwapPolicies:
+                  type: array
+                  items:
+                    type: string
+                  description: Unique identifiers of the source swap policies used to swap connections when deploying documents. Replaces the existing set.
+                copyInputTableData:
+                  type: boolean
+                  description: Whether to copy input table data to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - deploymentPolicyId
+                - name
+                - nameInTenant
+                - versionTagId
+                - sourceSwapPolicies
+                - copyInputTableData
+                properties:
+                  deploymentPolicyId:
+                    type: string
+                  name:
+                    type: string
+                    description: Name of the deployment policy
+                  nameInTenant:
+                    type: string
+                    description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+                  versionTagId:
+                    oneOf:
+                    - type: string
+                    - type: 'null'
+                  sourceSwapPolicies:
+                    type: array
+                    items:
+                      type: string
+                    description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
+                  copyInputTableData:
+                    type: boolean
+                    description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    delete:
+      summary: Archive a deployment policy
+      description: "Archive a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n    "
+      parameters:
+      - name: deploymentPolicyId
+        schema:
+          type: string
+          description: Unique identifier of the deployment policy.
+        in: path
+        required: true
+      operationId: archiveDeployment
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/deploymentPolicies/{deploymentPolicyId}/files:
+    get:
+      summary: List documents for a deployment policy
+      description: "List documents for a deployment policy\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- If the user associated with the API key does not have access to the document, the `inode` field is `null`.\n- The `inode` field is one of `workbook`, `dataModel`, `report`, or `folder`. Use the `type` field to determine which shape is returned and which ID field is present.\n- Folders are returned as a single entry. The documents they contain are not listed individually.\n\n### Usage scenarios\n- Review and audit documents deployed to specific tenant organizations.\n    "
+      parameters:
+      - name: deploymentPolicyId
+        schema:
+          type: string
+          description: Unique identifier of the deployment policy.
+        in: path
+        required: true
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 500. Defaults to 50.
+          title: Page size
+        in: query
+      operationId: listInodesForDeployment
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - inodeId
+                        - inode
+                        - deploymentPolicyId
+                        properties:
+                          inodeId:
+                            type: string
+                          inode:
+                            oneOf:
+                            - oneOf:
+                              - type: object
+                                required:
+                                - name
+                                - type
+                                - workbookId
+                                properties:
+                                  name:
+                                    type: string
+                                  type:
+                                    type: string
+                                    enum:
+                                    - workbook
+                                  workbookId:
+                                    type: string
+                                description: ''
+                                title: Workbook
+                              - type: object
+                                required:
+                                - name
+                                - type
+                                - dataModelId
+                                properties:
+                                  name:
+                                    type: string
+                                  type:
+                                    type: string
+                                    enum:
+                                    - dataModel
+                                  dataModelId:
+                                    type: string
+                                description: ''
+                                title: Data model
+                              - type: object
+                                required:
+                                - name
+                                - type
+                                - reportId
+                                properties:
+                                  name:
+                                    type: string
+                                  type:
+                                    type: string
+                                    enum:
+                                    - report
+                                  reportId:
+                                    type: string
+                                description: ''
+                                title: Report
+                              - type: object
+                                required:
+                                - name
+                                - type
+                                - folderId
+                                properties:
+                                  name:
+                                    type: string
+                                  type:
+                                    type: string
+                                    enum:
+                                    - folder
+                                  folderId:
+                                    type: string
+                                description: ''
+                                title: Folder
+                            - type: 'null'
+                          deploymentPolicyId:
+                            type: string
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    post:
+      summary: Add documents to a deployment policy
+      description: 'Add documents to a deployment policy.
+
+
+        ### Usage notes
+
+        - Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.
+
+        - To add workbooks to a deployment policy, retrieve the relevant `workbookId` from the [/v2/workbooks](https://help.sigmacomputing.com/reference/list-workbooks) endpoint.
+
+        - To add data models to a deployment policy, retrieve the relevant `dataModelId` from the [/v2/datamodels](https://help.sigmacomputing.com/reference/list-data-models) endpoint.
+
+        - To add reports to a deployment policy, retrieve the relevant `reportId` from the [/v2/reports](https://help.sigmacomputing.com/reference/list-reports) endpoint.
+
+        - To add folders to a deployment policy, retrieve the relevant folder ID from the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and review the `id` field in the response for files with a `type` of `folder`.
+
+        - Adding a folder deploys the documents it contains. Templates cannot be added to a deployment policy.
+
+
+        ### Usage scenarios
+
+        - Centrally manage documents that are deployed to specific tenant organizations.
+
+        - Deploy an entire folder of documents to tenant organizations without listing each document individually.
+
+        '
+      parameters:
+      - name: deploymentPolicyId
+        schema:
+          type: string
+          description: Unique identifier of the deployment policy.
+        in: path
+        required: true
+      operationId: addInodesToDeployment
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - inodeIds
+              properties:
+                inodeIds:
+                  type: array
+                  items:
+                    type: string
+                  description: Unique identifier of the workbook, data model, report, or folder.
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/deploymentPolicies/{deploymentPolicyId}/files/{inodeId}:
+    delete:
+      summary: Remove a document from a deployment policy
+      description: "Remove a document from a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- To remove workbooks from a deployment policy, retrieve the relevant `workbookId` from the [/v2/workbooks](https://help.sigmacomputing.com/reference/list-workbooks) endpoint.\n- To remove data models from a deployment policy, retrieve the relevant `dataModelId` from the [/v2/datamodels](https://help.sigmacomputing.com/reference/list-data-models) endpoint.\n- To remove reports from a deployment policy, retrieve the relevant `reportId` from the [/v2/reports](https://help.sigmacomputing.com/reference/list-reports) endpoint.\n- To remove folders from a deployment policy, retrieve the relevant folder ID from the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and review the `id` field in the response for files with a `type` of `folder`.\n\n### Usage scenarios\n- Revoke access to outdated documents from tenant organizations.\n    "
+      parameters:
+      - name: deploymentPolicyId
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: inodeId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: removeInodesFromDeployment
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/deploymentPolicies/{deploymentPolicyId}/tenants:
+    post:
+      summary: Add a tenant to a deployment policy
+      description: "Add a tenant to a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- Retrieve the `tenantId` from the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.\n\n### Usage scenarios\n- Deploy documents in a deployment policy to a specific tenant organization.\n    "
+      parameters:
+      - name: deploymentPolicyId
+        schema:
+          type: string
+          description: Unique identifier of a deployment policy.
+        in: path
+        required: true
+      operationId: addTenantToDeployment
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - tenantOrganizationId
+              properties:
+                tenantOrganizationId:
+                  type: string
+                  description: Unique identifier of the tenant organization.
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    get:
+      summary: List tenants for a deployment policy
+      description: "List tenants for a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n\n### Usage scenarios\n- Review and audit documents deployed to specific tenant organizations.\n    "
+      parameters:
+      - name: deploymentPolicyId
+        schema:
+          type: string
+          description: Unique identifier of the deployment policy.
+        in: path
+        required: true
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 500. Defaults to 50.
+          title: Page size
+        in: query
+      operationId: listTenantsForDeployment
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: string
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/deploymentPolicies/{deploymentPolicyId}/tenants/{tenantOrganizationId}:
+    delete:
+      summary: Remove a tenant from a deployment policy
+      description: "Remove a tenant from a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- Retrieve the `tenantOrganizationId` from the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint or from the [/v2/deploymentPolicies/{deploymentPolicyId}/tenants](https://help.sigmacomputing.com/reference/list-tenants-for-deployment) endpoint.\n\n### Usage scenarios\n- Remove documents in a deployment policy from a tenant organization.\n- Clean up tenant assignments when a tenant is no longer needed.\n    "
+      parameters:
+      - name: deploymentPolicyId
+        schema:
+          type: string
+          description: Unique identifier of a deployment policy.
+        in: path
+        required: true
+      - name: tenantOrganizationId
+        schema:
+          type: string
+          description: Unique identifier of the tenant organization.
+        in: path
+        required: true
+      operationId: removeTenantFromDeployment
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/deploymentPolicies/tenants:
+    get:
+      summary: List deployable tenant organizations
+      description: 'Returns a paginated list of tenant organizations that the calling organization can deploy to.
+
+
+        - **Parent organizations**: Returns all tenant organizations.
+
+        - **Tenant organizations**: Returns tenant organizations that the calling tenant has been granted deployment capabilities to.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned an account type with the **Manage deployment policies** permission enabled.'
+      parameters:
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 500. Defaults to 50.
+          title: Page size
+        in: query
+      - name: search
+        schema:
+          type: string
+          description: Search term to filter tenant organizations by name or slug.
+        in: query
+      operationId: listDeployableTenants
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - tenantOrganizationId
+                        - tenantOrganizationSlug
+                        - tenantOrganizationName
+                        properties:
+                          tenantOrganizationId:
+                            type: string
+                            description: Unique identifier of a tenant organization that can be deployed to.
+                          tenantOrganizationSlug:
+                            type: string
+                            description: URL identifier for the tenant organization.
+                          tenantOrganizationName:
+                            type: string
+                            description: Display name of the tenant organization.
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - deploymentPolicies
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type'
+        dataModelId:
+          type: string
+      required:
+      - name
+      - type
+      - dataModelId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1
+    deploymentPolicies_listDeployments_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: deploymentPolicies_listDeployments_Response_200
+    deploymentPolicies_removeTenantFromDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_removeTenantFromDeployment_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode:
+      oneOf:
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0'
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1'
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2'
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3'
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode
+    V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        deploymentPolicyId:
+          type: string
+        name:
+          type: string
+          description: Name of the deployment policy
+        nameInTenant:
+          type: string
+          description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+        versionTagId:
+          type:
+          - string
+          - 'null'
+        sourceSwapPolicies:
+          type: array
+          items:
+            type: string
+          description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
+        copyInputTableData:
+          type: boolean
+          description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
+      required:
+      - deploymentPolicyId
+      - name
+      - nameInTenant
+      - versionTagId
+      - sourceSwapPolicies
+      - copyInputTableData
+      title: V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type'
+        reportId:
+          type: string
+      required:
+      - name
+      - type
+      - reportId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        inodeId:
+          type: string
+        inode:
+          oneOf:
+          - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode'
+          - type: 'null'
+        deploymentPolicyId:
+          type: string
+      required:
+      - inodeId
+      - inode
+      - deploymentPolicyId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems
+    deploymentPolicies_addTenantToDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_addTenantToDeployment_Response_200
+    deploymentPolicies_getDeployment_Response_200:
+      type: object
+      properties:
+        deploymentPolicyId:
+          type: string
+        name:
+          type: string
+          description: Name of the deployment policy
+        nameInTenant:
+          type: string
+          description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+        versionTagId:
+          type:
+          - string
+          - 'null'
+        sourceSwapPolicies:
+          type: array
+          items:
+            type: string
+          description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
+        copyInputTableData:
+          type: boolean
+          description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
+      required:
+      - deploymentPolicyId
+      - name
+      - nameInTenant
+      - versionTagId
+      - sourceSwapPolicies
+      - copyInputTableData
+      title: deploymentPolicies_getDeployment_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type:
+      type: string
+      enum:
+      - report
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type
+    deploymentPolicies_updateDeployment_Response_200:
+      type: object
+      properties:
+        deploymentPolicyId:
+          type: string
+        name:
+          type: string
+          description: Name of the deployment policy
+        nameInTenant:
+          type: string
+          description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+        versionTagId:
+          type:
+          - string
+          - 'null'
+        sourceSwapPolicies:
+          type: array
+          items:
+            type: string
+          description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
+        copyInputTableData:
+          type: boolean
+          description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
+      required:
+      - deploymentPolicyId
+      - name
+      - nameInTenant
+      - versionTagId
+      - sourceSwapPolicies
+      - copyInputTableData
+      title: deploymentPolicies_updateDeployment_Response_200
+    deploymentPolicies_listDeployableTenants_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: deploymentPolicies_listDeployableTenants_Response_200
+    deploymentPolicies_archiveDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_archiveDeployment_Response_200
+    deploymentPolicies_listInodesForDeployment_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: deploymentPolicies_listInodesForDeployment_Response_200
+    deploymentPolicies_addInodesToDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_addInodesToDeployment_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type'
+        workbookId:
+          type: string
+      required:
+      - name
+      - type
+      - workbookId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0
+    deploymentPolicies_listTenantsForDeployment_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            type: string
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: deploymentPolicies_listTenantsForDeployment_Response_200
+    deploymentPolicies_removeInodesFromDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_removeInodesFromDeployment_Response_200
+    deploymentPolicies_createDeployment_Response_200:
+      type: object
+      properties:
+        deploymentPolicyId:
+          type: string
+      required:
+      - deploymentPolicyId
+      title: deploymentPolicies_createDeployment_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type'
+        folderId:
+          type: string
+      required:
+      - name
+      - type
+      - folderId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3
+    V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of a tenant organization that can be deployed to.
+        tenantOrganizationSlug:
+          type: string
+          description: URL identifier for the tenant organization.
+        tenantOrganizationName:
+          type: string
+          description: Display name of the tenant organization.
+      required:
+      - tenantOrganizationId
+      - tenantOrganizationSlug
+      - tenantOrganizationName
+      title: V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type:
+      type: string
+      enum:
+      - workbook
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type:
+      type: string
+      enum:
+      - folder
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type:
+      type: string
+      enum:
+      - dataModel
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

@@ -1,0 +1,264 @@
+openapi: 3.2.0
+info:
+  title: Sigma REST Shared Templates API
+  version: 1.0.0
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: sharedTemplates
+paths:
+  /v2/shared_templates/{shareId}:
+    delete:
+      operationId: deleteExternalShare
+      summary: Delete a template share
+      description: "Remove a template shared with your organization.\n\n  **Usage notes**\n  - Retrieve the **shareId** by calling the [/v2/shared_templates/shared_with_you](https://help.sigmacomputing.com/reference/list-templates-shared-with-you) endpoint and using the `shareId` included in the response.\n  "
+      tags:
+      - sharedTemplates
+      parameters:
+      - name: shareId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sharedTemplates_deleteExternalShare_Response_200'
+  /v2/shared_templates/accept:
+    post:
+      operationId: acceptTemplateShare
+      summary: Accept a pending template share
+      description: "If a workbook template has been shared with your organization but not yet accepted, accept the template share.\n  \n  ### Usage notes\n  - Retrieve pending template shares by calling the [/v2/shared_templates/shared_with_you](https://help.sigmacomputing.com/reference/list-templates-shared-with-you) endpoint and specifying `pending` as `true`.\n  - Retrieve the **shareId** by calling the [/v2/shared_templates/shared_with_you](https://help.sigmacomputing.com/reference/list-templates-shared-with-you) endpoint and using the `shareId` included in the response.\n  - Retrieve the **connectionId** by calling the [/v2/connections](https://help.sigmacomputing.com/reference/list-connections) endpoint.\n  - Retrieve the **inodeId** for a table by calling the [/v2/connections/{connectionId}/lookup](https://help.sigmacomputing.com/reference/lookup-connection) endpoint.\n\n  - The key of the **sourceSwaps** object is the original id of the table, dataset, or connection in the organization that shared the template\n  "
+      tags:
+      - sharedTemplates
+      parameters:
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sharedTemplates_acceptTemplateShare_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shareId:
+                  type: string
+                sourceSwaps:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps'
+              required:
+              - shareId
+  /v2/shared_templates/shared_with_you:
+    get:
+      operationId: listTemplatesSharedWithYou
+      summary: List templates shared with your organization
+      description: "Lists all workbook templates shared with your organization.\n  \n  ### Usage notes\n  - Use the `pending` parameter to identify templates that have been shared but not yet accepted.\n  "
+      tags:
+      - sharedTemplates
+      parameters:
+      - name: page
+        in: query
+        description: Use to specify further pages using the string returned in the nextPage portion of the response.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+        required: false
+        schema:
+          type: number
+          format: double
+      - name: pending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sharedTemplates_listTemplatesSharedWithYou_Response_200'
+components:
+  schemas:
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps1:
+      oneOf:
+      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps10'
+      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11'
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps1
+    sharedTemplates_listTemplatesSharedWithYou_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2SharedTemplatesSharedWithYouGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: sharedTemplates_listTemplatesSharedWithYou_Response_200
+    V2SharedTemplatesSharedWithYouGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        providerOrganizationId:
+          type: string
+        name:
+          type: string
+        shareId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          description: When the template was shared with your organization.
+        description:
+          type: string
+        pending:
+          type: boolean
+      required:
+      - providerOrganizationId
+      - name
+      - shareId
+      - createdAt
+      title: V2SharedTemplatesSharedWithYouGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps0:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf0Type'
+        newInodeId:
+          type: string
+        columns:
+          type: object
+          additionalProperties:
+            type: string
+          description: Mapping from old column names to new column names. Leave blank to keep the same column names.
+        metrics:
+          type: object
+          additionalProperties:
+            type: string
+          description: Mapping from old metric names to new metric names. Leave blank to keep the same metric names.
+      required:
+      - type
+      - newInodeId
+      - columns
+      - metrics
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps0
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11:
+      type: object
+      properties:
+        newConnectionName:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf1Type'
+      required:
+      - newConnectionName
+      - type
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf0Type:
+      type: string
+      enum:
+      - connection
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf0Type
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf0Type:
+      type: string
+      enum:
+      - table
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf0Type
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps:
+      oneOf:
+      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps0'
+      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps1'
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps
+    sharedTemplates_acceptTemplateShare_Response_200:
+      type: object
+      properties: {}
+      title: sharedTemplates_acceptTemplateShare_Response_200
+    sharedTemplates_deleteExternalShare_Response_200:
+      type: object
+      properties: {}
+      title: sharedTemplates_deleteExternalShare_Response_200
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf1Type:
+      type: string
+      enum:
+      - connection
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf1Type
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps10:
+      type: object
+      properties:
+        newConnectionId:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf0Type'
+      required:
+      - newConnectionId
+      - type
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps10
+  securitySchemes:
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication

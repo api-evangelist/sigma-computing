@@ -1,0 +1,1165 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Public REST User Attributes API
+  version: 2.0.0
+  summary: The Sigma REST API provides developers access to resources programmatically, using HTTP.
+  description: "The Sigma REST API provides developers access to resources programmatically,\n    using HTTP. The API allows secure access to all the commonly used resources\n    like connections, datasets, teams, workbooks and more. It is designed to have\n    predictable, resource-oriented URLs and to use HTTP response codes to\n    indicate API errors. It uses built-in HTTP features, like HTTP\n    authentication and HTTP verbs, which are understood by off-the-shelf HTTP\n    clients. It supports cross-origin resource sharing, allowing you to interact\n    securely with the API from a client-side web application (though you should\n    never expose your client credentials or API token in any public website's client-side code).\n    JSON is returned by all API responses, including errors.\n    Some useful links:\n        - [API Reference Help](https://help.sigmacomputing.com/reference)\n        - [API QuickStart with Postman](https://quickstarts.sigmacomputing.com/guide/sigma_api_with_postman/index.html?index=..%2F..index#0)"
+  termsOfService: Contact Sigma
+  contact:
+    email: support@sigmacomputing.com
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+security:
+- oauth2: []
+tags:
+- name: user-attributes
+paths:
+  /v2/user-attributes:
+    get:
+      summary: List user attributes
+      description: Get a list of available user attributes, values, and owners.
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      - name: name
+        schema:
+          type: string
+          description: Search filter for the name of the user attribute.
+        in: query
+      operationId: listUserAttributes
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - userAttributeId
+                          - name
+                          properties:
+                            userAttributeId:
+                              type: string
+                              description: Unique identifier of the user attribute.
+                            name:
+                              type: string
+                              description: Name of the user attribute.
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                        - type: object
+                          properties:
+                            description:
+                              type:
+                              - string
+                              - 'null'
+                              description: Description of the user attribute.
+                            defaultValue:
+                              type:
+                              - object
+                              - 'null'
+                              required:
+                              - type
+                              - val
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                  - string
+                                  description: Type of user attribute.
+                                val:
+                                  type: string
+                                  description: Value of the user attribute.
+                              description: Default value of the user attribute.
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                - type: object
+                  properties:
+                    total:
+                      type: number
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+    post:
+      summary: Create a user attribute
+      description: Create a new user attribute. An optional description and default value can be provided.
+      parameters: []
+      operationId: createUserAttribute
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - name
+                properties:
+                  name:
+                    type: string
+                    description: Name of the user attribute.
+              - type: object
+                properties:
+                  description:
+                    type: string
+                    description: Description of the user attribute.
+                  defaultValue:
+                    type: object
+                    required:
+                    - type
+                    - val
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                        - string
+                        description: Type of user attribute.
+                      val:
+                        type: string
+                        description: Value of the user attribute.
+                    description: Default value of the user attribute.
+                    title: Default value
+            examples:
+              Request Example:
+                value:
+                  name: department
+                  description: The user’s home department.
+                  defaultValue:
+                    type: string
+                    val: engineering
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - userAttributeId
+                  - name
+                  properties:
+                    userAttributeId:
+                      type: string
+                      description: Unique identifier of the user attribute.
+                    name:
+                      type: string
+                      description: Name of the user attribute.
+                - type: object
+                  required:
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  properties:
+                    createdBy:
+                      type: string
+                      description: The identifier of the user who created this object.
+                    updatedBy:
+                      type: string
+                      description: The identifier of the user or process that last updated this object.
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: When the object was created.
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: When the object was last updated.
+                - type: object
+                  properties:
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                      description: Description of the user attribute.
+                    defaultValue:
+                      type:
+                      - object
+                      - 'null'
+                      required:
+                      - type
+                      - val
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - string
+                          description: Type of user attribute.
+                        val:
+                          type: string
+                          description: Value of the user attribute.
+                      description: Default value of the user attribute.
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+  /v2/user-attributes/{userAttributeId}:
+    delete:
+      summary: Delete a user attribute
+      description: "Delete a user attribute.\n\n### Usage notes\n- To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n- Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n- This action permanently removes the user attribute from the organization and cannot be undone.\n      "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      operationId: deleteUserAttribute
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+    get:
+      summary: Get a user attribute
+      description: "Get details for a specific user attribute.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      operationId: getUserAttribute
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - userAttributeId
+                  - name
+                  properties:
+                    userAttributeId:
+                      type: string
+                      description: Unique identifier of the user attribute.
+                    name:
+                      type: string
+                      description: Name of the user attribute.
+                - type: object
+                  required:
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  properties:
+                    createdBy:
+                      type: string
+                      description: The identifier of the user who created this object.
+                    updatedBy:
+                      type: string
+                      description: The identifier of the user or process that last updated this object.
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: When the object was created.
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: When the object was last updated.
+                - type: object
+                  properties:
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                      description: Description of the user attribute.
+                    defaultValue:
+                      type:
+                      - object
+                      - 'null'
+                      required:
+                      - type
+                      - val
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - string
+                          description: Type of user attribute.
+                        val:
+                          type: string
+                          description: Value of the user attribute.
+                      description: Default value of the user attribute.
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+  /v2/user-attributes/{userAttributeId}/teams:
+    get:
+      summary: Get teams for a user attribute
+      description: "Get a list of teams that have a specific user attribute defined, and the assigned value for the user attribute.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: getUserAttributeTeamAssignments
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - teamId
+                          - value
+                          - priority
+                          properties:
+                            teamId:
+                              type: string
+                              description: Unique identifier of the team.
+                            value:
+                              type: object
+                              required:
+                              - type
+                              - val
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                  - string
+                                  description: Type of user attribute.
+                                val:
+                                  type: string
+                                  description: Value of the user attribute.
+                              description: Assigned value.
+                            priority:
+                              type: number
+                              description: Priority of the assignment.
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                - type: object
+                  properties:
+                    total:
+                      type: number
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+    patch:
+      summary: Update a user attribute for teams
+      description: "Update a user attribute for one or more teams. Currently, this endpoint only supports deleting a user attribute assignment.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      operationId: updateUserAttributeForTeams
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - delete
+              properties:
+                delete:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - teamId
+                    properties:
+                      teamId:
+                        type: string
+                        description: Unique identifier of the team.
+                  description: The teams whose assignments are to be revoked.
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+    post:
+      summary: Set a user attribute for teams
+      description: "Assign and set the value of a specific user attribute for one or more teams.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      operationId: setUserAttributeForTeams
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - assignments
+              properties:
+                assignments:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - teamId
+                    - value
+                    properties:
+                      teamId:
+                        type: string
+                        description: Unique identifier of the team.
+                      value:
+                        type: object
+                        required:
+                        - type
+                        - val
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - string
+                            description: Type of user attribute.
+                          val:
+                            type: string
+                            description: Value of the user attribute.
+                        description: The value of the user attribute
+                        title: Attribute value
+            examples:
+              Request Example:
+                value:
+                  assignments:
+                  - teamId: 00000000-0000-0000-0000-000000000000
+                    value:
+                      type: string
+                      val: foo
+                  - teamId: 00000000-0000-0000-0000-000000000001
+                    value:
+                      type: string
+                      val: bar
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+  /v2/user-attributes/{userAttributeId}/teams/{teamId}:
+    delete:
+      summary: Delete a user attribute for a team
+      description: "Delete a specific user attribute for a specific team.\n\n### Usage notes\n- Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n- Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n      "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      - name: teamId
+        schema:
+          type: string
+          description: Unique identifier of the team.
+        in: path
+        required: true
+      operationId: deleteUserAttributeForTeam
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+  /v2/user-attributes/{userAttributeId}/tenants:
+    get:
+      summary: Get tenants for a user attribute
+      description: "Get a list of tenants that have a specific user attribute defined, and the assigned value for the user attribute.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: getUserAttributeTenantAssignments
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - tenantOrganizationId
+                          - value
+                          properties:
+                            tenantOrganizationId:
+                              type: string
+                              description: Unique identifier of the tenant.
+                            value:
+                              type: object
+                              required:
+                              - type
+                              - val
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                  - string
+                                  description: Type of user attribute.
+                                val:
+                                  type: string
+                                  description: Value of the user attribute.
+                              description: Assigned value.
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                - type: object
+                  properties:
+                    total:
+                      type: number
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+    patch:
+      summary: Update a user attribute for tenants
+      description: "Update a user attribute for one or more tenants. Currently, this endpoint only supports deleting a user attribute assignment.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Specify one or more tenants by tenantOrganizationId. Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint and using the `tenantOrganizationId` included in the response.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      operationId: updateUserAttributeForTenants
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - delete
+              properties:
+                delete:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - tenantOrganizationId
+                    properties:
+                      tenantOrganizationId:
+                        type: string
+                        description: The unique identifier of the tenant.
+                  description: The tenants whose assignments are to be revoked.
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+    post:
+      summary: Set a user attribute for tenants
+      description: "Assign and set the value of a specific user attribute for one or more tenants.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Specify one or more tenant by tenantOrganizationId. Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint and using the `tenantOrganizationId` included in the response.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      operationId: setUserAttributeForTenants
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - assignments
+              properties:
+                assignments:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - tenantOrganizationId
+                    - value
+                    properties:
+                      tenantOrganizationId:
+                        type: string
+                        description: Unique identifier of the tenant.
+                      value:
+                        type: object
+                        required:
+                        - type
+                        - val
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - string
+                            description: Type of user attribute.
+                          val:
+                            type: string
+                            description: Value of the user attribute.
+                        description: The value of the user attribute
+                        title: Attribute value
+            examples:
+              Request Example:
+                value:
+                  assignments:
+                  - tenantOrganizationId: 00000000-0000-0000-0000-000000000000
+                    value:
+                      type: string
+                      val: foo
+                  - tenantOrganizationId: 00000000-0000-0000-0000-000000000001
+                    value:
+                      type: string
+                      val: bar
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+  /v2/user-attributes/{userAttributeId}/tenants/{tenantOrganizationId}:
+    delete:
+      summary: Delete a user attribute for a tenant
+      description: "Delete a specific user attribute for a specific tenant.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint and using the `tenantOrganizationId` included in the response.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      - name: tenantOrganizationId
+        schema:
+          type: string
+          description: Unique identifier of the tenant.
+        in: path
+        required: true
+      operationId: deleteUserAttributeForTenant
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+  /v2/user-attributes/{userAttributeId}/users:
+    get:
+      summary: Get users for a user attribute
+      description: "Get a list of users that have a specific user attribute defined, and the assigned value for the user attribute.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: getUserAttributeUserAssignments
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - userId
+                          - value
+                          properties:
+                            userId:
+                              type: string
+                              description: Unique identifier of the user.
+                            value:
+                              type: object
+                              required:
+                              - type
+                              - val
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                  - string
+                                  description: Type of user attribute.
+                                val:
+                                  type: string
+                                  description: Value of the user attribute.
+                              description: Assigned value.
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                - type: object
+                  properties:
+                    total:
+                      type: number
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+    patch:
+      summary: Update a user attribute for users
+      description: "Update a user attribute for one or more users. Currently, this endpoint only supports deleting a user attribute assignment.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Specify one or more users by userId. Retrieve the **userId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint and using the `memberId` included in the response.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      operationId: updateUserAttributeForUsers
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - delete
+              properties:
+                delete:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - userId
+                    properties:
+                      userId:
+                        type: string
+                        description: The unique identifier of the user.
+                  description: The users whose assignments are to be revoked.
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+    post:
+      summary: Set a user attribute for users
+      description: "Assign and set the value of a specific user attribute for one or more users.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Specify one or more users by userId. Retrieve the **userId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint and using the `memberId` included in the response.\n    "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      operationId: setUserAttributeForUsers
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - assignments
+              properties:
+                assignments:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - userId
+                    - value
+                    properties:
+                      userId:
+                        type: string
+                        description: Unique identifier of the user.
+                      value:
+                        type: object
+                        required:
+                        - type
+                        - val
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - string
+                            description: Type of user attribute.
+                          val:
+                            type: string
+                            description: Value of the user attribute.
+                        description: The value of the user attribute
+                        title: Attribute value
+            examples:
+              Request Example:
+                value:
+                  assignments:
+                  - userId: mTwJbaYKQbBexvF4ZWGeRxuAmbGKm
+                    value:
+                      type: string
+                      val: foo
+                  - userId: mTwJbaYKQbBexvF4ZWGeRxuAmbGKn
+                    value:
+                      type: string
+                      val: bar
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+  /v2/user-attributes/{userAttributeId}/users/{userId}:
+    delete:
+      summary: Delete a user attribute for a user
+      description: "Delete a specific user attribute for a specific user.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Retrieve the **userId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint and using the `memberId` included in the response.\n      "
+      parameters:
+      - name: userAttributeId
+        schema:
+          type: string
+          description: Unique identifier of the user attribute.
+        in: path
+        required: true
+      - name: userId
+        schema:
+          type: string
+          description: Unique identifier of the user.
+        in: path
+        required: true
+      operationId: deleteUserAttributeForUser
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - user-attributes
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}

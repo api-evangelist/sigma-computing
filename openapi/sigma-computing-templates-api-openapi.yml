@@ -1,0 +1,873 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Templates API
+  version: '1.0'
+  description: 'Operations tagged templates across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: templates
+paths:
+  /v2/templates:
+    get:
+      summary: List templates
+      description: "Returns a list of available templates.\n\n  ### Usage notes\n  - Official Sigma templates are created by SigmaSchedulerRobot.\n  "
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      - name: source
+        schema:
+          type: string
+          enum:
+          - internal
+          - external
+          description: Filters results to templates based on their source. Set to internal to only retrieve templates created within your organization. Set to external to only retrieve templates shared to your organization. Do not specify a source to list all templates regardless of their source.
+          title: Template source
+        in: query
+      - name: search
+        schema:
+          type: string
+          description: Filter results based on the name of the templates.
+          title: Search by name
+        in: query
+      operationId: listTemplates
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - templateId
+                          - templateUrlId
+                          - name
+                          - url
+                          - path
+                          - latestVersion
+                          properties:
+                            templateId:
+                              type: string
+                            templateUrlId:
+                              type: string
+                            name:
+                              type: string
+                            url:
+                              type: string
+                            path:
+                              type: string
+                            latestVersion:
+                              type: number
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                        - type: object
+                          properties:
+                            isArchived:
+                              type: boolean
+                            tags:
+                              type: array
+                              items:
+                                type: object
+                                required:
+                                - versionTagId
+                                - name
+                                properties:
+                                  versionTagId:
+                                    type: string
+                                  name:
+                                    type: string
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - templates
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/templates/{templateId}:
+    get:
+      summary: Get template
+      description: "Get a template by template ID.\n\n  ### Usage notes\n  - Retrieve the **templateId** by calling the [/v2/templates](https://help.sigmacomputing.com/reference/list-templates) endpoint.\n  "
+      parameters:
+      - name: templateId
+        schema:
+          type: string
+          description: Template ID
+        in: path
+        required: true
+      operationId: getTemplate
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - templateId
+                  - templateUrlId
+                  - name
+                  - url
+                  - path
+                  - latestVersion
+                  properties:
+                    templateId:
+                      type: string
+                    templateUrlId:
+                      type: string
+                    name:
+                      type: string
+                    url:
+                      type: string
+                    path:
+                      type: string
+                    latestVersion:
+                      type: number
+                - type: object
+                  required:
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  properties:
+                    createdBy:
+                      type: string
+                      description: The identifier of the user who created this object.
+                    updatedBy:
+                      type: string
+                      description: The identifier of the user or process that last updated this object.
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: When the object was created.
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: When the object was last updated.
+                - type: object
+                  properties:
+                    isArchived:
+                      type: boolean
+                    tags:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - versionTagId
+                        - name
+                        properties:
+                          versionTagId:
+                            type: string
+                          name:
+                            type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - templates
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/templates/{templateId}/swapSources:
+    post:
+      summary: Swap template data sources
+      description: "Swap the data sources used by a workbook template. You can swap from one connection to another, and/or from one dataset to another.\n\n  ### Usage notes\n  - Retrieve the **templateId** by calling the [/v2/templates](https://help.sigmacomputing.com/reference/list-templates) endpoint.\n  - Retrieve the **connectionId** to use as the **toId** by calling the [/v2/connections](https://help.sigmacomputing.com/reference/list-connections) endpoint.\n  - To map the sources of a specific element, you can use the table or dataset ID:\n\n    - Retrieve the **fromId** for a specific data element by calling the [/v2/workbooks/{workbookId}/lineage/elements/{elementId}](https://help.sigmacomputing.com/reference/list-lineage) endpoint and using the `source` key from the response, which looks like `inode-2PBoXx3UabchxF1F3l07kE`. The ID is everything after `inode-`.\n    - Retrieve table and dataset IDs by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint. Use the `typeFilters` option to filter for table and dataset files. Use `id` field in the response as the `fromId` or `toId`, as relevant.\n    "
+      parameters:
+      - name: templateId
+        schema:
+          type: string
+          description: Template ID
+        in: path
+        required: true
+      operationId: sourceSwapTemplate
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sourceMapping:
+                  type: array
+                  items:
+                    allOf:
+                    - type: object
+                      required:
+                      - fromId
+                      - toId
+                      properties:
+                        fromId:
+                          type: string
+                          description: ID of the dataset (deprecated) or table to swap from.
+                          title: Data source ID
+                        toId:
+                          type: string
+                          description: ID of the dataset (deprecated) or table to swap to.
+                          title: Data source ID
+                    - type: object
+                      properties:
+                        metricMapping:
+                          type: array
+                          items:
+                            type: object
+                            required:
+                            - fromMetric
+                            - toMetric
+                            properties:
+                              fromMetric:
+                                type: string
+                                description: Metric in the data source.
+                                title: Metric name
+                              toMetric:
+                                type: string
+                                description: Metric in the data source.
+                                title: Metric name
+                        columnMapping:
+                          type: array
+                          items:
+                            type: object
+                            required:
+                            - fromColumn
+                            - toColumn
+                            properties:
+                              fromColumn:
+                                oneOf:
+                                - type: string
+                                  description: Column in the data source.
+                                  title: Column name
+                                - type: array
+                                  items:
+                                    type: string
+                                  description: Dataset or table link of the form ["link_name", "column_name"]
+                                  title: Link
+                              toColumn:
+                                oneOf:
+                                - type: string
+                                  description: Column in the data source.
+                                  title: Column name
+                                - type: array
+                                  items:
+                                    type: string
+                                  description: Dataset or table link of the form ["link_name", "column_name"]
+                                  title: Link
+                connectionMapping:
+                  type: array
+                  items:
+                    allOf:
+                    - type: object
+                      required:
+                      - fromId
+                      - toId
+                      properties:
+                        fromId:
+                          type: string
+                          description: ID of the connection to swap from.
+                          title: Connection ID
+                        toId:
+                          type: string
+                          description: ID of the connection to swap to.
+                          title: Connection ID
+                    - type: object
+                      properties:
+                        swapTables:
+                          type: boolean
+                          description: Whether to swap all tables in the connection
+                          title: Swap Tables
+                        paths:
+                          type: array
+                          items:
+                            type: object
+                            required:
+                            - fromPath
+                            - toPath
+                            properties:
+                              fromPath:
+                                type: array
+                                items:
+                                  type: string
+                                description: Connection path of the form ['DATABASE', 'SCHEMA', 'TABLE']
+                                title: From Path
+                              toPath:
+                                type: array
+                                items:
+                                  type: string
+                                description: Connection path of the form ['DATABASE', 'SCHEMA', 'TABLE']
+                                title: To Path
+                copyInputTableData:
+                  type: boolean
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - unswappedSources
+                - unswappedConnections
+                properties:
+                  unswappedSources:
+                    type: array
+                    items:
+                      type: string
+                    description: IDs of sources in the workbook that were not swapped.
+                  unswappedConnections:
+                    type: array
+                    items:
+                      type: string
+                    description: IDs of custom SQL connections in the workbook that were not swapped.
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - templates
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/templates/save_workbook:
+    post:
+      summary: Create workbook from template
+      description: "Create a workbook by saving it from a template.\n\n  ### Usage notes\n  - Retrieve the **templateId** by calling the [/v2/templates](https://help.sigmacomputing.com/reference/list-templates) endpoint.\n  - Retrieve the **folderId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and reviewing the `id` field in the response for files with a `type` of `folder`. To use the \"My Documents\" folder as the destination folder, call the [/v2/members/{memberId}](https://help.sigmacomputing.com/reference/get-member) endpoint and use the `homeFolderId` included in the response.\n  - If you leave the name or description options blank, the workbook created inherits the values of the template.\n  "
+      parameters: []
+      operationId: saveWorkbookFromTemplate
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - templateId
+                - folderId
+                properties:
+                  templateId:
+                    type: string
+                  folderId:
+                    type: string
+              - type: object
+                properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  updateAutomatically:
+                    type: boolean
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - workbookId
+                properties:
+                  workbookId:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - templates
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems:
+      type: object
+      properties:
+        fromId:
+          type: string
+          description: ID of the connection to swap from.
+        toId:
+          type: string
+          description: ID of the connection to swap to.
+        swapTables:
+          type: boolean
+          description: Whether to swap all tables in the connection
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems'
+      required:
+      - fromId
+      - toId
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems
+    templates_sourceSwapTemplate_Response_200:
+      type: object
+      properties:
+        unswappedSources:
+          type: array
+          items:
+            type: string
+          description: IDs of sources in the workbook that were not swapped.
+        unswappedConnections:
+          type: array
+          items:
+            type: string
+          description: IDs of custom SQL connections in the workbook that were not swapped.
+      required:
+      - unswappedSources
+      - unswappedConnections
+      title: templates_sourceSwapTemplate_Response_200
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn:
+      oneOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems:
+      type: object
+      properties:
+        fromId:
+          type: string
+          description: ID of the dataset (deprecated) or table to swap from.
+        toId:
+          type: string
+          description: ID of the dataset (deprecated) or table to swap to.
+        metricMapping:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems'
+        columnMapping:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems'
+      required:
+      - fromId
+      - toId
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems
+    V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+        name:
+          type: string
+      required:
+      - versionTagId
+      - name
+      title: V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn:
+      oneOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn
+    V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+        name:
+          type: string
+      required:
+      - versionTagId
+      - name
+      title: V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems
+    templates_listTemplates_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: templates_listTemplates_Response_200
+    V2TemplatesGetParametersSource:
+      type: string
+      enum:
+      - internal
+      - external
+      description: Filters results to templates based on their source. Set to internal to only retrieve templates created within your organization. Set to external to only retrieve templates shared to your organization. Do not specify a source to list all templates regardless of their source.
+      title: V2TemplatesGetParametersSource
+    templates_getTemplate_Response_200:
+      type: object
+      properties:
+        templateId:
+          type: string
+        templateUrlId:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+        path:
+          type: string
+        latestVersion:
+          type: number
+          format: double
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        isArchived:
+          type: boolean
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems'
+      required:
+      - templateId
+      - templateUrlId
+      - name
+      - url
+      - path
+      - latestVersion
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: templates_getTemplate_Response_200
+    V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        templateId:
+          type: string
+        templateUrlId:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+        path:
+          type: string
+        latestVersion:
+          type: number
+          format: double
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        isArchived:
+          type: boolean
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems'
+      required:
+      - templateId
+      - templateUrlId
+      - name
+      - url
+      - path
+      - latestVersion
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems:
+      type: object
+      properties:
+        fromPath:
+          type: array
+          items:
+            type: string
+          description: Connection path of the form ['DATABASE', 'SCHEMA', 'TABLE']
+        toPath:
+          type: array
+          items:
+            type: string
+          description: Connection path of the form ['DATABASE', 'SCHEMA', 'TABLE']
+      required:
+      - fromPath
+      - toPath
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems:
+      type: object
+      properties:
+        fromColumn:
+          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn'
+        toColumn:
+          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn'
+      required:
+      - fromColumn
+      - toColumn
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems:
+      type: object
+      properties:
+        fromMetric:
+          type: string
+          description: Metric in the data source.
+        toMetric:
+          type: string
+          description: Metric in the data source.
+      required:
+      - fromMetric
+      - toMetric
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems
+    templates_saveWorkbookFromTemplate_Response_200:
+      type: object
+      properties:
+        workbookId:
+          type: string
+      required:
+      - workbookId
+      title: templates_saveWorkbookFromTemplate_Response_200
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

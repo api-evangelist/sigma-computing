@@ -1,0 +1,492 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Organizations API
+  version: '1.0'
+  description: 'Operations tagged organizations across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: organizations
+paths:
+  /v2/organizations/settings:
+    patch:
+      summary: Update organization settings
+      description: 'Update settings for the organization associated with the API credentials.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - To update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+      parameters: []
+      operationId: updateOrganizationSettings
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timezone:
+                  type: string
+                  description: IANA timezone identifier for the organization (e.g. "America/New_York").
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - organizationId
+                  properties:
+                    organizationId:
+                      type: string
+                      description: Unique identifier of the organization
+                - type: object
+                  properties:
+                    timezone:
+                      type: string
+                      description: Current IANA timezone for the organization
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - organizations
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/organizations/settings/bulkCopy:
+    get:
+      operationId: getBulkCopySetting
+      summary: Get the bulk copy setting for an organization
+      description: 'Check whether members of the organization can bulk copy data from tables.
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+      tags:
+      - organizations
+      parameters:
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/organizations_getBulkCopySetting_Response_200'
+    patch:
+      operationId: updateBulkCopySetting
+      summary: Update the bulk copy setting for an organization
+      description: 'Set whether members of the organization can bulk copy data from tables.
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+      tags:
+      - organizations
+      parameters:
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/organizations_updateBulkCopySetting_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  description: Whether the setting is enabled for the organization.
+              required:
+              - enabled
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/organizations/settings/licenseUpgradeRequests:
+    get:
+      operationId: getLicenseUpgradeRequestsSetting
+      summary: Get the license upgrade request setting for an organization
+      description: 'Check whether members of the organization can request a license upgrade.
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+      tags:
+      - organizations
+      parameters:
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/organizations_getLicenseUpgradeRequestsSetting_Response_200'
+    patch:
+      operationId: updateLicenseUpgradeRequestsSetting
+      summary: Update the license upgrade request setting for an organization
+      description: 'Set whether members of the organization can request a license upgrade.
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+      tags:
+      - organizations
+      parameters:
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/organizations_updateLicenseUpgradeRequestsSetting_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  description: Whether the setting is enabled for the organization.
+              required:
+              - enabled
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/organizations/settings/publicEmbeds:
+    get:
+      operationId: getPublicEmbedsSetting
+      summary: Get the public embeds setting for an organization
+      description: 'Check whether the organization allows workbooks to be embedded publicly.
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+      tags:
+      - organizations
+      parameters:
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/organizations_getPublicEmbedsSetting_Response_200'
+    patch:
+      operationId: updatePublicEmbedsSetting
+      summary: Update the public embeds setting for an organization
+      description: 'Set whether the organization allows workbooks to be embedded publicly.
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+      tags:
+      - organizations
+      parameters:
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/organizations_updatePublicEmbedsSetting_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  description: Whether the setting is enabled for the organization.
+              required:
+              - enabled
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    organizations_updateLicenseUpgradeRequestsSetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_updateLicenseUpgradeRequestsSetting_Response_200
+    organizations_getPublicEmbedsSetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_getPublicEmbedsSetting_Response_200
+    organizations_getBulkCopySetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_getBulkCopySetting_Response_200
+    organizations_updateBulkCopySetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_updateBulkCopySetting_Response_200
+    organizations_updateOrganizationSettings_Response_200:
+      type: object
+      properties:
+        organizationId:
+          type: string
+          description: Unique identifier of the organization
+        timezone:
+          type: string
+          description: Current IANA timezone for the organization
+      required:
+      - organizationId
+      title: organizations_updateOrganizationSettings_Response_200
+    organizations_updatePublicEmbedsSetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_updatePublicEmbedsSetting_Response_200
+    organizations_getLicenseUpgradeRequestsSetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_getLicenseUpgradeRequestsSetting_Response_200
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

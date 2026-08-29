@@ -1,0 +1,1688 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Datasets API
+  version: '1.0'
+  description: 'Operations tagged datasets across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: datasets
+paths:
+  /v2/datasets:
+    get:
+      summary: List datasets (Deprecated)
+      description: "Get a list of available datasets. Available datasets include any datasets in your My Documents folder and any datasets you have access to.\n\n **Deprecation notice**: [Datasets](/docs/datasets) are deprecated. Starting June 2, 2026, you will no longer be able to create datasets or edit existing datasets. Migrate your datasets to data models and update any documents that use datasets as a data source to use a different source. See [Migrate a dataset to a data model](/docs/migrate-a-dataset-to-a-data-model).\n\n ### Usage scenarios\n - **Plan dataset migration**: Review the owner, location (path) of the dataset, migration status, and total number of documents that reference the dataset to plan dataset migration tasks.\n - **Clean up after dataset migration**: Retrieve the `dataModelId` of the data model created for the dataset. Make a GET request to the [/v2/dataModels/{dataModelId}](https://help.sigmacomputing.com/reference/get-data-model) endpoint to retrieve more details about the created data model.\n - **Identify unused datasets**: Review datasets that have 0 documents referencing it as a source and delete those datasets by making a DELETE request to the [/v2/files/{inodeId}](https://help.sigmacomputing.com/reference/delete-file) endpoint.\n   "
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      - name: skipPermissionCheck
+        schema:
+          type: boolean
+          description: Only available to Sigma admins. Return all datasets, regardless of whether the user has access.
+        in: query
+      operationId: listDatasets
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - datasetId
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          - name
+                          - description
+                          - url
+                          - owner
+                          - referenceCount
+                          - path
+                          - migrationToDataModel
+                          - migrationStatus
+                          properties:
+                            datasetId:
+                              type: string
+                            createdBy:
+                              type: string
+                            updatedBy:
+                              type: string
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type: string
+                              format: date-time
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            url:
+                              type: string
+                            owner:
+                              type: string
+                            referenceCount:
+                              type: number
+                              description: Count of inbound references to the dataset
+                              title: Reference count
+                            path:
+                              type: string
+                              description: Path describing dataset's ancestor workspace and folders
+                              title: Path
+                            migrationToDataModel:
+                              type:
+                              - object
+                              - 'null'
+                              required:
+                              - dataModelId
+                              - dataModelUrl
+                              - migratedAt
+                              - migratedBy
+                              properties:
+                                dataModelId:
+                                  type: string
+                                dataModelUrl:
+                                  type: string
+                                migratedAt:
+                                  type: string
+                                  format: date-time
+                                migratedBy:
+                                  type: string
+                              description: Details about migration to data model
+                              title: Migration to data model
+                            migrationStatus:
+                              type: string
+                              enum:
+                              - migrated
+                              - not-migrated
+                              - not-required
+                              description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
+                              title: Migration status
+                        - type: object
+                          properties:
+                            isArchived:
+                              type: boolean
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - datasets
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/datasets/{datasetId}:
+    get:
+      summary: Get a dataset (Deprecated)
+      description: "Get a specific dataset by datasetId\n\n  **Deprecation notice**: [Datasets](/docs/datasets) are deprecated. Starting June 2, 2026, you will no longer be able to create datasets or edit existing datasets. Migrate your datasets to data models and update any documents that use datasets as a data source to use a different source. See [Migrate a dataset to a data model](/docs/migrate-a-dataset-to-a-data-model).\n\n  ### Usage notes\n  - Retrieve the **datasetId** by calling the [/v2/datasets](https://help.sigmacomputing.com/reference/list-datasets) endpoint.\n  "
+      parameters:
+      - name: datasetId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: getDataset
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - datasetId
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  - name
+                  - description
+                  - url
+                  - owner
+                  - referenceCount
+                  - path
+                  - migrationToDataModel
+                  - migrationStatus
+                  properties:
+                    datasetId:
+                      type: string
+                    createdBy:
+                      type: string
+                    updatedBy:
+                      type: string
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    url:
+                      type: string
+                    owner:
+                      type: string
+                    referenceCount:
+                      type: number
+                      description: Count of inbound references to the dataset
+                      title: Reference count
+                    path:
+                      type: string
+                      description: Path describing dataset's ancestor workspace and folders
+                      title: Path
+                    migrationToDataModel:
+                      type:
+                      - object
+                      - 'null'
+                      required:
+                      - dataModelId
+                      - dataModelUrl
+                      - migratedAt
+                      - migratedBy
+                      properties:
+                        dataModelId:
+                          type: string
+                        dataModelUrl:
+                          type: string
+                        migratedAt:
+                          type: string
+                          format: date-time
+                        migratedBy:
+                          type: string
+                      description: Details about migration to data model
+                      title: Migration to data model
+                    migrationStatus:
+                      type: string
+                      enum:
+                      - migrated
+                      - not-migrated
+                      - not-required
+                      description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
+                      title: Migration status
+                - type: object
+                  properties:
+                    isArchived:
+                      type: boolean
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - datasets
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/datasets/{datasetId}/grants:
+    get:
+      summary: Get grants for a dataset (Deprecated)
+      description: "Get a list of permissions granted to teams and users for a specific dataset.\n\n  **Deprecation notice**: [Datasets](/docs/datasets) are deprecated. Starting June 2, 2026, you will no longer be able to create datasets or edit existing datasets. Migrate your datasets to data models and update any documents that use datasets as a data source to use a different source. See [Migrate a dataset to a data model](/docs/migrate-a-dataset-to-a-data-model).\n\n  ### Usage notes\n  - Retrieve the **datasetId** by calling the [/v2/datasets](https://help.sigmacomputing.com/reference/list-datasets) endpoint.\n  "
+      parameters:
+      - name: datasetId
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: listDatasetGrants
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - grantId
+                        - inodeId
+                        - organizationId
+                        - memberId
+                        - teamId
+                        - permission
+                        - createdBy
+                        - updatedBy
+                        - createdAt
+                        - updatedAt
+                        properties:
+                          grantId:
+                            type: string
+                            description: The unique identifier of the grant
+                          inodeId:
+                            type: string
+                            description: The unique identifier of the inode
+                          organizationId:
+                            type: string
+                            description: The unique identifier of the organization
+                          memberId:
+                            type:
+                            - string
+                            - 'null'
+                            description: The unique identifier of the member
+                          teamId:
+                            type:
+                            - string
+                            - 'null'
+                            description: The unique identifier of the team
+                          permission:
+                            oneOf:
+                            - type: string
+                              enum:
+                              - admin
+                              - annotate
+                              - update
+                              - usage
+                              - writeback
+                              description: 'Valid inode types: table, connection database, and connection schema.'
+                              title: Connection Permission
+                            - type: string
+                              enum:
+                              - create
+                              - annotate
+                              - organize
+                              - explore
+                              - view
+                              - edit
+                              - apply
+                              description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
+                              title: Inode Permission
+                            - type: string
+                              enum:
+                              - view
+                              - edit
+                              - apply
+                              description: 'Valid inode types: version tag.'
+                              title: Version Tag Permission
+                            description: The permission granted to the member
+                          createdBy:
+                            type: string
+                            description: The identifier of the user who created this grant
+                          updatedBy:
+                            type: string
+                            description: The identifier of the user or process that last updated this grant
+                          createdAt:
+                            type: string
+                            format: date-time
+                            description: When the grant was created
+                          updatedAt:
+                            type: string
+                            format: date-time
+                            description: When the grant was last updated
+                        title: Connection grant response
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - datasets
+      security:
+      - oauth2: []
+    post:
+      summary: Grant permissions on a dataset (Deprecated)
+      description: "Grant permissions to a specific dataset for users or teams.\n\n  **Deprecation notice**: [Datasets](/docs/datasets) are deprecated. Starting June 2, 2026, you will no longer be able to create datasets or edit existing datasets. Migrate your datasets to data models and update any documents that use datasets as a data source to use a different source. See [Migrate a dataset to a data model](/docs/migrate-a-dataset-to-a-data-model).\n\n  ### Usage notes\n  - Retrieve the **datasetId** by calling the [/v2/datasets](https://help.sigmacomputing.com/reference/list-datasets) endpoint.\n  - Grant permissions to one user or team at a time using the relevant IDs:\n\n    - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n    - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n    "
+      parameters:
+      - name: datasetId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: createDatasetGrant
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - grants
+              properties:
+                grants:
+                  type: array
+                  items:
+                    allOf:
+                    - type: object
+                      required:
+                      - grantee
+                      - permission
+                      properties:
+                        grantee:
+                          oneOf:
+                          - type: object
+                            required:
+                            - memberId
+                            properties:
+                              memberId:
+                                type: string
+                            description: The UUID of the member receiving the grant
+                            title: Member
+                          - type: object
+                            required:
+                            - teamId
+                            properties:
+                              teamId:
+                                type: string
+                            description: The UUID of the team receiving the grant
+                            title: Team
+                        permission:
+                          type: string
+                          enum:
+                          - view
+                          - edit
+                    - type: object
+                      properties:
+                        tagId:
+                          type: string
+              title: Dataset grant creation request
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - datasets
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/datasets/{datasetId}/grants/{grantId}:
+    delete:
+      summary: Delete a permission granted on a dataset (Deprecated)
+      description: "Delete a permission granted on a specific dataset by grantId.\n\n  **Deprecation notice**: [Datasets](/docs/datasets) are deprecated. Starting June 2, 2026, you will no longer be able to create datasets or edit existing datasets. Migrate your datasets to data models and update any documents that use datasets as a data source to use a different source. See [Migrate a dataset to a data model](/docs/migrate-a-dataset-to-a-data-model).\n\n  ### Usage notes\n  - Retrieve the **datasetId** by calling the [/v2/datasets](https://help.sigmacomputing.com/reference/list-datasets) endpoint.\n  - Retrieve the **grantId** by calling the [/v2/datasets/{datasetId}/grants](https://help.sigmacomputing.com/reference/list-dataset-grants) endpoint.\n  "
+      parameters:
+      - name: datasetId
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: grantId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: deleteDatasetGrant
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - datasets
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/datasets/{datasetId}/materialization:
+    post:
+      summary: Materialize a dataset (Deprecated)
+      description: "Start a materialization run for a specific dataset. The materialization schedule for the dataset must already exist.\n\n  **Deprecation notice**: [Datasets](/docs/datasets) are deprecated. Starting June 2, 2026, you will no longer be able to create datasets or edit existing datasets. Migrate your datasets to data models and update any documents that use datasets as a data source to use a different source. See [Migrate a dataset to a data model](/docs/migrate-a-dataset-to-a-data-model).\n\n  ### Usage notes\n  - Retrieve the **datasetId** by calling the [/v2/datasets](https://help.sigmacomputing.com/reference/list-datasets) endpoint.\n  "
+      parameters:
+      - name: datasetId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: materializeDataset
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - taskId
+                properties:
+                  taskId:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - datasets
+      security:
+      - oauth2: []
+    get:
+      summary: List materializations for a dataset (Deprecated)
+      description: "List materialization jobs for a dataset.\n\n  **Deprecation notice**: [Datasets](/docs/datasets) are deprecated. Starting June 2, 2026, you will no longer be able to create datasets or edit existing datasets. Migrate your datasets to data models and update any documents that use datasets as a data source to use a different source. See [Migrate a dataset to a data model](/docs/migrate-a-dataset-to-a-data-model).\n\n  ### Usage notes\n  - Retrieve the **datasetId** by calling the [/v2/datasets](https://help.sigmacomputing.com/reference/list-datasets) endpoint.\n  "
+      parameters:
+      - name: datasetId
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: listDatasetMaterializations
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - status
+                        - finishedAt
+                        - error
+                        - runtimeSecs
+                        - numRows
+                        - numBytes
+                        properties:
+                          status:
+                            type: string
+                            enum:
+                            - success
+                            - failed
+                            - marked
+                            - swept
+                          finishedAt:
+                            type: string
+                            format: date-time
+                          error:
+                            allOf:
+                            - type: object
+                              required:
+                              - code
+                              - message
+                              properties:
+                                code:
+                                  type: string
+                                message:
+                                  type:
+                                  - string
+                                  - 'null'
+                            - type: object
+                              properties:
+                                errorCode:
+                                  type:
+                                  - string
+                                  - 'null'
+                            type: 'null'
+                          runtimeSecs:
+                            type:
+                            - number
+                            - 'null'
+                          numRows:
+                            type:
+                            - number
+                            - 'null'
+                          numBytes:
+                            type:
+                            - number
+                            - 'null'
+                        title: Materialization result
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - datasets
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/datasets/{datasetId}/migrate:
+    post:
+      summary: Migrate a dataset to a data model (Beta)
+      description: 'Migrate a dataset (deprecated) to a data model. The response always includes the dataset''s link details and its link and reference counts. For more information on how datasets are migrated to data models, see [Migrate a dataset to a data model](https://help.sigmacomputing.com/docs/migrate-a-dataset-to-a-data-model).
+
+
+        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+
+
+        ### Usage notes
+
+        - Retrieve the **datasetId** by calling the [/v2/datasets](https://help.sigmacomputing.com/reference/list-datasets) endpoint.
+
+        - To skip the migration and return only the dataset''s link details and its link and reference counts, pass `dryRun: true`.
+
+
+        ### Usage scenarios
+
+        - **Plan dataset migration**: Pass `dryRun: true` to review the datasets and connection tables linked to the dataset, and how many documents reference it, before you migrate.
+
+        - **Migrate datasets in bulk**: If you want to migrate several datasets, you can use this endpoint to programmatically migrate the datasets returned by [/v2/datasets](https://help.sigmacomputing.com/reference/list-datasets) with a `migrationStatus` of `not-migrated`.
+
+        '
+      parameters:
+      - name: datasetId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: migrateDatasetToDataModel
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - shouldUpdateReferences
+                properties:
+                  shouldUpdateReferences:
+                    type: boolean
+                    description: Whether to update references in workbooks that use this dataset to point to the new data model.
+                    title: Update references
+              - type: object
+                properties:
+                  destFolderId:
+                    type: string
+                    description: Optional destination folder ID where the data model should be created. If not provided, the data model will be created in the same folder as the dataset.
+                    title: Destination folder ID
+                  dryRun:
+                    type: boolean
+                    description: If true, do not perform the migration. Only return the link details and the link and reference counts. Defaults to false.
+                    title: Dry run
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - dataModelId
+                - links
+                - linkCount
+                - referenceCount
+                properties:
+                  dataModelId:
+                    type:
+                    - string
+                    - 'null'
+                    description: ID of the newly-created data model. Null when `dryRun` is true.
+                    title: Data model ID
+                  links:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - source
+                      - target
+                      properties:
+                        source:
+                          oneOf:
+                          - type: object
+                            required:
+                            - type
+                            - datasetId
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - dataset
+                              datasetId:
+                                type: string
+                                description: ID of the dataset.
+                                title: Dataset ID
+                            description: A linked dataset.
+                            title: Dataset
+                          - type: object
+                            required:
+                            - type
+                            - tableId
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - table
+                              tableId:
+                                type: string
+                                description: ID of the connection table.
+                                title: Table ID
+                            description: A linked connection table.
+                            title: Table
+                          description: The dataset or table that is the source of the link.
+                          title: Source
+                        target:
+                          oneOf:
+                          - type: object
+                            required:
+                            - type
+                            - datasetId
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - dataset
+                              datasetId:
+                                type: string
+                                description: ID of the dataset.
+                                title: Dataset ID
+                            description: A linked dataset.
+                            title: Dataset
+                          - type: object
+                            required:
+                            - type
+                            - tableId
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - table
+                              tableId:
+                                type: string
+                                description: ID of the connection table.
+                                title: Table ID
+                            description: A linked connection table.
+                            title: Table
+                          description: The dataset or table the link targets.
+                          title: Target
+                    description: All datasets or connection tables linked to this dataset. Each can be a source, target, or part of a series of links.
+                    title: Links
+                  linkCount:
+                    type: number
+                    description: Number of links the dataset has to other datasets.
+                    title: Link count
+                  referenceCount:
+                    type: number
+                    description: Number of references from other datasets to this dataset.
+                    title: Reference count
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - datasets
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/datasets/{datasetId}/sources:
+    get:
+      summary: List dataset sources (Deprecated)
+      description: "Retrieve the sources of a dataset if the source is a table or a dataset. Returns the inode IDs.\n\n  **Deprecation notice**: [Datasets](/docs/datasets) are deprecated. Starting June 2, 2026, you will no longer be able to create datasets or edit existing datasets. Migrate your datasets to data models and update any documents that use datasets as a data source to use a different source. See [Migrate a dataset to a data model](/docs/migrate-a-dataset-to-a-data-model).\n\n  ### Usage notes\n  - Retrieve the **datasetId** by calling the [/v2/datasets](https://help.sigmacomputing.com/reference/list-datasets) endpoint.\n  "
+      parameters:
+      - name: datasetId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: getDatasetSources
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - type
+                  - inodeId
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                      - dataset
+                      - table
+                    inodeId:
+                      type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - datasets
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    datasets_getDataset_Response_200:
+      type: object
+      properties:
+        datasetId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        owner:
+          type: string
+        referenceCount:
+          type: number
+          format: double
+          description: Count of inbound references to the dataset
+        path:
+          type: string
+          description: Path describing dataset's ancestor workspace and folders
+        migrationToDataModel:
+          oneOf:
+          - $ref: '#/components/schemas/V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationToDataModel'
+          - type: 'null'
+          description: Details about migration to data model
+        migrationStatus:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationStatus'
+          description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
+        isArchived:
+          type: boolean
+      required:
+      - datasetId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - url
+      - owner
+      - referenceCount
+      - path
+      - migrationToDataModel
+      - migrationStatus
+      title: datasets_getDataset_Response_200
+    V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsStatus:
+      type: string
+      enum:
+      - success
+      - failed
+      - marked
+      - swept
+      title: V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsStatus
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf1Type:
+      type: string
+      enum:
+      - table
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf1Type
+    datasets_listDatasets_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: datasets_listDatasets_Response_200
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource1:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf1Type'
+        tableId:
+          type: string
+          description: ID of the connection table.
+      required:
+      - type
+      - tableId
+      description: A linked connection table.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource1
+    V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItemsType:
+      type: string
+      enum:
+      - dataset
+      - table
+      title: V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItemsType
+    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee:
+      oneOf:
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1'
+      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItems:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource'
+          description: The dataset or table that is the source of the link.
+        target:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget'
+          description: The dataset or table the link targets.
+      required:
+      - source
+      - target
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItems
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget0:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf0Type'
+        datasetId:
+          type: string
+          description: ID of the dataset.
+      required:
+      - type
+      - datasetId
+      description: A linked dataset.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget0
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf1Type:
+      type: string
+      enum:
+      - table
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf1Type
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf0Type:
+      type: string
+      enum:
+      - dataset
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf0Type
+    datasets_createDatasetGrant_Response_200:
+      type: object
+      properties: {}
+      title: datasets_createDatasetGrant_Response_200
+    V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        datasetId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        owner:
+          type: string
+        referenceCount:
+          type: number
+          format: double
+          description: Count of inbound references to the dataset
+        path:
+          type: string
+          description: Path describing dataset's ancestor workspace and folders
+        migrationToDataModel:
+          oneOf:
+          - $ref: '#/components/schemas/V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationToDataModel'
+          - type: 'null'
+          description: Details about migration to data model
+        migrationStatus:
+          $ref: '#/components/schemas/V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationStatus'
+          description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
+        isArchived:
+          type: boolean
+      required:
+      - datasetId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - url
+      - owner
+      - referenceCount
+      - path
+      - migrationToDataModel
+      - migrationStatus
+      title: V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget1:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf1Type'
+        tableId:
+          type: string
+          description: ID of the connection table.
+      required:
+      - type
+      - tableId
+      description: A linked connection table.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget1
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget:
+      oneOf:
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget0'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget1'
+      description: The dataset or table the link targets.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget
+    V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItems:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItemsType'
+        inodeId:
+          type: string
+      required:
+      - type
+      - inodeId
+      title: V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItems
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource0:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf0Type'
+        datasetId:
+          type: string
+          description: ID of the dataset.
+      required:
+      - type
+      - datasetId
+      description: A linked dataset.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource0
+    datasets_listDatasetMaterializations_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: datasets_listDatasetMaterializations_Response_200
+    V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationToDataModel:
+      type: object
+      properties:
+        dataModelId:
+          type: string
+        dataModelUrl:
+          type: string
+        migratedAt:
+          type: string
+          format: date-time
+        migratedBy:
+          type: string
+      required:
+      - dataModelId
+      - dataModelUrl
+      - migratedAt
+      - migratedBy
+      description: Details about migration to data model
+      title: V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationToDataModel
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource:
+      oneOf:
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource0'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource1'
+      description: The dataset or table that is the source of the link.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource
+    datasets_deleteDatasetGrant_Response_200:
+      type: object
+      properties: {}
+      title: datasets_deleteDatasetGrant_Response_200
+    V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationStatus:
+      type: string
+      enum:
+      - migrated
+      - not-migrated
+      - not-required
+      description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
+      title: V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationStatus
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
+      oneOf:
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2'
+      description: The permission granted to the member
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf0Type:
+      type: string
+      enum:
+      - dataset
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf0Type
+    datasets_materializeDataset_Response_200:
+      type: object
+      properties:
+        taskId:
+          type: string
+      required:
+      - taskId
+      title: datasets_materializeDataset_Response_200
+    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1:
+      type: object
+      properties:
+        teamId:
+          type: string
+      required:
+      - teamId
+      description: The UUID of the team receiving the grant
+      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0:
+      type: string
+      enum:
+      - admin
+      - annotate
+      - update
+      - usage
+      - writeback
+      description: 'Valid inode types: table, connection database, and connection schema.'
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2:
+      type: string
+      enum:
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: version tag.'
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2
+    V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type:
+          - string
+          - 'null'
+        errorCode:
+          type:
+          - string
+          - 'null'
+      required:
+      - code
+      - message
+      title: V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsError
+    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0:
+      type: object
+      properties:
+        memberId:
+          type: string
+      required:
+      - memberId
+      description: The UUID of the member receiving the grant
+      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0
+    V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationStatus:
+      type: string
+      enum:
+      - migrated
+      - not-migrated
+      - not-required
+      description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
+      title: V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationStatus
+    V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsStatus'
+        finishedAt:
+          type: string
+          format: date-time
+        error:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsError'
+        runtimeSecs:
+          type:
+          - number
+          - 'null'
+          format: double
+        numRows:
+          type:
+          - number
+          - 'null'
+          format: double
+        numBytes:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - status
+      - finishedAt
+      - error
+      - runtimeSecs
+      - numRows
+      - numBytes
+      title: V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission:
+      type: string
+      enum:
+      - view
+      - edit
+      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        grantId:
+          type: string
+          description: The unique identifier of the grant
+        inodeId:
+          type: string
+          description: The unique identifier of the inode
+        organizationId:
+          type: string
+          description: The unique identifier of the organization
+        memberId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the member
+        teamId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the team
+        permission:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
+          description: The permission granted to the member
+        createdBy:
+          type: string
+          description: The identifier of the user who created this grant
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this grant
+        createdAt:
+          type: string
+          format: date-time
+          description: When the grant was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the grant was last updated
+      required:
+      - grantId
+      - inodeId
+      - organizationId
+      - memberId
+      - teamId
+      - permission
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems
+    datasets_migrateDatasetToDataModel_Response_200:
+      type: object
+      properties:
+        dataModelId:
+          type:
+          - string
+          - 'null'
+          description: ID of the newly-created data model. Null when `dryRun` is true.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItems'
+          description: All datasets or connection tables linked to this dataset. Each can be a source, target, or part of a series of links.
+        linkCount:
+          type: number
+          format: double
+          description: Number of links the dataset has to other datasets.
+        referenceCount:
+          type: number
+          format: double
+          description: Number of references from other datasets to this dataset.
+      required:
+      - dataModelId
+      - links
+      - linkCount
+      - referenceCount
+      title: datasets_migrateDatasetToDataModel_Response_200
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1
+    V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationToDataModel:
+      type: object
+      properties:
+        dataModelId:
+          type: string
+        dataModelUrl:
+          type: string
+        migratedAt:
+          type: string
+          format: date-time
+        migratedBy:
+          type: string
+      required:
+      - dataModelId
+      - dataModelUrl
+      - migratedAt
+      - migratedBy
+      description: Details about migration to data model
+      title: V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationToDataModel
+    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems:
+      type: object
+      properties:
+        grantee:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee'
+        permission:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission'
+        tagId:
+          type: string
+      required:
+      - grantee
+      - permission
+      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems
+    datasets_listDatasetGrants_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: datasets_listDatasetGrants_Response_200
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

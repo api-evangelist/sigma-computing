@@ -1218,6 +1218,78 @@ apis:
     url: conformance/sigma-computing-conformance.yml
   - type: Lifecycle
     url: lifecycle/sigma-computing-lifecycle.yml
+- aid: sigma-computing:sigma-computing-allowedips-api
+  name: Sigma Computing Allowed Ips API
+  description: The allowedIps API from Sigma Computing — 1 operation(s) for allowedips.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - allowedIps
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-allowedips-api-openapi.yml
+- aid: sigma-computing:sigma-computing-allowedips-batchcreate-api
+  name: Sigma Computing Allowed Ips\:batch Create API
+  description: >-
+    The allowedIps\:batchCreate API from Sigma Computing — 1 operation(s) for allowedips\:batchcreate.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - allowedIps\:batchCreate
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-allowedips-batchcreate-api-openapi.yml
+- aid: sigma-computing:sigma-computing-allowedips-batchdelete-api
+  name: Sigma Computing Allowed Ips\:batch Delete API
+  description: >-
+    The allowedIps\:batchDelete API from Sigma Computing — 1 operation(s) for allowedips\:batchdelete.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - allowedIps\:batchDelete
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-allowedips-batchdelete-api-openapi.yml
+- aid: sigma-computing:sigma-computing-api-connectors-api
+  name: Sigma Computing API Connectors API
+  description: The api-connectors API from Sigma Computing — 2 operation(s) for api-connectors.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - api-connectors
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-api-connectors-api-openapi.yml
+- aid: sigma-computing:sigma-computing-api-credentials-api
+  name: Sigma Computing API Credentials API
+  description: The api-credentials API from Sigma Computing — 2 operation(s) for api-credentials.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - api-credentials
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-api-credentials-api-openapi.yml
+- aid: sigma-computing:sigma-computing-shared-templates-api
+  name: Sigma Computing Shared Templates API
+  description: The shared_templates API from Sigma Computing — 3 operation(s) for shared_templates.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - shared_templates
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-shared-templates-api-openapi.yml
+- aid: sigma-computing:sigma-computing-user-attributes-api
+  name: Sigma Computing User Attributes API
+  description: The user-attributes API from Sigma Computing — 8 operation(s) for user-attributes.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - user-attributes
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-user-attributes-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

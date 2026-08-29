@@ -1,0 +1,165 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Public REST Allowed Ips API
+  version: 2.0.0
+  summary: The Sigma REST API provides developers access to resources programmatically, using HTTP.
+  description: "The Sigma REST API provides developers access to resources programmatically,\n    using HTTP. The API allows secure access to all the commonly used resources\n    like connections, datasets, teams, workbooks and more. It is designed to have\n    predictable, resource-oriented URLs and to use HTTP response codes to\n    indicate API errors. It uses built-in HTTP features, like HTTP\n    authentication and HTTP verbs, which are understood by off-the-shelf HTTP\n    clients. It supports cross-origin resource sharing, allowing you to interact\n    securely with the API from a client-side web application (though you should\n    never expose your client credentials or API token in any public website's client-side code).\n    JSON is returned by all API responses, including errors.\n    Some useful links:\n        - [API Reference Help](https://help.sigmacomputing.com/reference)\n        - [API QuickStart with Postman](https://quickstarts.sigmacomputing.com/guide/sigma_api_with_postman/index.html?index=..%2F..index#0)"
+  termsOfService: Contact Sigma
+  contact:
+    email: support@sigmacomputing.com
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+security:
+- oauth2: []
+tags:
+- name: allowedIps
+paths:
+  /v3alpha/allowedIps:
+    get:
+      summary: List IP allowlist entries (Beta)
+      description: "Retrieve a paginated list of all IP addresses and CIDR ranges in your organization's IP allowlist.\n\n**Beta**: This documentation describes a private beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.\n\n  ### Usage notes\n  - Returns the IP allowlist entries.\n  - Results are sorted by creation date in descending order (newest first).\n  "
+      parameters:
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 1000. Defaults to 50.
+          title: Page size
+        in: query
+      operationId: v3alpha_listIpAllowlistEntries
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - ipAllowlistEntryId
+                          - ip
+                          - scope
+                          properties:
+                            ipAllowlistEntryId:
+                              type: string
+                              description: Unique ID for this IP allowlist entry
+                            ip:
+                              type: string
+                              description: IPv4/IPv6 address or CIDR range
+                            scope:
+                              type: string
+                              enum:
+                              - public-api
+                              - ui
+                              - both
+                              description: Scope for which this IP allowlist entry applies
+                        - type: object
+                          properties:
+                            description:
+                              type: string
+                              description: Description for this IP allowlist entry
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - allowedIps
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}

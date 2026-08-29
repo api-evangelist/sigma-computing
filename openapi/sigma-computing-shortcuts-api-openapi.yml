@@ -1,0 +1,309 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Shortcuts API
+  version: '1.0'
+  description: 'Operations tagged shortcuts across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: shortcuts
+paths:
+  /v2/shortcuts:
+    post:
+      summary: Create a shortcut (Beta)
+      description: "Create a shortcut that surfaces an existing item in another folder or workspace without duplicating it.\n\n\n**Beta**: This documentation describes a private beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.\n\n  ### Usage notes\n  - A shortcut requires a **parentId** (the folder or workspace to place it in) and a **target** (the item the shortcut points to).\n    - Retrieve the ID of a folder to use as a **parentId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and reviewing the `id` field in the response for files with a `type` of `folder`.\n    - Retrieve the ID of a workspace to use as a **parentId** by calling the [/v2/workspaces](https://help.sigmacomputing.com/reference/list-workspaces) endpoint.\n  - The target can be a document (workbook, data model, report, dataset, or folder) or a database object (table, view, schema, database, or stored procedure).\n  - You must have at least **Can view** access to the target document or folder, or **Can use** access to the target database object.\n\n  ### Usage scenarios\n  - **Deployment and embedding**: Surface shared workbooks or data models in tenant workspaces or folders without exposing a central workspace to end users.\n    "
+      parameters: []
+      operationId: shortcutsCreate
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - parentId
+                - target
+                properties:
+                  parentId:
+                    type: string
+                    description: The ID of the folder or workspace to place the shortcut in.
+                    title: Parent folder
+                  target:
+                    type: object
+                    required:
+                    - id
+                    properties:
+                      id:
+                        type: string
+                        description: The ID of the workbook, data model, report, dataset, folder, or database object the shortcut points to.
+                        title: Shortcut target ID
+                    description: The item the shortcut points to.
+                    title: Shortcut target
+              - type: object
+                properties:
+                  name:
+                    type: string
+                    description: A name for the shortcut. Defaults to the name of the item it points to if this field is omitted.
+                    title: Shortcut name
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - id
+                  - urlId
+                  - name
+                  - parentId
+                  - parentUrlId
+                  - path
+                  - target
+                  properties:
+                    id:
+                      type: string
+                    urlId:
+                      type: string
+                    name:
+                      type: string
+                    parentId:
+                      type: string
+                    parentUrlId:
+                      type: string
+                    path:
+                      type: string
+                    target:
+                      type: object
+                      required:
+                      - type
+                      - id
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - workbook
+                          - data-model
+                          - dataset
+                          - report
+                          - folder
+                          - table
+                          - scope
+                          - stored-procedure
+                          description: The type of the item this shortcut points to. For database targets, `table` also covers views, and `scope` covers schemas and databases.
+                          title: Shortcut target type
+                        id:
+                          type: string
+                          description: The ID of the item this shortcut points to.
+                          title: Shortcut target ID
+                - type: object
+                  properties:
+                    ownerId:
+                      type:
+                      - string
+                      - 'null'
+                - type: object
+                  required:
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  properties:
+                    createdBy:
+                      type: string
+                      description: The identifier of the user who created this object.
+                    updatedBy:
+                      type: string
+                      description: The identifier of the user or process that last updated this object.
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: When the object was created.
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: When the object was last updated.
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - shortcuts
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType:
+      type: string
+      enum:
+      - workbook
+      - data-model
+      - dataset
+      - report
+      - folder
+      - table
+      - scope
+      - stored-procedure
+      description: The type of the item this shortcut points to. For database targets, `table` also covers views, and `scope` covers schemas and databases.
+      title: V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType
+    shortcuts_create_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+        urlId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        parentUrlId:
+          type: string
+        path:
+          type: string
+        target:
+          $ref: '#/components/schemas/V2ShortcutsPostResponsesContentApplicationJsonSchemaTarget'
+        ownerId:
+          type:
+          - string
+          - 'null'
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+      required:
+      - id
+      - urlId
+      - name
+      - parentId
+      - parentUrlId
+      - path
+      - target
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: shortcuts_create_Response_200
+    V2ShortcutsPostRequestBodyContentApplicationJsonSchemaTarget:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the workbook, data model, report, dataset, folder, or database object the shortcut points to.
+      required:
+      - id
+      description: The item the shortcut points to.
+      title: V2ShortcutsPostRequestBodyContentApplicationJsonSchemaTarget
+    V2ShortcutsPostResponsesContentApplicationJsonSchemaTarget:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType'
+          description: The type of the item this shortcut points to. For database targets, `table` also covers views, and `scope` covers schemas and databases.
+        id:
+          type: string
+          description: The ID of the item this shortcut points to.
+      required:
+      - type
+      - id
+      title: V2ShortcutsPostResponsesContentApplicationJsonSchemaTarget
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

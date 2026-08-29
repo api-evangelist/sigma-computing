@@ -1,0 +1,433 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Account Types API
+  version: '1.0'
+  description: 'Operations tagged accountTypes across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: accountTypes
+paths:
+  /v2/accountTypes:
+    get:
+      summary: List account types
+      description: "Returns a list of all account types available in the organization.\n\n  ### Usage notes\n  - Use the **accountTypeId** with the [/v2/accountTypes/:accountTypeId/permissions](https://help.sigmacomputing.com/reference/list-account-type-permissions) endpoint to retrieve more detailed permissions.\n  - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n\n  ### Usage scenarios\n  - Display available account types in an admin interface.\n  - Show an overview of account types for management.\n  "
+      parameters:
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 1000. Defaults to 50.
+          title: Page size
+        in: query
+      operationId: listAccountTypes
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - accountTypeId
+                        - accountTypeName
+                        - description
+                        - isCustom
+                        properties:
+                          accountTypeId:
+                            type: string
+                            description: The unique identifier of the account type.
+                          accountTypeName:
+                            type: string
+                            description: The name of the account type.
+                          description:
+                            type: string
+                            description: A human-readable description of the permissions and capabilities provided by this account type.
+                          isCustom:
+                            type: boolean
+                            description: Whether this is a custom account type created by the organization (true) or a default Sigma account type (false).
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - accountTypes
+      security:
+      - oauth2: []
+    post:
+      summary: Create an account type
+      description: "Create a custom account type with specified permissions.\n\n  ### Usage notes\n  - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n  - Use the permission names from the [/v2/accountTypes/:accountTypeId/permissions](https://help.sigmacomputing.com/reference/list-account-type-permissions) endpoint.\n\n  ### Usage scenarios\n  - Create custom account types to define specific permission sets for your organization's users.\n  "
+      parameters: []
+      operationId: createAccountType
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - description
+              - permissions
+              properties:
+                name:
+                  type: string
+                  description: The name of the account type.
+                description:
+                  type: string
+                  description: A description of the account type.
+                permissions:
+                  type: array
+                  items:
+                    type: string
+                  description: An array of permissions to enable for this account type. Use the permission names from the [/v2/accountTypes/:accountTypeId/permissions](https://help.sigmacomputing.com/reference/list-account-type-permissions) endpoint.
+      responses:
+        '201':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - accountTypeId
+                - accountTypeName
+                - description
+                - isCustom
+                properties:
+                  accountTypeId:
+                    type: string
+                    description: The unique identifier of the account type.
+                  accountTypeName:
+                    type: string
+                    description: The name of the account type.
+                  description:
+                    type: string
+                    description: A human-readable description of the permissions and capabilities provided by this account type.
+                  isCustom:
+                    type: boolean
+                    description: Whether this is a custom account type created by the organization (true) or a default Sigma account type (false).
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - accountTypes
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/accountTypes/{accountTypeId}:
+    delete:
+      summary: Delete an account type
+      description: "Delete a custom account type and reassign its users to another account type.\n\n  ### Usage notes\n  - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n  - Default Sigma account types cannot be deleted.\n  - All users assigned to the deleted account type will be reassigned to the specified **reassignToAccountTypeId**.\n  - Retrieve account type IDs by calling the [/v2/accountTypes](https://help.sigmacomputing.com/reference/list-account-types) endpoint.\n\n  ### Usage scenarios\n  - Remove custom account types that are no longer needed.\n  - Consolidate account types by moving users to a different account type before deletion.\n  "
+      parameters:
+      - name: accountTypeId
+        schema:
+          type: string
+          description: The unique identifier of the account type to delete.
+        in: path
+        required: true
+      - name: reassignToAccountTypeId
+        schema:
+          type: string
+          description: The unique identifier of the account type to reassign users to. Users currently assigned the deleted account type will be reassigned this account type.
+        in: query
+      operationId: deleteAccountType
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - accountTypes
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/accountTypes/{accountTypeId}/permissions:
+    get:
+      summary: List account type permissions
+      description: "Returns all feature permissions for a specific account type.\n\n  ### Usage notes\n  - Retrieve the **accountTypeId** by calling the [/v2/accountTypes](https://help.sigmacomputing.com/reference/list-account-types) endpoint.\n  - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n\n  ### Usage scenarios\n  - Display permission details in an admin interface.\n  - Validate user capabilities based on account type.\n  - Compare permissions across different account types.\n  "
+      parameters:
+      - name: accountTypeId
+        schema:
+          type: string
+          description: The unique identifier of the account type.
+        in: path
+        required: true
+      operationId: listAccountTypePermissions
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - permission
+                  - description
+                  properties:
+                    permission:
+                      type: string
+                      description: The permission name. For example, "view-worksheet".
+                    description:
+                      type: string
+                      description: A human-readable description of what this permission allows.
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - accountTypes
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    accountTypes_deleteAccountType_Response_200:
+      type: object
+      properties: {}
+      title: accountTypes_deleteAccountType_Response_200
+    accountTypes_createAccountType_Response_201:
+      type: object
+      properties:
+        accountTypeId:
+          type: string
+          description: The unique identifier of the account type.
+        accountTypeName:
+          type: string
+          description: The name of the account type.
+        description:
+          type: string
+          description: A human-readable description of the permissions and capabilities provided by this account type.
+        isCustom:
+          type: boolean
+          description: Whether this is a custom account type created by the organization (true) or a default Sigma account type (false).
+      required:
+      - accountTypeId
+      - accountTypeName
+      - description
+      - isCustom
+      title: accountTypes_createAccountType_Response_201
+    V2AccountTypesAccountTypeIdPermissionsGetResponsesContentApplicationJsonSchemaItems:
+      type: object
+      properties:
+        permission:
+          type: string
+          description: The permission name. For example, "view-worksheet".
+        description:
+          type: string
+          description: A human-readable description of what this permission allows.
+      required:
+      - permission
+      - description
+      title: V2AccountTypesAccountTypeIdPermissionsGetResponsesContentApplicationJsonSchemaItems
+    V2AccountTypesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        accountTypeId:
+          type: string
+          description: The unique identifier of the account type.
+        accountTypeName:
+          type: string
+          description: The name of the account type.
+        description:
+          type: string
+          description: A human-readable description of the permissions and capabilities provided by this account type.
+        isCustom:
+          type: boolean
+          description: Whether this is a custom account type created by the organization (true) or a default Sigma account type (false).
+      required:
+      - accountTypeId
+      - accountTypeName
+      - description
+      - isCustom
+      title: V2AccountTypesGetResponsesContentApplicationJsonSchemaEntriesItems
+    accountTypes_listAccountTypes_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2AccountTypesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: accountTypes_listAccountTypes_Response_200
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

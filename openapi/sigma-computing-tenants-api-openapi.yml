@@ -1,0 +1,1277 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Tenants API
+  version: '1.0'
+  description: 'Operations tagged tenants across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: tenants
+paths:
+  /v2/tenants:
+    post:
+      summary: Create a tenant organization
+      description: 'Create a new tenant organization with the specified name and organization slug to be used in the URL.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - The **tenantOrganizationName** is displayed as the organization name in the Sigma interface.
+
+        - The **tenantOrganizationSlug** must be unique and is used in URLs to identify the tenant organization.'
+      parameters: []
+      operationId: createTenant
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - tenantOrganizationName
+                - tenantOrganizationSlug
+                properties:
+                  tenantOrganizationName:
+                    type: string
+                    description: Name of the tenant organization to create
+                  tenantOrganizationSlug:
+                    type: string
+                    description: URL identifier for the tenant organization
+              - type: object
+                properties:
+                  cloudProvider:
+                    type: string
+                    enum:
+                    - aws
+                    - aws-au
+                    - aws-ca
+                    - aws-eu
+                    - aws-uk
+                    - aws-us-a
+                    - azure-ca
+                    - azure-eu
+                    - azure-uk
+                    - azure-us
+                    - gcp
+                    - gcp-us
+                    description: Cloud provider to create the tenant organization in. Defaults to the same cloud provider as the parent organization
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - tenantOrganizationId
+                  - parentOrganizationId
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  - tenantOrganizationName
+                  - tenantOrganizationSlug
+                  properties:
+                    tenantOrganizationId:
+                      type: string
+                      description: Unique identifier of the tenant organization
+                    parentOrganizationId:
+                      type: string
+                      description: Unique identifier of the tenant's parent organization
+                    createdBy:
+                      type: string
+                      description: Unique identifier of the user who created the tenant organization
+                      title: Unique identifier of the user who created the tenant organization
+                    updatedBy:
+                      type: string
+                      description: Unique identifier of the user who last updated the tenant organization
+                      title: Unique identifier of the user who last updated the tenant organization
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
+                    tenantOrganizationName:
+                      type: string
+                      description: Name of the tenant organization to create
+                    tenantOrganizationSlug:
+                      type: string
+                      description: URL identifier for the tenant organization
+                - type: object
+                  properties:
+                    sharedAt:
+                      type: string
+                      format: date-time
+                      description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
+                    tenantCloudProvider:
+                      type: string
+                      description: Cloud provider the tenant organization is hosted on
+                    tenantRegion:
+                      type: string
+                      description: Region the tenant organization is hosted in
+                    tenantApiUrl:
+                      type: string
+                      description: Base URL for accessing the tenant organization API
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tenants
+      security:
+      - oauth2: []
+    get:
+      summary: List tenant organizations
+      description: 'Retrieve a paginated list of tenant organizations with optional filtering and sorting.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Use **pageToken** and **pageSize** parameters to manage paginated responses.
+
+        - Use **search** to filter results by organization slug or ID of the user who created the tenant.
+
+        - Use **key** and **order** to sort results by creation date, ID of the user who created the tenant, name, or URL.'
+      parameters:
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 1000. Defaults to 50.
+          title: Page size
+        in: query
+      - name: key
+        schema:
+          type: string
+          enum:
+          - createdAt
+          - createdBy
+          - name
+          - url
+          description: Field to sort the results by
+        in: query
+      - name: order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Sort order for the results
+        in: query
+      - name: search
+        schema:
+          type: string
+          description: Search term to filter tenant organizations by slug or creator
+        in: query
+      operationId: listTenants
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        oneOf:
+                        - allOf:
+                          - type: object
+                            required:
+                            - tenantOrganizationId
+                            - parentOrganizationId
+                            - createdBy
+                            - updatedBy
+                            - createdAt
+                            - updatedAt
+                            - tenantOrganizationName
+                            - tenantOrganizationSlug
+                            properties:
+                              tenantOrganizationId:
+                                type: string
+                                description: Unique identifier of the tenant organization
+                              parentOrganizationId:
+                                type: string
+                                description: Unique identifier of the tenant's parent organization
+                              createdBy:
+                                type: string
+                                description: Unique identifier of the user who created the tenant organization
+                                title: Unique identifier of the user who created the tenant organization
+                              updatedBy:
+                                type: string
+                                description: Unique identifier of the user who last updated the tenant organization
+                                title: Unique identifier of the user who last updated the tenant organization
+                              createdAt:
+                                type: string
+                                format: date-time
+                                description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
+                              updatedAt:
+                                type: string
+                                format: date-time
+                                description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
+                              tenantOrganizationName:
+                                type: string
+                                description: Name of the tenant organization to create
+                              tenantOrganizationSlug:
+                                type: string
+                                description: URL identifier for the tenant organization
+                          - type: object
+                            properties:
+                              sharedAt:
+                                type: string
+                                format: date-time
+                                description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
+                              tenantCloudProvider:
+                                type: string
+                                description: Cloud provider the tenant organization is hosted on
+                              tenantRegion:
+                                type: string
+                                description: Region the tenant organization is hosted in
+                              tenantApiUrl:
+                                type: string
+                                description: Base URL for accessing the tenant organization API
+                        - type: 'null'
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tenants
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/tenants/{tenantOrganizationId}:
+    patch:
+      summary: Update details of a tenant organization
+      description: "Update the details of an existing tenant organization. The organization name and slug can be updated through this endpoint.\n    \n### Usage notes\n- To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n- Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint."
+      parameters:
+      - name: tenantOrganizationId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: patchTenant
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantOrganizationName:
+                  type: string
+                  description: New name for the tenant organization
+                tenantOrganizationSlug:
+                  type: string
+                  description: New URL identifier for the tenant organization
+              description: Request parameters for updating a tenant organization
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - tenantOrganizationId
+                  - parentOrganizationId
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  - tenantOrganizationName
+                  - tenantOrganizationSlug
+                  properties:
+                    tenantOrganizationId:
+                      type: string
+                      description: Unique identifier of the tenant organization
+                    parentOrganizationId:
+                      type: string
+                      description: Unique identifier of the tenant's parent organization
+                    createdBy:
+                      type: string
+                      description: Unique identifier of the user who created the tenant organization
+                      title: Unique identifier of the user who created the tenant organization
+                    updatedBy:
+                      type: string
+                      description: Unique identifier of the user who last updated the tenant organization
+                      title: Unique identifier of the user who last updated the tenant organization
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
+                    tenantOrganizationName:
+                      type: string
+                      description: Name of the tenant organization to create
+                    tenantOrganizationSlug:
+                      type: string
+                      description: URL identifier for the tenant organization
+                - type: object
+                  properties:
+                    sharedAt:
+                      type: string
+                      format: date-time
+                      description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
+                    tenantCloudProvider:
+                      type: string
+                      description: Cloud provider the tenant organization is hosted on
+                    tenantRegion:
+                      type: string
+                      description: Region the tenant organization is hosted in
+                    tenantApiUrl:
+                      type: string
+                      description: Base URL for accessing the tenant organization API
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tenants
+      security:
+      - oauth2: []
+    delete:
+      summary: Delete a tenant organization
+      description: 'Delete a tenant organization by tenantOrganizationId.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.
+
+        - This action permanently removes the tenant organization and cannot be undone.'
+      parameters:
+      - name: tenantOrganizationId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: deleteTenant
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tenants
+      security:
+      - oauth2: []
+    get:
+      summary: Get details for a tenant organization
+      description: 'Retrieve details of a specific tenant organization by tenantOrganizationId.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.'
+      parameters:
+      - name: tenantOrganizationId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: getTenant
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - tenantOrganizationId
+                  - parentOrganizationId
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  - tenantOrganizationName
+                  - tenantOrganizationSlug
+                  properties:
+                    tenantOrganizationId:
+                      type: string
+                      description: Unique identifier of the tenant organization
+                    parentOrganizationId:
+                      type: string
+                      description: Unique identifier of the tenant's parent organization
+                    createdBy:
+                      type: string
+                      description: Unique identifier of the user who created the tenant organization
+                      title: Unique identifier of the user who created the tenant organization
+                    updatedBy:
+                      type: string
+                      description: Unique identifier of the user who last updated the tenant organization
+                      title: Unique identifier of the user who last updated the tenant organization
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
+                    tenantOrganizationName:
+                      type: string
+                      description: Name of the tenant organization to create
+                    tenantOrganizationSlug:
+                      type: string
+                      description: URL identifier for the tenant organization
+                - type: object
+                  properties:
+                    sharedAt:
+                      type: string
+                      format: date-time
+                      description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
+                    tenantCloudProvider:
+                      type: string
+                      description: Cloud provider the tenant organization is hosted on
+                    tenantRegion:
+                      type: string
+                      description: Region the tenant organization is hosted in
+                    tenantApiUrl:
+                      type: string
+                      description: Base URL for accessing the tenant organization API
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tenants
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/tenants/{tenantOrganizationId}/capabilities/deployments:
+    get:
+      summary: List tenant deployment capabilities
+      description: 'Retrieve a paginated list of tenant organizations that the specified tenant organization can deploy to.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.
+
+        - Use **pageToken** and **pageSize** to paginate results.'
+      parameters:
+      - name: tenantOrganizationId
+        schema:
+          type: string
+          description: Unique identifier of the tenant organization whose deployment capabilities are being managed.
+          title: Tenant Organization ID
+        in: path
+        required: true
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 1000. Defaults to 50.
+          title: Page size
+        in: query
+      operationId: listTenantDeploymentCapabilities
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - tenantOrganizationId
+                        properties:
+                          tenantOrganizationId:
+                            type: string
+                            description: Unique identifier of a tenant organization that can be deployed to.
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tenants
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/tenants/{tenantOrganizationId}/capabilities/deployments:batchAdd:
+    post:
+      summary: Add deployment capabilities to a tenant
+      description: 'Grant a tenant organization the capability to deploy to other tenant organizations.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve **tenantOrganizationId** values by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.'
+      parameters:
+      - name: tenantOrganizationId
+        schema:
+          type: string
+          description: Unique identifier of the tenant organization whose deployment capabilities are being managed.
+          title: Tenant Organization ID
+        in: path
+        required: true
+      operationId: addTenantDeploymentCapabilities
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - deployToTenantOrganizationIds
+              properties:
+                deployToTenantOrganizationIds:
+                  type: array
+                  items:
+                    type: string
+                  description: The tenant organizations that this tenant can deploy to.
+              description: Request parameters for adding tenant deployment capabilities
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - capabilities
+                properties:
+                  capabilities:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - tenantOrganizationId
+                      properties:
+                        tenantOrganizationId:
+                          type: string
+                          description: Unique identifier of a tenant organization that can be deployed to.
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tenants
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/tenants/{tenantOrganizationId}/capabilities/deployments:batchRemove:
+    post:
+      summary: Remove deployment capabilities from a tenant
+      description: 'Revoke a tenant organization''s capability to deploy to one or more tenant organizations.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve **tenantOrganizationId** values by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.
+
+        - Existing deployments from this tenant organization to the specified tenant organizations will be removed.'
+      parameters:
+      - name: tenantOrganizationId
+        schema:
+          type: string
+          description: Unique identifier of the tenant organization whose deployment capabilities are being managed.
+          title: Tenant Organization ID
+        in: path
+        required: true
+      operationId: removeTenantDeploymentCapabilities
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - deployToTenantOrganizationIds
+              properties:
+                deployToTenantOrganizationIds:
+                  type: array
+                  items:
+                    type: string
+                  description: The tenant organizations that this tenant can no longer deploy to
+              description: Request parameters for removing tenant deployment capabilities
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tenants
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/tenants/{tenantOrganizationId}/workbooks:
+    get:
+      summary: Get deployed workbook in tenant organization
+      description: "Retrieve the workbook ID for a workbook deployed to a tenant organization for a given parent workbook and deployment policy.\n\n### Usage notes\n- To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n- The parent workbook must be part of the specified deployment policy.\n- The workbook must be deployed to the specified tenant organization.\n- Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.\n- Retrieve the **deploymentPolicyId** by calling the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint. \n- Retrieve the **parentWorkbookId** by calling the [/v2/deploymentPolicies/{deploymentPolicyId}/files](https://help.sigmacomputing.com/reference/list-inodes-for-deployment) endpoint and using the `workbookId` included in the response.\n- For version-tagged deployment policies, you may pass either the source workbook ID or the version-tagged workbook ID as the **parentWorkbookId**."
+      parameters:
+      - name: tenantOrganizationId
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: parentWorkbookId
+        schema:
+          type: string
+          description: Unique identifier of the workbook in the parent organization. For version-tagged deployments, this can be either the source workbook ID or the version-tagged workbook ID.
+        in: query
+      - name: deploymentPolicyId
+        schema:
+          type: string
+          description: The ID of the deployment policy that contains the workbook
+        in: query
+      operationId: getTenantWorkbook
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - workbookId
+                - workbookUrl
+                properties:
+                  workbookId:
+                    type: string
+                    description: Unique identifier of the workbook deployed to the tenant organization
+                  workbookUrl:
+                    type: string
+                    description: URL to access the workbook in the tenant organization
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tenants
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    V2TenantsTenantOrganizationIdCapabilitiesDeploymentsBatchAddPostResponsesContentApplicationJsonSchemaCapabilitiesItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of a tenant organization that can be deployed to.
+      required:
+      - tenantOrganizationId
+      title: V2TenantsTenantOrganizationIdCapabilitiesDeploymentsBatchAddPostResponsesContentApplicationJsonSchemaCapabilitiesItems
+    tenants_removeTenantDeploymentCapabilities_Response_200:
+      type: object
+      properties: {}
+      title: tenants_removeTenantDeploymentCapabilities_Response_200
+    tenants_addTenantDeploymentCapabilities_Response_200:
+      type: object
+      properties:
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TenantsTenantOrganizationIdCapabilitiesDeploymentsBatchAddPostResponsesContentApplicationJsonSchemaCapabilitiesItems'
+      required:
+      - capabilities
+      title: tenants_addTenantDeploymentCapabilities_Response_200
+    V2TenantsGetParametersKey:
+      type: string
+      enum:
+      - createdAt
+      - createdBy
+      - name
+      - url
+      description: Field to sort the results by
+      title: V2TenantsGetParametersKey
+    tenants_listTenantDeploymentCapabilities_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TenantsTenantOrganizationIdCapabilitiesDeploymentsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: tenants_listTenantDeploymentCapabilities_Response_200
+    V2TenantsGetParametersOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      description: Sort order for the results
+      title: V2TenantsGetParametersOrder
+    tenants_patchTenant_Response_200:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of the tenant organization
+        parentOrganizationId:
+          type: string
+          description: Unique identifier of the tenant's parent organization
+        createdBy:
+          type: string
+          description: Unique identifier of the user who created the tenant organization
+        updatedBy:
+          type: string
+          description: Unique identifier of the user who last updated the tenant organization
+        createdAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
+        tenantOrganizationName:
+          type: string
+          description: Name of the tenant organization to create
+        tenantOrganizationSlug:
+          type: string
+          description: URL identifier for the tenant organization
+        sharedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
+        tenantCloudProvider:
+          type: string
+          description: Cloud provider the tenant organization is hosted on
+        tenantRegion:
+          type: string
+          description: Region the tenant organization is hosted in
+        tenantApiUrl:
+          type: string
+          description: Base URL for accessing the tenant organization API
+      required:
+      - tenantOrganizationId
+      - parentOrganizationId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - tenantOrganizationName
+      - tenantOrganizationSlug
+      title: tenants_patchTenant_Response_200
+    tenants_deleteTenant_Response_200:
+      type: object
+      properties: {}
+      title: tenants_deleteTenant_Response_200
+    tenants_createTenant_Response_200:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of the tenant organization
+        parentOrganizationId:
+          type: string
+          description: Unique identifier of the tenant's parent organization
+        createdBy:
+          type: string
+          description: Unique identifier of the user who created the tenant organization
+        updatedBy:
+          type: string
+          description: Unique identifier of the user who last updated the tenant organization
+        createdAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
+        tenantOrganizationName:
+          type: string
+          description: Name of the tenant organization to create
+        tenantOrganizationSlug:
+          type: string
+          description: URL identifier for the tenant organization
+        sharedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
+        tenantCloudProvider:
+          type: string
+          description: Cloud provider the tenant organization is hosted on
+        tenantRegion:
+          type: string
+          description: Region the tenant organization is hosted in
+        tenantApiUrl:
+          type: string
+          description: Base URL for accessing the tenant organization API
+      required:
+      - tenantOrganizationId
+      - parentOrganizationId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - tenantOrganizationName
+      - tenantOrganizationSlug
+      title: tenants_createTenant_Response_200
+    V2TenantsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of the tenant organization
+        parentOrganizationId:
+          type: string
+          description: Unique identifier of the tenant's parent organization
+        createdBy:
+          type: string
+          description: Unique identifier of the user who created the tenant organization
+        updatedBy:
+          type: string
+          description: Unique identifier of the user who last updated the tenant organization
+        createdAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
+        tenantOrganizationName:
+          type: string
+          description: Name of the tenant organization to create
+        tenantOrganizationSlug:
+          type: string
+          description: URL identifier for the tenant organization
+        sharedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
+        tenantCloudProvider:
+          type: string
+          description: Cloud provider the tenant organization is hosted on
+        tenantRegion:
+          type: string
+          description: Region the tenant organization is hosted in
+        tenantApiUrl:
+          type: string
+          description: Base URL for accessing the tenant organization API
+      required:
+      - tenantOrganizationId
+      - parentOrganizationId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - tenantOrganizationName
+      - tenantOrganizationSlug
+      title: V2TenantsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TenantsTenantOrganizationIdCapabilitiesDeploymentsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of a tenant organization that can be deployed to.
+      required:
+      - tenantOrganizationId
+      title: V2TenantsTenantOrganizationIdCapabilitiesDeploymentsGetResponsesContentApplicationJsonSchemaEntriesItems
+    tenants_getTenantWorkbook_Response_200:
+      type: object
+      properties:
+        workbookId:
+          type: string
+          description: Unique identifier of the workbook deployed to the tenant organization
+        workbookUrl:
+          type: string
+          description: URL to access the workbook in the tenant organization
+      required:
+      - workbookId
+      - workbookUrl
+      title: tenants_getTenantWorkbook_Response_200
+    V2TenantsPostRequestBodyContentApplicationJsonSchemaCloudProvider:
+      type: string
+      enum:
+      - aws
+      - aws-au
+      - aws-ca
+      - aws-eu
+      - aws-uk
+      - aws-us-a
+      - azure-au
+      - azure-ca
+      - azure-eu
+      - azure-uk
+      - azure-us
+      - gcp
+      - gcp-us
+      description: Cloud provider to create the tenant organization in. Defaults to the same cloud provider as the parent organization
+      title: V2TenantsPostRequestBodyContentApplicationJsonSchemaCloudProvider
+    tenants_listTenants_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/V2TenantsGetResponsesContentApplicationJsonSchemaEntriesItems'
+            - type: 'null'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: tenants_listTenants_Response_200
+    tenants_getTenant_Response_200:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of the tenant organization
+        parentOrganizationId:
+          type: string
+          description: Unique identifier of the tenant's parent organization
+        createdBy:
+          type: string
+          description: Unique identifier of the user who created the tenant organization
+        updatedBy:
+          type: string
+          description: Unique identifier of the user who last updated the tenant organization
+        createdAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
+        tenantOrganizationName:
+          type: string
+          description: Name of the tenant organization to create
+        tenantOrganizationSlug:
+          type: string
+          description: URL identifier for the tenant organization
+        sharedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
+        tenantCloudProvider:
+          type: string
+          description: Cloud provider the tenant organization is hosted on
+        tenantRegion:
+          type: string
+          description: Region the tenant organization is hosted in
+        tenantApiUrl:
+          type: string
+          description: Base URL for accessing the tenant organization API
+      required:
+      - tenantOrganizationId
+      - parentOrganizationId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - tenantOrganizationName
+      - tenantOrganizationSlug
+      title: tenants_getTenant_Response_200
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

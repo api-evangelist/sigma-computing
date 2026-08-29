@@ -1,0 +1,826 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Tags API
+  version: '1.0'
+  description: 'Operations tagged tags across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: tags
+paths:
+  /v2/tags:
+    post:
+      summary: Create a tag
+      description: Create a version tag to use, for example, for workbooks.
+      parameters: []
+      operationId: createVersionTag
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - name
+                - color
+                properties:
+                  name:
+                    type: string
+                    description: Name of the tag. Must be unique
+                  color:
+                    type: string
+                    enum:
+                    - cyan
+                    - grass
+                    - violet
+                    - plum
+                    - amber
+                    - bronze
+                    description: Color to associate with the tag in Sigma
+              - type: object
+                properties:
+                  description:
+                    type: string
+                    description: Description for the tag
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - name
+                - versionTagId
+                properties:
+                  name:
+                    type: string
+                  versionTagId:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tags
+      security:
+      - oauth2: []
+    get:
+      summary: Get tags
+      description: Get a list of version tags.
+      parameters:
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      - name: search
+        schema:
+          type: string
+          description: Search query
+        in: query
+      operationId: listVersionTag
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - versionTagId
+                          - name
+                          - ownerId
+                          properties:
+                            versionTagId:
+                              type: string
+                            name:
+                              type: string
+                            ownerId:
+                              type: string
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                        - type: object
+                          properties:
+                            isArchived:
+                              type: boolean
+                            description:
+                              type: string
+                            color:
+                              type: string
+                              enum:
+                              - cyan
+                              - grass
+                              - violet
+                              - plum
+                              - amber
+                              - bronze
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tags
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/tags/{tagId}:
+    delete:
+      summary: Delete a tag
+      description: Delete a specific version tag. Retrieve the **tagId** by calling the [/v2/tags](https://help.sigmacomputing.com/reference/list-version-tag) endpoint and using the `versionTagId` in the response.
+      parameters:
+      - name: tagId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: deleteVersionTag
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tags
+      security:
+      - oauth2: []
+    patch:
+      summary: Update a tag
+      description: Update the description of a specific version tag. Retrieve the **tagId** by calling the [/v2/tags](https://help.sigmacomputing.com/reference/list-version-tag) endpoint and using the `versionTagId` in the response.
+      parameters:
+      - name: tagId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: updateVersionTag
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  description: Description of the version tag.
+              description: Update version tag request
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - versionTagId
+                  - name
+                  - ownerId
+                  properties:
+                    versionTagId:
+                      type: string
+                    name:
+                      type: string
+                    ownerId:
+                      type: string
+                - type: object
+                  required:
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  properties:
+                    createdBy:
+                      type: string
+                      description: The identifier of the user who created this object.
+                    updatedBy:
+                      type: string
+                      description: The identifier of the user or process that last updated this object.
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: When the object was created.
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: When the object was last updated.
+                - type: object
+                  properties:
+                    isArchived:
+                      type: boolean
+                    description:
+                      type: string
+                    color:
+                      type: string
+                      enum:
+                      - cyan
+                      - grass
+                      - violet
+                      - plum
+                      - amber
+                      - bronze
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - tags
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/tags/{tagId}/workbooks:
+    get:
+      summary: List workbooks for a tag
+      description: Get a list of workbooks for a specific version tag. Retrieve the **tagId** by calling the [/v2/tags](https://help.sigmacomputing.com/reference/list-version-tag) endpoint and using the `versionTagId` in the response.
+      parameters:
+      - name: tagId
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: page
+        schema:
+          type: string
+          description: Use to specify further pages using the string returned in the nextPage portion of the response.
+          title: Page
+        in: query
+      - name: limit
+        schema:
+          type: number
+          description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+          title: Limit
+        in: query
+      operationId: listWorkbooksForTag
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - workbookId
+                          - workbookUrlId
+                          - name
+                          - url
+                          - path
+                          - latestVersion
+                          - ownerId
+                          properties:
+                            workbookId:
+                              type: string
+                              description: Unique identifier of the workbook.
+                              title: Workbook ID
+                            workbookUrlId:
+                              type: string
+                            name:
+                              type: string
+                            url:
+                              type: string
+                            path:
+                              type: string
+                            latestVersion:
+                              type: number
+                            ownerId:
+                              type: string
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                        - type: object
+                          properties:
+                            isArchived:
+                              type: boolean
+                            tags:
+                              type: array
+                              items:
+                                type: object
+                                required:
+                                - versionTagId
+                                - name
+                                - sourceWorkbookVersion
+                                - taggedWorkbookId
+                                - workbookTaggedAt
+                                properties:
+                                  versionTagId:
+                                    type: string
+                                    description: Unique identifier of the tag.
+                                    title: Tag ID
+                                  name:
+                                    type: string
+                                  sourceWorkbookVersion:
+                                    type: number
+                                  taggedWorkbookId:
+                                    type: string
+                                    description: Unique identifier of the tagged workbook.
+                                    title: Workbook ID
+                                  workbookTaggedAt:
+                                    type: string
+                                    format: date-time
+                            description:
+                              type: string
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: https://help.sigmacomputing.com/reference/createversiontag
+        description: 'Sigma API documentation:'
+      tags:
+      - tags
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    tags_createVersionTag_Response_200:
+      type: object
+      properties:
+        name:
+          type: string
+        versionTagId:
+          type: string
+      required:
+      - name
+      - versionTagId
+      title: tags_createVersionTag_Response_200
+    V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor:
+      type: string
+      enum:
+      - cyan
+      - grass
+      - violet
+      - plum
+      - amber
+      - bronze
+      title: V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor
+    V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+          description: Unique identifier of the tag.
+        name:
+          type: string
+        sourceWorkbookVersion:
+          type: number
+          format: double
+        taggedWorkbookId:
+          type: string
+          description: Unique identifier of the tagged workbook.
+        workbookTaggedAt:
+          type: string
+          format: date-time
+      required:
+      - versionTagId
+      - name
+      - sourceWorkbookVersion
+      - taggedWorkbookId
+      - workbookTaggedAt
+      title: V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
+    V2TagsPostRequestBodyContentApplicationJsonSchemaColor:
+      type: string
+      enum:
+      - cyan
+      - grass
+      - violet
+      - plum
+      - amber
+      - bronze
+      description: Color to associate with the tag in Sigma
+      title: V2TagsPostRequestBodyContentApplicationJsonSchemaColor
+    tags_listVersionTag_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: tags_listVersionTag_Response_200
+    tags_listWorkbooksForTag_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: tags_listWorkbooksForTag_Response_200
+    tags_deleteVersionTag_Response_200:
+      type: object
+      properties: {}
+      title: tags_deleteVersionTag_Response_200
+    V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+        name:
+          type: string
+        ownerId:
+          type: string
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        isArchived:
+          type: boolean
+        description:
+          type: string
+        color:
+          $ref: '#/components/schemas/V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor'
+      required:
+      - versionTagId
+      - name
+      - ownerId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        workbookId:
+          type: string
+          description: Unique identifier of the workbook.
+        workbookUrlId:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+        path:
+          type: string
+        latestVersion:
+          type: number
+          format: double
+        ownerId:
+          type: string
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        isArchived:
+          type: boolean
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems'
+        description:
+          type: string
+        taggedSourceUrlId:
+          type: string
+          description: For a workbook deployed to a tenant organization by a deployment policy with a version tag, the `urlId` of the original source workbook in the parent organization. Only present when `includeTaggedSourceUrlId=true` is included in the request.
+      required:
+      - workbookId
+      - workbookUrlId
+      - name
+      - url
+      - path
+      - latestVersion
+      - ownerId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor:
+      type: string
+      enum:
+      - cyan
+      - grass
+      - violet
+      - plum
+      - amber
+      - bronze
+      title: V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor
+    tags_updateVersionTag_Response_200:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+        name:
+          type: string
+        ownerId:
+          type: string
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        isArchived:
+          type: boolean
+        description:
+          type: string
+        color:
+          $ref: '#/components/schemas/V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor'
+      required:
+      - versionTagId
+      - name
+      - ownerId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: tags_updateVersionTag_Response_200
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

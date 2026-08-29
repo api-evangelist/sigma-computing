@@ -1,0 +1,1227 @@
+openapi: 3.2.0
+info:
+  title: Sigma REST User Attributes API
+  version: 1.0.0
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: userAttributes
+paths:
+  /v2/user-attributes:
+    get:
+      operationId: listUserAttributes
+      summary: List user attributes
+      description: Get a list of available user attributes, values, and owners.
+      tags:
+      - userAttributes
+      parameters:
+      - name: page
+        in: query
+        description: Use to specify further pages using the string returned in the nextPage portion of the response.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+        required: false
+        schema:
+          type: number
+          format: double
+      - name: name
+        in: query
+        description: Search filter for the name of the user attribute.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_listUserAttributes_Response_200'
+    post:
+      operationId: createUserAttribute
+      summary: Create a user attribute
+      description: Create a new user attribute. An optional description and default value can be provided.
+      tags:
+      - userAttributes
+      parameters:
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_createUserAttribute_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the user attribute.
+                description:
+                  type: string
+                  description: Description of the user attribute.
+                defaultValue:
+                  $ref: '#/components/schemas/V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValue'
+                  description: Default value of the user attribute.
+              required:
+              - name
+  /v2/user-attributes/{userAttributeId}:
+    get:
+      operationId: getUserAttribute
+      summary: Get a user attribute
+      description: "Get details for a specific user attribute.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_getUserAttribute_Response_200'
+    delete:
+      operationId: deleteUserAttribute
+      summary: Delete a user attribute
+      description: "Delete a user attribute.\n\n### Usage notes\n- To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n- Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n- This action permanently removes the user attribute from the organization and cannot be undone.\n      "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_deleteUserAttribute_Response_200'
+  /v2/user-attributes/{userAttributeId}/teams:
+    get:
+      operationId: getUserAttributeTeamAssignments
+      summary: Get teams for a user attribute
+      description: "Get a list of teams that have a specific user attribute defined, and the assigned value for the user attribute.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Use to specify further pages using the string returned in the nextPage portion of the response.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+        required: false
+        schema:
+          type: number
+          format: double
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_getUserAttributeTeamAssignments_Response_200'
+    post:
+      operationId: setUserAttributeForTeams
+      summary: Set a user attribute for teams
+      description: "Assign and set the value of a specific user attribute for one or more teams.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_setUserAttributeForTeams_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignments:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems'
+              required:
+              - assignments
+    patch:
+      operationId: updateUserAttributeForTeams
+      summary: Update a user attribute for teams
+      description: "Update a user attribute for one or more teams. Currently, this endpoint only supports deleting a user attribute assignment.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_updateUserAttributeForTeams_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delete:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsPatchRequestBodyContentApplicationJsonSchemaDeleteItems'
+                  description: The teams whose assignments are to be revoked.
+              required:
+              - delete
+  /v2/user-attributes/{userAttributeId}/teams/{teamId}:
+    delete:
+      operationId: deleteUserAttributeForTeam
+      summary: Delete a user attribute for a team
+      description: "Delete a specific user attribute for a specific team.\n\n### Usage notes\n- Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n- Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n      "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: Unique identifier of the team.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_deleteUserAttributeForTeam_Response_200'
+  /v2/user-attributes/{userAttributeId}/users:
+    get:
+      operationId: getUserAttributeUserAssignments
+      summary: Get users for a user attribute
+      description: "Get a list of users that have a specific user attribute defined, and the assigned value for the user attribute.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Use to specify further pages using the string returned in the nextPage portion of the response.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+        required: false
+        schema:
+          type: number
+          format: double
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_getUserAttributeUserAssignments_Response_200'
+    post:
+      operationId: setUserAttributeForUsers
+      summary: Set a user attribute for users
+      description: "Assign and set the value of a specific user attribute for one or more users.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Specify one or more users by userId. Retrieve the **userId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint and using the `memberId` included in the response.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_setUserAttributeForUsers_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignments:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItems'
+              required:
+              - assignments
+    patch:
+      operationId: updateUserAttributeForUsers
+      summary: Update a user attribute for users
+      description: "Update a user attribute for one or more users. Currently, this endpoint only supports deleting a user attribute assignment.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Specify one or more users by userId. Retrieve the **userId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint and using the `memberId` included in the response.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_updateUserAttributeForUsers_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delete:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersPatchRequestBodyContentApplicationJsonSchemaDeleteItems'
+                  description: The users whose assignments are to be revoked.
+              required:
+              - delete
+  /v2/user-attributes/{userAttributeId}/users/{userId}:
+    delete:
+      operationId: deleteUserAttributeForUser
+      summary: Delete a user attribute for a user
+      description: "Delete a specific user attribute for a specific user.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Retrieve the **userId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint and using the `memberId` included in the response.\n      "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: Unique identifier of the user.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_deleteUserAttributeForUser_Response_200'
+  /v2/user-attributes/{userAttributeId}/tenants:
+    get:
+      operationId: getUserAttributeTenantAssignments
+      summary: Get tenants for a user attribute
+      description: "Get a list of tenants that have a specific user attribute defined, and the assigned value for the user attribute.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Use to specify further pages using the string returned in the nextPage portion of the response.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page, with a maximum of 1,000 per request. Use the `page` option in subsequent requests to retrieve the next set of results.
+        required: false
+        schema:
+          type: number
+          format: double
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_getUserAttributeTenantAssignments_Response_200'
+    post:
+      operationId: setUserAttributeForTenants
+      summary: Set a user attribute for tenants
+      description: "Assign and set the value of a specific user attribute for one or more tenants.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Specify one or more tenant by tenantOrganizationId. Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint and using the `tenantOrganizationId` included in the response.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_setUserAttributeForTenants_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignments:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems'
+              required:
+              - assignments
+    patch:
+      operationId: updateUserAttributeForTenants
+      summary: Update a user attribute for tenants
+      description: "Update a user attribute for one or more tenants. Currently, this endpoint only supports deleting a user attribute assignment.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Specify one or more tenants by tenantOrganizationId. Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint and using the `tenantOrganizationId` included in the response.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_updateUserAttributeForTenants_Response_200'
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delete:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsPatchRequestBodyContentApplicationJsonSchemaDeleteItems'
+                  description: The tenants whose assignments are to be revoked.
+              required:
+              - delete
+  /v2/user-attributes/{userAttributeId}/tenants/{tenantOrganizationId}:
+    delete:
+      operationId: deleteUserAttributeForTenant
+      summary: Delete a user attribute for a tenant
+      description: "Delete a specific user attribute for a specific tenant.\n\n  ### Usage notes\n  - Retrieve the **userAttributeId** by calling the [/v2/user-attributes](https://help.sigmacomputing.com/reference/list-user-attributes) endpoint.\n  - Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint and using the `tenantOrganizationId` included in the response.\n    "
+      tags:
+      - userAttributes
+      parameters:
+      - name: userAttributeId
+        in: path
+        description: Unique identifier of the user attribute.
+        required: true
+        schema:
+          type: string
+      - name: tenantOrganizationId
+        in: path
+        description: Unique identifier of the tenant.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: OAuth authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAttributes_deleteUserAttributeForTenant_Response_200'
+components:
+  schemas:
+    V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Assigned value.
+      title: V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValue
+    userAttributes_getUserAttributeUserAssignments_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: userAttributes_getUserAttributeUserAssignments_Response_200
+    V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Assigned value.
+      title: V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValue
+    V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValueType
+    V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        teamId:
+          type: string
+          description: Unique identifier of the team.
+        value:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
+          description: Assigned value.
+        priority:
+          type: number
+          format: double
+          description: Priority of the assignment.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+      required:
+      - teamId
+      - value
+      - priority
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItems
+    userAttributes_getUserAttribute_Response_200:
+      type: object
+      properties:
+        userAttributeId:
+          type: string
+          description: Unique identifier of the user attribute.
+        name:
+          type: string
+          description: Name of the user attribute.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the user attribute.
+        defaultValue:
+          oneOf:
+          - $ref: '#/components/schemas/V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValue'
+          - type: 'null'
+          description: Default value of the user attribute.
+      required:
+      - userAttributeId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: userAttributes_getUserAttribute_Response_200
+    V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
+    userAttributes_deleteUserAttributeForUser_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_deleteUserAttributeForUser_Response_200
+    userAttributes_updateUserAttributeForUsers_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_updateUserAttributeForUsers_Response_200
+    V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Default value of the user attribute.
+      title: V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValue
+    userAttributes_createUserAttribute_Response_200:
+      type: object
+      properties:
+        userAttributeId:
+          type: string
+          description: Unique identifier of the user attribute.
+        name:
+          type: string
+          description: Name of the user attribute.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the user attribute.
+        defaultValue:
+          oneOf:
+          - $ref: '#/components/schemas/V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValue'
+          - type: 'null'
+          description: Default value of the user attribute.
+      required:
+      - userAttributeId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: userAttributes_createUserAttribute_Response_200
+    V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: The value of the user attribute
+      title: V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
+    userAttributes_setUserAttributeForTenants_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_setUserAttributeForTenants_Response_200
+    userAttributes_updateUserAttributeForTenants_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_updateUserAttributeForTenants_Response_200
+    userAttributes_getUserAttributeTenantAssignments_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: userAttributes_getUserAttributeTenantAssignments_Response_200
+    V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
+    userAttributes_deleteUserAttributeForTenant_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_deleteUserAttributeForTenant_Response_200
+    V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Assigned value.
+      title: V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValue
+    V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
+    V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValueType
+    V2UserAttributesUserAttributeIdUsersPatchRequestBodyContentApplicationJsonSchemaDeleteItems:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The unique identifier of the user.
+      required:
+      - userId
+      title: V2UserAttributesUserAttributeIdUsersPatchRequestBodyContentApplicationJsonSchemaDeleteItems
+    V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
+    V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Unique identifier of the user.
+        value:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
+          description: Assigned value.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+      required:
+      - userId
+      - value
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        userAttributeId:
+          type: string
+          description: Unique identifier of the user attribute.
+        name:
+          type: string
+          description: Name of the user attribute.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the user attribute.
+        defaultValue:
+          oneOf:
+          - $ref: '#/components/schemas/V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValue'
+          - type: 'null'
+          description: Default value of the user attribute.
+      required:
+      - userAttributeId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Default value of the user attribute.
+      title: V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValue
+    V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Default value of the user attribute.
+      title: V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValue
+    userAttributes_deleteUserAttribute_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_deleteUserAttribute_Response_200
+    V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of the tenant.
+        value:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
+          description: The value of the user attribute
+      required:
+      - tenantOrganizationId
+      - value
+      title: V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
+    V2UserAttributesUserAttributeIdTenantsPatchRequestBodyContentApplicationJsonSchemaDeleteItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: The unique identifier of the tenant.
+      required:
+      - tenantOrganizationId
+      title: V2UserAttributesUserAttributeIdTenantsPatchRequestBodyContentApplicationJsonSchemaDeleteItems
+    userAttributes_setUserAttributeForTeams_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_setUserAttributeForTeams_Response_200
+    userAttributes_getUserAttributeTeamAssignments_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: userAttributes_getUserAttributeTeamAssignments_Response_200
+    V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValueType
+    V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Unique identifier of the user.
+        value:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
+          description: The value of the user attribute
+      required:
+      - userId
+      - value
+      title: V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
+    V2UserAttributesUserAttributeIdTeamsPatchRequestBodyContentApplicationJsonSchemaDeleteItems:
+      type: object
+      properties:
+        teamId:
+          type: string
+          description: Unique identifier of the team.
+      required:
+      - teamId
+      title: V2UserAttributesUserAttributeIdTeamsPatchRequestBodyContentApplicationJsonSchemaDeleteItems
+    V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: The value of the user attribute
+      title: V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
+    userAttributes_setUserAttributeForUsers_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_setUserAttributeForUsers_Response_200
+    userAttributes_updateUserAttributeForTeams_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_updateUserAttributeForTeams_Response_200
+    userAttributes_deleteUserAttributeForTeam_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_deleteUserAttributeForTeam_Response_200
+    V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValueType
+    V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
+      type: object
+      properties:
+        teamId:
+          type: string
+          description: Unique identifier of the team.
+        value:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
+          description: The value of the user attribute
+      required:
+      - teamId
+      - value
+      title: V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
+    V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
+    V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of the tenant.
+        value:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
+          description: Assigned value.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+      required:
+      - tenantOrganizationId
+      - value
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Default value of the user attribute.
+      title: V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValue
+    V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: The value of the user attribute
+      title: V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
+    userAttributes_listUserAttributes_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: userAttributes_listUserAttributes_Response_200
+    V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
+  securitySchemes:
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication

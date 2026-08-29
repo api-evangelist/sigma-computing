@@ -1,0 +1,884 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Saml API
+  version: '1.0'
+  description: 'Operations tagged saml across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: saml
+paths:
+  /v2/saml/service-providers:
+    get:
+      summary: List SAML service providers (Beta)
+      description: 'List all SAML service providers in the organization.
+
+
+        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.'
+      parameters:
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 500. Defaults to 50.
+          title: Page size
+        in: query
+      operationId: listSamlServiceProviders
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - samlServiceProviderId
+                        properties:
+                          samlServiceProviderId:
+                            type: string
+                            description: Unique identifier of the SAML service provider
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - saml
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/saml/service-providers/{samlServiceProviderId}/certificates:
+    get:
+      summary: List SAML service provider certificates (Beta)
+      description: 'List all certificates for a given SAML service provider.
+
+
+        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.'
+      parameters:
+      - name: samlServiceProviderId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider
+        in: path
+        required: true
+      - name: pageToken
+        schema:
+          type: string
+          description: Use to specify the next set of results with the string returned in the `nextPageToken` field of the previous response.
+          title: Page token
+        in: query
+      - name: pageSize
+        schema:
+          type: integer
+          description: Number of results to return per page, with a maximum of 500. Defaults to 50.
+          title: Page size
+        in: query
+      operationId: listSamlServiceProviderCertificates
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - samlServiceProviderCertificateId
+                        - samlServiceProviderId
+                        - purpose
+                        - publicKeyCertificate
+                        - isActive
+                        - notBefore
+                        - notAfter
+                        - createdAt
+                        - createdBy
+                        - updatedAt
+                        - updatedBy
+                        properties:
+                          samlServiceProviderCertificateId:
+                            type: string
+                            description: Unique identifier of the SAML service provider certificate
+                          samlServiceProviderId:
+                            type: string
+                            description: Unique identifier of the SAML service provider
+                          purpose:
+                            type: string
+                            enum:
+                            - signing
+                            - encryption
+                            description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+                          publicKeyCertificate:
+                            type: string
+                            description: PEM-encoded X.509 certificate
+                          isActive:
+                            type: boolean
+                            description: Whether the certificate is currently active
+                          notBefore:
+                            type: string
+                            format: date-time
+                            description: Date and time when the certificate becomes valid
+                          notAfter:
+                            type: string
+                            format: date-time
+                            description: Date and time when the certificate expires
+                          createdAt:
+                            type: string
+                            format: date-time
+                            description: When the certificate was created
+                          createdBy:
+                            type: string
+                            description: Identifier of the user who created the certificate
+                          updatedAt:
+                            type: string
+                            format: date-time
+                            description: When the certificate was last updated
+                          updatedBy:
+                            type: string
+                            description: Identifier of the user who last updated the certificate
+                      description: Array of results returned by the endpoint
+                      title: Result entries
+                - type: object
+                  properties:
+                    nextPageToken:
+                      type: string
+                      description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+                        **Must be treated as an opaque string.**'
+                      title: Next page token
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - saml
+      security:
+      - oauth2: []
+    post:
+      summary: Create a SAML service provider certificate (Beta)
+      description: 'Create a certificate for a given SAML service provider.
+
+
+        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.'
+      parameters:
+      - name: samlServiceProviderId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider
+        in: path
+        required: true
+      operationId: createSamlServiceProviderCertificate
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - purpose
+              - validForDays
+              properties:
+                purpose:
+                  type: string
+                  enum:
+                  - signing
+                  - encryption
+                  description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+                validForDays:
+                  type: number
+                  description: Number of days the certificate is valid
+      responses:
+        '201':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - samlServiceProviderId
+                - samlServiceProviderCertificateId
+                properties:
+                  samlServiceProviderId:
+                    type: string
+                    description: Unique identifier of the SAML service provider
+                  samlServiceProviderCertificateId:
+                    type: string
+                    description: Unique identifier of the SAML service provider certificate
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - saml
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/saml/service-providers/{samlServiceProviderId}/certificates/{samlServiceProviderCertificateId}:
+    get:
+      summary: Get a SAML service provider certificate (Beta)
+      description: "Get a certificate to use with your IdP when configuring Sigma as a service provider.\n\n**Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.\n\n### Usage notes\n- To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n- Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.\n- Retrieve the `samlServiceProviderCertificateId` by calling the [/saml/service-providers/certificates](https://help.sigmacomputing.com/reference/list-saml-service-provider-certificates) endpoint.\n- Signing certificates are used by your IdP to verify signatures that Sigma attaches to SAML requests.\n- Encryption certificates are used by your IdP to encrypt SAML responses sent to Sigma.\n    "
+      parameters:
+      - name: samlServiceProviderId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider
+        in: path
+        required: true
+      - name: samlServiceProviderCertificateId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+        in: path
+        required: true
+      operationId: getSamlServiceProviderCertificate
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - samlServiceProviderCertificateId
+                - samlServiceProviderId
+                - purpose
+                - publicKeyCertificate
+                - isActive
+                - notBefore
+                - notAfter
+                - createdAt
+                - createdBy
+                - updatedAt
+                - updatedBy
+                properties:
+                  samlServiceProviderCertificateId:
+                    type: string
+                    description: Unique identifier of the SAML service provider certificate
+                  samlServiceProviderId:
+                    type: string
+                    description: Unique identifier of the SAML service provider
+                  purpose:
+                    type: string
+                    enum:
+                    - signing
+                    - encryption
+                    description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+                  publicKeyCertificate:
+                    type: string
+                    description: PEM-encoded X.509 certificate
+                  isActive:
+                    type: boolean
+                    description: Whether the certificate is currently active
+                  notBefore:
+                    type: string
+                    format: date-time
+                    description: Date and time when the certificate becomes valid
+                  notAfter:
+                    type: string
+                    format: date-time
+                    description: Date and time when the certificate expires
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: When the certificate was created
+                  createdBy:
+                    type: string
+                    description: Identifier of the user who created the certificate
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    description: When the certificate was last updated
+                  updatedBy:
+                    type: string
+                    description: Identifier of the user who last updated the certificate
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - saml
+      security:
+      - oauth2: []
+    delete:
+      summary: Remove a SAML service provider certificate (Beta)
+      description: 'Remove a certificate.
+
+
+        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.
+
+        - Retrieve the `samlServiceProviderCertificateId` by calling the [/saml/service-providers/certificates](https://help.sigmacomputing.com/reference/list-saml-service-provider-certificates) endpoint.'
+      parameters:
+      - name: samlServiceProviderId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider
+        in: path
+        required: true
+      - name: samlServiceProviderCertificateId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+        in: path
+        required: true
+      operationId: removeSamlServiceProviderCertificate
+      responses:
+        '204':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - saml
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/saml/service-providers/{samlServiceProviderId}/certificates/{samlServiceProviderCertificateId}/activate:
+    post:
+      summary: Activate a SAML service provider certificate (Beta)
+      description: 'Activate a certificate.
+
+
+        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Activating a certificate deactivates all certificates used for the same purpose by the same SAML service provider. For example, activating a signing certificate deactivates all other signing certificates in use by the same SAML SP.
+
+        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.
+
+        - Retrieve the `samlServiceProviderCertificateId` by calling the [/saml/service-providers/certificates](https://help.sigmacomputing.com/reference/list-saml-service-provider-certificates) endpoint.'
+      parameters:
+      - name: samlServiceProviderId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider
+        in: path
+        required: true
+      - name: samlServiceProviderCertificateId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+        in: path
+        required: true
+      operationId: activateSamlServiceProviderCertificate
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '204':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - saml
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/saml/service-providers/{samlServiceProviderId}/certificates/{samlServiceProviderCertificateId}/deactivate:
+    post:
+      summary: Deactivate a SAML service provider certificate (Beta)
+      description: 'Deactivate a certificate.
+
+
+        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.
+
+        - Retrieve the `samlServiceProviderCertificateId` by calling the [/saml/service-providers/certificates](https://help.sigmacomputing.com/reference/list-saml-service-provider-certificates) endpoint.'
+      parameters:
+      - name: samlServiceProviderId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider
+        in: path
+        required: true
+      - name: samlServiceProviderCertificateId
+        schema:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+        in: path
+        required: true
+      operationId: deactivateSamlServiceProviderCertificate
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '204':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - saml
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    saml_listSamlServiceProviderCertificates_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: saml_listSamlServiceProviderCertificates_Response_200
+    saml_listSamlServiceProviders_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: saml_listSamlServiceProviders_Response_200
+    V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        samlServiceProviderId:
+          type: string
+          description: Unique identifier of the SAML service provider
+      required:
+      - samlServiceProviderId
+      title: V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose:
+      type: string
+      enum:
+      - signing
+      - encryption
+      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose
+    V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose:
+      type: string
+      enum:
+      - signing
+      - encryption
+      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose
+    saml_createSamlServiceProviderCertificate_Response_201:
+      type: object
+      properties:
+        samlServiceProviderId:
+          type: string
+          description: Unique identifier of the SAML service provider
+        samlServiceProviderCertificateId:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+      required:
+      - samlServiceProviderId
+      - samlServiceProviderCertificateId
+      title: saml_createSamlServiceProviderCertificate_Response_201
+    saml_getSamlServiceProviderCertificate_Response_200:
+      type: object
+      properties:
+        samlServiceProviderCertificateId:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+        samlServiceProviderId:
+          type: string
+          description: Unique identifier of the SAML service provider
+        purpose:
+          $ref: '#/components/schemas/V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose'
+          description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+        publicKeyCertificate:
+          type: string
+          description: PEM-encoded X.509 certificate
+        isActive:
+          type: boolean
+          description: Whether the certificate is currently active
+        notBefore:
+          type: string
+          format: date-time
+          description: Date and time when the certificate becomes valid
+        notAfter:
+          type: string
+          format: date-time
+          description: Date and time when the certificate expires
+        createdAt:
+          type: string
+          format: date-time
+          description: When the certificate was created
+        createdBy:
+          type: string
+          description: Identifier of the user who created the certificate
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the certificate was last updated
+        updatedBy:
+          type: string
+          description: Identifier of the user who last updated the certificate
+      required:
+      - samlServiceProviderCertificateId
+      - samlServiceProviderId
+      - purpose
+      - publicKeyCertificate
+      - isActive
+      - notBefore
+      - notAfter
+      - createdAt
+      - createdBy
+      - updatedAt
+      - updatedBy
+      title: saml_getSamlServiceProviderCertificate_Response_200
+    V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        samlServiceProviderCertificateId:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+        samlServiceProviderId:
+          type: string
+          description: Unique identifier of the SAML service provider
+        purpose:
+          $ref: '#/components/schemas/V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose'
+          description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+        publicKeyCertificate:
+          type: string
+          description: PEM-encoded X.509 certificate
+        isActive:
+          type: boolean
+          description: Whether the certificate is currently active
+        notBefore:
+          type: string
+          format: date-time
+          description: Date and time when the certificate becomes valid
+        notAfter:
+          type: string
+          format: date-time
+          description: Date and time when the certificate expires
+        createdAt:
+          type: string
+          format: date-time
+          description: When the certificate was created
+        createdBy:
+          type: string
+          description: Identifier of the user who created the certificate
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the certificate was last updated
+        updatedBy:
+          type: string
+          description: Identifier of the user who last updated the certificate
+      required:
+      - samlServiceProviderCertificateId
+      - samlServiceProviderId
+      - purpose
+      - publicKeyCertificate
+      - isActive
+      - notBefore
+      - notAfter
+      - createdAt
+      - createdBy
+      - updatedAt
+      - updatedBy
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItems
+    ? V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
+    : type: string
+      enum:
+      - signing
+      - encryption
+      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml

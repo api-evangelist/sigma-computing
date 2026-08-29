@@ -1,0 +1,1443 @@
+openapi: 3.2.0
+info:
+  title: Sigma Computing Files API
+  version: '1.0'
+  description: 'Operations tagged files across 2 of this provider''s published API definitions: sigma-computing-public-rest-api-openapi.json, sigma-computing-rest-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sigmacomputing.com
+  description: Server for GCP (US) hosted organizations
+- url: https://api.sa.gcp.sigmacomputing.com
+  description: Server for GCP (KSA) hosted organizations
+- url: https://aws-api.sigmacomputing.com
+  description: Server for AWS US (West) hosted organizations
+- url: https://api.us-a.aws.sigmacomputing.com
+  description: Server for AWS US (East) hosted organizations
+- url: https://api.ca.aws.sigmacomputing.com
+  description: Server for AWS Canada hosted organizations
+- url: https://api.eu.aws.sigmacomputing.com
+  description: Server for AWS Europe hosted organizations
+- url: https://api.au.aws.sigmacomputing.com
+  description: Server for AWS Australia and APAC hosted organizations
+- url: https://api.uk.aws.sigmacomputing.com
+  description: Server for AWS UK hosted organizations
+- url: https://api.us.azure.sigmacomputing.com
+  description: Server for Azure US hosted organizations
+- url: https://api.eu.azure.sigmacomputing.com
+  description: Server for Azure Europe hosted organizations
+- url: https://api.ca.azure.sigmacomputing.com
+  description: Server for Azure Canada hosted organizations
+- url: https://api.uk.azure.sigmacomputing.com
+  description: Server for Azure United Kingdom hosted organizations
+- url: https://api.au.azure.sigmacomputing.com
+  description: Server for Azure Australia hosted organizations
+tags:
+- name: files
+paths:
+  /v2/files:
+    get:
+      summary: List files
+      description: "List all documents, such as workbooks and folders, accessible from the parent.\n\n  ### Which files are returned by this endpoint\n\n  The documents and folders accessible through this endpoint match those returned when you search in the Sigma UI. Some documents that you can view in the Sigma UI are not returned by this endpoint.\n\n  - Returned documents and folders are limited to those that you have access to, such as through ownership, a document directly shared with you, a document link shared with you that you have opened, or access inherited through a folder or a workspace. This restriction also applies to users granted the Admin account type.\n  - Newly created files are not returned immediately after creation. Updated files are reflected immediately.\n  - If no `typeFilters` are set, only workbooks, folders, data models, datasets (deprecated), and reports are returned. To return other file types, such as a shortcut (symlink), specify a file type using the `typeFilters` option.\n\n  ### Usage notes\n\n  - Use the **parentId** to specify a folder and return details about the nested files and documents:\n    - Retrieve the ID to use as a **parentId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and reviewing the `id` field in the response for files with a `type` of `folder`.\n    - To use the \"My Documents\" folder as the parent folder, call the [/v2/members/{memberId}](https://help.sigmacomputing.com/reference/get-member) endpoint and use the `homeFolderId` included in the response.\n    - If parentId is not specified, it is assumed to be the root.\n  - Use the available filters to return files that contain a specific keyword in the name, files with specific permissions granted to the user associated with the API credentials, or files of a specific type.\n    "
+      parameters:
+      - name: name
+        schema:
+          type: string
+        in: query
+      - name: permissionFilter
+        schema:
+          oneOf:
+          - type: string
+            enum:
+            - view
+            - explore
+            - edit
+            description: ''
+            title: Workbook Permission
+          - type: string
+            enum:
+            - view
+            - explore
+            - organize
+            - edit
+            description: Choose **organize** for Can Contribute permissions or **edit** for Can Manage permissions.
+            title: Folder Permission
+        in: query
+      - name: typeFilters
+        schema:
+          oneOf:
+          - type: array
+            items:
+              type: string
+              enum:
+              - workspace
+              - folder
+              - workbook
+              - dataset
+              - data-model
+              - sql
+              - worksheet
+              - dashboard
+              - template
+              - table
+              - symlink
+              - report
+            description: '**Note**: Workspaces are not returned as part of the response. To retrieve a workspace, use the **Single Document Type**.'
+            title: Multiple Document Types
+          - type: string
+            enum:
+            - workspace
+            - folder
+            - workbook
+            - dataset
+            - data-model
+            - sql
+            - worksheet
+            - dashboard
+            - template
+            - table
+            - symlink
+            - report
+            description: ''
+            title: Single Document Type
+        in: query
+      - name: page
+        schema:
+          type: string
+        in: query
+      - name: limit
+        schema:
+          type: number
+        in: query
+      - name: parentId
+        schema:
+          type: string
+          description: Parent folder
+        in: query
+      - name: directChildFilter
+        schema:
+          type: boolean
+        in: query
+      operationId: filesList
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - entries
+                  - nextPage
+                  properties:
+                    entries:
+                      type: array
+                      items:
+                        allOf:
+                        - type: object
+                          required:
+                          - id
+                          - urlId
+                          - name
+                          - type
+                          - parentId
+                          - parentUrlId
+                          - permission
+                          - path
+                          - badge
+                          - isArchived
+                          properties:
+                            id:
+                              type: string
+                            urlId:
+                              type: string
+                            name:
+                              type: string
+                            type:
+                              type: string
+                              enum:
+                              - workspace
+                              - folder
+                              - workbook
+                              - dataset
+                              - data-model
+                              - sql
+                              - worksheet
+                              - dashboard
+                              - template
+                              - table
+                              - symlink
+                              - report
+                            parentId:
+                              type: string
+                            parentUrlId:
+                              type: string
+                            permission:
+                              type: string
+                              enum:
+                              - create
+                              - annotate
+                              - organize
+                              - explore
+                              - view
+                              - edit
+                              - apply
+                            path:
+                              type: string
+                            badge:
+                              type:
+                              - string
+                              - 'null'
+                            isArchived:
+                              type: boolean
+                        - type: object
+                          properties:
+                            description:
+                              type: string
+                            ownerId:
+                              type:
+                              - string
+                              - 'null'
+                            parentSourceUrlId:
+                              type: string
+                              description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+                              title: Parent Source URL ID
+                        - type: object
+                          required:
+                          - createdBy
+                          - updatedBy
+                          - createdAt
+                          - updatedAt
+                          properties:
+                            createdBy:
+                              type: string
+                              description: The identifier of the user who created this object.
+                            updatedBy:
+                              type: string
+                              description: The identifier of the user or process that last updated this object.
+                            createdAt:
+                              type: string
+                              format: date-time
+                              description: When the object was created.
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              description: When the object was last updated.
+                      description: Array of results returned by the endpoint
+                    nextPage:
+                      type:
+                      - string
+                      - 'null'
+                      description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+                - type: object
+                  properties:
+                    total:
+                      type: number
+                      description: Total number of results. Useful to determine if there is a need to paginate.
+                    hasMore:
+                      type: boolean
+                      description: '**[Deprecated]** Indicates whether more results are available.'
+              examples:
+                Response Example:
+                  value:
+                    entries:
+                    - id: 00000000-0000-0000-0000-000000000000
+                      urlId: 57a96EMo3GVJG73179MV2l
+                      name: Examples
+                      description: Examples description
+                      type: folder
+                      parentId: 00000000-0000-0000-0000-000000000001
+                      parentUrlId: 57a96EMo3GVJG73179MV2G
+                      permission: edit
+                      path: My Documents/Examples
+                      badge: Endorsed
+                      ownerId: <memberId>
+                      createdBy: <memberId>
+                      updatedBy: <memberId>
+                      createdAt: '2022-11-22T22:33:47.323Z'
+                      updatedAt: '2022-11-22T22:33:47.323Z'
+                      isArchived: false
+                    hasMore: false
+                    total: 1
+                    nextPage: null
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - files
+      security:
+      - oauth2: []
+    post:
+      summary: Create a file
+      description: "Create an empty workspace, folder, workbook, or report in Sigma.\n\n  ### Usage notes\n  - Specify a **parentId** for a folder, workbook, or report to place it within another folder. Retrieve the ID to use as a **parentId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and reviewing the `id` field in the response for files with a `type` of `folder`.\n  - Specify an **ownerId** for a folder, workbook, or report to create it on behalf of another user. Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n\n  ### Usage scenarios\n  - **Project onboarding**: Start a new project by creating a workspace and folders to contain the workbooks for the project.\n    "
+      parameters: []
+      operationId: filesCreate
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - type: object
+                required:
+                - type
+                - name
+                properties:
+                  type:
+                    type: string
+                    enum:
+                    - workspace
+                  name:
+                    type: string
+                description: Workspace to create
+                title: Workspace details
+              - allOf:
+                - type: object
+                  required:
+                  - type
+                  - name
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                      - folder
+                    name:
+                      type: string
+                - type: object
+                  properties:
+                    description:
+                      type: string
+                    ownerId:
+                      type: string
+                    parentId:
+                      type: string
+                description: Folder to create
+                title: Folder details
+              - allOf:
+                - type: object
+                  required:
+                  - type
+                  - name
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                      - workbook
+                    name:
+                      type: string
+                - type: object
+                  properties:
+                    description:
+                      type: string
+                    ownerId:
+                      type: string
+                    parentId:
+                      type: string
+                    source:
+                      type: object
+                      required:
+                      - inodeId
+                      - version
+                      properties:
+                        inodeId:
+                          type: string
+                        version:
+                          type: number
+                description: Workbook to create
+                title: Workbook details
+              - allOf:
+                - type: object
+                  required:
+                  - type
+                  - name
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                      - report
+                    name:
+                      type: string
+                - type: object
+                  properties:
+                    description:
+                      type: string
+                    ownerId:
+                      type: string
+                    parentId:
+                      type: string
+                description: Report to create
+                title: Report details
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - id
+                  - urlId
+                  - name
+                  - type
+                  - parentId
+                  - parentUrlId
+                  - permission
+                  - path
+                  - badge
+                  - isArchived
+                  properties:
+                    id:
+                      type: string
+                    urlId:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                      enum:
+                      - workspace
+                      - folder
+                      - workbook
+                      - dataset
+                      - data-model
+                      - sql
+                      - worksheet
+                      - dashboard
+                      - template
+                      - table
+                      - symlink
+                      - report
+                    parentId:
+                      type: string
+                    parentUrlId:
+                      type: string
+                    permission:
+                      type: string
+                      enum:
+                      - create
+                      - annotate
+                      - organize
+                      - explore
+                      - view
+                      - edit
+                      - apply
+                    path:
+                      type: string
+                    badge:
+                      type:
+                      - string
+                      - 'null'
+                    isArchived:
+                      type: boolean
+                - type: object
+                  properties:
+                    description:
+                      type: string
+                    ownerId:
+                      type:
+                      - string
+                      - 'null'
+                    parentSourceUrlId:
+                      type: string
+                      description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+                      title: Parent Source URL ID
+                - type: object
+                  required:
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  properties:
+                    createdBy:
+                      type: string
+                      description: The identifier of the user who created this object.
+                    updatedBy:
+                      type: string
+                      description: The identifier of the user or process that last updated this object.
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: When the object was created.
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: When the object was last updated.
+              examples:
+                Response Example:
+                  value:
+                    id: 00000000-0000-0000-0000-000000000000
+                    urlId: 57a96EMo3GVJG73179MV2l
+                    name: Examples
+                    description: Examples description
+                    type: folder
+                    parentId: 00000000-0000-0000-0000-000000000001
+                    parentUrlId: 57a96EMo3GVJG73179MV2G
+                    permission: edit
+                    path: My Documents/Examples
+                    badge: Endorsed
+                    ownerId: <memberId>
+                    createdBy: <memberId>
+                    updatedBy: <memberId>
+                    createdAt: '2022-11-22T22:33:47.323Z'
+                    updatedAt: '2022-11-22T22:33:47.323Z'
+                    isArchived: false
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - files
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+  /v2/files/{inodeId}:
+    get:
+      summary: Get file information
+      description: "Get information about a specific document or folder, such as a workbook, report, or data model.\n\n  ### Usage notes\n  - Retrieve the **inodeId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and using the `id` included in the response.\n  - Retrieve the **inodeId** for a data model by calling the [/v2/members/{memberId}/files/recents](https://help.sigmacomputing.com/reference/list-recent-inodes) endpoint and using the `id` included in the response.\n    "
+      parameters:
+      - name: inodeId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: filesGet
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - id
+                  - urlId
+                  - name
+                  - type
+                  - parentId
+                  - parentUrlId
+                  - permission
+                  - path
+                  - badge
+                  - isArchived
+                  properties:
+                    id:
+                      type: string
+                    urlId:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                      enum:
+                      - workspace
+                      - folder
+                      - workbook
+                      - dataset
+                      - data-model
+                      - sql
+                      - worksheet
+                      - dashboard
+                      - template
+                      - table
+                      - symlink
+                      - report
+                    parentId:
+                      type: string
+                    parentUrlId:
+                      type: string
+                    permission:
+                      type: string
+                      enum:
+                      - create
+                      - annotate
+                      - organize
+                      - explore
+                      - view
+                      - edit
+                      - apply
+                    path:
+                      type: string
+                    badge:
+                      type:
+                      - string
+                      - 'null'
+                    isArchived:
+                      type: boolean
+                - type: object
+                  properties:
+                    description:
+                      type: string
+                    ownerId:
+                      type:
+                      - string
+                      - 'null'
+                    parentSourceUrlId:
+                      type: string
+                      description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+                      title: Parent Source URL ID
+                - type: object
+                  required:
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  properties:
+                    createdBy:
+                      type: string
+                      description: The identifier of the user who created this object.
+                    updatedBy:
+                      type: string
+                      description: The identifier of the user or process that last updated this object.
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: When the object was created.
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: When the object was last updated.
+              examples:
+                Response Example:
+                  value:
+                    id: 00000000-0000-0000-0000-000000000000
+                    urlId: 57a96EMo3GVJG73179MV2l
+                    name: Examples
+                    description: Examples description
+                    type: folder
+                    parentId: 00000000-0000-0000-0000-000000000001
+                    parentUrlId: 57a96EMo3GVJG73179MV2G
+                    permission: edit
+                    path: My Documents/Examples
+                    badge: Endorsed
+                    ownerId: <memberId>
+                    createdBy: <memberId>
+                    updatedBy: <memberId>
+                    createdAt: '2022-11-22T22:33:47.323Z'
+                    updatedAt: '2022-11-22T22:33:47.323Z'
+                    isArchived: false
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - files
+      security:
+      - oauth2: []
+    patch:
+      summary: Update a file
+      description: "Update a folder or document, such as a workbook, data model, or report.\n\n  ### Usage notes\n  - Retrieve the **inodeId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and using the `id` included in the response.\n  - Specify a **parentId** to place the document within a folder. Retrieve the ID to use as a **parentId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and reviewing the `id` field in the response for files with a `type` of `folder`.\n  - To restore a deleted folder or document, set the **restore** parameter to `true`.\n    "
+      parameters:
+      - name: inodeId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: filesUpdate
+      requestBody:
+        description: The request body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                ownerId:
+                  type: string
+                parentId:
+                  type: string
+                  description: Folder ID to contain the folder or document
+                restore:
+                  type: boolean
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  required:
+                  - id
+                  - urlId
+                  - name
+                  - type
+                  - parentId
+                  - parentUrlId
+                  - permission
+                  - path
+                  - badge
+                  - isArchived
+                  properties:
+                    id:
+                      type: string
+                    urlId:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                      enum:
+                      - workspace
+                      - folder
+                      - workbook
+                      - dataset
+                      - data-model
+                      - sql
+                      - worksheet
+                      - dashboard
+                      - template
+                      - table
+                      - symlink
+                      - report
+                    parentId:
+                      type: string
+                    parentUrlId:
+                      type: string
+                    permission:
+                      type: string
+                      enum:
+                      - create
+                      - annotate
+                      - organize
+                      - explore
+                      - view
+                      - edit
+                      - apply
+                    path:
+                      type: string
+                    badge:
+                      type:
+                      - string
+                      - 'null'
+                    isArchived:
+                      type: boolean
+                - type: object
+                  properties:
+                    description:
+                      type: string
+                    ownerId:
+                      type:
+                      - string
+                      - 'null'
+                    parentSourceUrlId:
+                      type: string
+                      description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+                      title: Parent Source URL ID
+                - type: object
+                  required:
+                  - createdBy
+                  - updatedBy
+                  - createdAt
+                  - updatedAt
+                  properties:
+                    createdBy:
+                      type: string
+                      description: The identifier of the user who created this object.
+                    updatedBy:
+                      type: string
+                      description: The identifier of the user or process that last updated this object.
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: When the object was created.
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: When the object was last updated.
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - files
+      security:
+      - oauth2: []
+    delete:
+      summary: Delete a file
+      description: "Delete a folder or document, such as a workbook, data model, or report.\n\n  ### Usage notes\n  - Retrieve the **inodeId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and using the `id` included in the response.\n    "
+      parameters:
+      - name: inodeId
+        schema:
+          type: string
+        in: path
+        required: true
+      operationId: filesDelete
+      responses:
+        '200':
+          description: The response body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        default:
+          $ref: '#/components/responses/ApiError'
+      externalDocs:
+        url: ''
+        description: 'Sigma API documentation:'
+      tags:
+      - files
+      security:
+      - oauth2: []
+    servers:
+    - url: https://api.sigmacomputing.com
+      description: Server for GCP (US) hosted organizations
+    - url: https://api.sa.gcp.sigmacomputing.com
+      description: Server for GCP (KSA) hosted organizations
+    - url: https://aws-api.sigmacomputing.com
+      description: Server for AWS US (West) hosted organizations
+    - url: https://api.us-a.aws.sigmacomputing.com
+      description: Server for AWS US (East) hosted organizations
+    - url: https://api.ca.aws.sigmacomputing.com
+      description: Server for AWS Canada hosted organizations
+    - url: https://api.eu.aws.sigmacomputing.com
+      description: Server for AWS Europe hosted organizations
+    - url: https://api.au.aws.sigmacomputing.com
+      description: Server for AWS Australia and APAC hosted organizations
+    - url: https://api.uk.aws.sigmacomputing.com
+      description: Server for AWS UK hosted organizations
+    - url: https://api.us.azure.sigmacomputing.com
+      description: Server for Azure US hosted organizations
+    - url: https://api.eu.azure.sigmacomputing.com
+      description: Server for Azure Europe hosted organizations
+    - url: https://api.ca.azure.sigmacomputing.com
+      description: Server for Azure Canada hosted organizations
+    - url: https://api.uk.azure.sigmacomputing.com
+      description: Server for Azure United Kingdom hosted organizations
+    - url: https://api.au.azure.sigmacomputing.com
+      description: Server for Azure Australia hosted organizations
+components:
+  responses:
+    ApiError:
+      description: Sigma API Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: string
+              requestId:
+                type: string
+  schemas:
+    files_get_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+        urlId:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2FilesInodeIdGetResponsesContentApplicationJsonSchemaType'
+        parentId:
+          type: string
+        parentUrlId:
+          type: string
+        permission:
+          $ref: '#/components/schemas/V2FilesInodeIdGetResponsesContentApplicationJsonSchemaPermission'
+        path:
+          type: string
+        badge:
+          type:
+          - string
+          - 'null'
+        isArchived:
+          type: boolean
+        description:
+          type: string
+        ownerId:
+          type:
+          - string
+          - 'null'
+        parentSourceUrlId:
+          type: string
+          description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+      required:
+      - id
+      - urlId
+      - name
+      - type
+      - parentId
+      - parentUrlId
+      - permission
+      - path
+      - badge
+      - isArchived
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: files_get_Response_200
+    files_update_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+        urlId:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaType'
+        parentId:
+          type: string
+        parentUrlId:
+          type: string
+        permission:
+          $ref: '#/components/schemas/V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaPermission'
+        path:
+          type: string
+        badge:
+          type:
+          - string
+          - 'null'
+        isArchived:
+          type: boolean
+        description:
+          type: string
+        ownerId:
+          type:
+          - string
+          - 'null'
+        parentSourceUrlId:
+          type: string
+          description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+      required:
+      - id
+      - urlId
+      - name
+      - type
+      - parentId
+      - parentUrlId
+      - permission
+      - path
+      - badge
+      - isArchived
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: files_update_Response_200
+    V2FilesPostResponsesContentApplicationJsonSchemaPermission:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      title: V2FilesPostResponsesContentApplicationJsonSchemaPermission
+    FilesCreateRequest3:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf3Type'
+        name:
+          type: string
+        description:
+          type: string
+        ownerId:
+          type: string
+        parentId:
+          type: string
+      required:
+      - type
+      - name
+      description: Report to create
+      title: FilesCreateRequest3
+    V2FilesGetParametersTypeFiltersSchemaOneOf0Items:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesGetParametersTypeFiltersSchemaOneOf0Items
+    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf3Type:
+      type: string
+      enum:
+      - report
+      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf3Type
+    FilesCreateRequest2:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Type'
+        name:
+          type: string
+        description:
+          type: string
+        ownerId:
+          type: string
+        parentId:
+          type: string
+        source:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Source'
+      required:
+      - type
+      - name
+      description: Workbook to create
+      title: FilesCreateRequest2
+    V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsType:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsType
+    V2FilesInodeIdGetResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesInodeIdGetResponsesContentApplicationJsonSchemaType
+    files_list_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2FilesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: files_list_Response_200
+    V2FilesGetParametersPermissionFilter:
+      oneOf:
+      - $ref: '#/components/schemas/V2FilesGetParametersPermissionFilter0'
+      - $ref: '#/components/schemas/V2FilesGetParametersPermissionFilter1'
+      title: V2FilesGetParametersPermissionFilter
+    files_create_Request:
+      oneOf:
+      - $ref: '#/components/schemas/FilesCreateRequest0'
+      - $ref: '#/components/schemas/FilesCreateRequest1'
+      - $ref: '#/components/schemas/FilesCreateRequest2'
+      - $ref: '#/components/schemas/FilesCreateRequest3'
+      title: files_create_Request
+    V2FilesGetParametersTypeFilters:
+      oneOf:
+      - $ref: '#/components/schemas/V2FilesGetParametersTypeFilters0'
+      - $ref: '#/components/schemas/V2FilesGetParametersTypeFilters1'
+      title: V2FilesGetParametersTypeFilters
+    V2FilesGetParametersPermissionFilter0:
+      type: string
+      enum:
+      - view
+      - explore
+      - edit
+      title: V2FilesGetParametersPermissionFilter0
+    FilesCreateRequest1:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf1Type'
+        name:
+          type: string
+        description:
+          type: string
+        ownerId:
+          type: string
+        parentId:
+          type: string
+      required:
+      - type
+      - name
+      description: Folder to create
+      title: FilesCreateRequest1
+    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf0Type:
+      type: string
+      enum:
+      - workspace
+      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf0Type
+    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Source:
+      type: object
+      properties:
+        inodeId:
+          type: string
+        version:
+          type: number
+          format: double
+      required:
+      - inodeId
+      - version
+      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Source
+    V2FilesGetParametersPermissionFilter1:
+      type: string
+      enum:
+      - view
+      - explore
+      - organize
+      - edit
+      description: Choose **organize** for Can Contribute permissions or **edit** for Can Manage permissions.
+      title: V2FilesGetParametersPermissionFilter1
+    V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      title: V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
+    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Type:
+      type: string
+      enum:
+      - workbook
+      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Type
+    FilesCreateRequest0:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf0Type'
+        name:
+          type: string
+      required:
+      - type
+      - name
+      description: Workspace to create
+      title: FilesCreateRequest0
+    V2FilesInodeIdGetResponsesContentApplicationJsonSchemaPermission:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      title: V2FilesInodeIdGetResponsesContentApplicationJsonSchemaPermission
+    files_create_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+        urlId:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2FilesPostResponsesContentApplicationJsonSchemaType'
+        parentId:
+          type: string
+        parentUrlId:
+          type: string
+        permission:
+          $ref: '#/components/schemas/V2FilesPostResponsesContentApplicationJsonSchemaPermission'
+        path:
+          type: string
+        badge:
+          type:
+          - string
+          - 'null'
+        isArchived:
+          type: boolean
+        description:
+          type: string
+        ownerId:
+          type:
+          - string
+          - 'null'
+        parentSourceUrlId:
+          type: string
+          description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+      required:
+      - id
+      - urlId
+      - name
+      - type
+      - parentId
+      - parentUrlId
+      - permission
+      - path
+      - badge
+      - isArchived
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: files_create_Response_200
+    V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaPermission:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      title: V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaPermission
+    V2FilesGetParametersTypeFilters0:
+      type: array
+      items:
+        $ref: '#/components/schemas/V2FilesGetParametersTypeFiltersSchemaOneOf0Items'
+      description: '**Note**: Workspaces are not returned as part of the response. To retrieve a workspace, use the **Single Document Type**.'
+      title: V2FilesGetParametersTypeFilters0
+    files_delete_Response_200:
+      type: object
+      properties: {}
+      title: files_delete_Response_200
+    V2FilesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        id:
+          type: string
+        urlId:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsType'
+        parentId:
+          type: string
+        parentUrlId:
+          type: string
+        permission:
+          $ref: '#/components/schemas/V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
+        path:
+          type: string
+        badge:
+          type:
+          - string
+          - 'null'
+        isArchived:
+          type: boolean
+        description:
+          type: string
+        ownerId:
+          type:
+          - string
+          - 'null'
+        parentSourceUrlId:
+          type: string
+          description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+      required:
+      - id
+      - urlId
+      - name
+      - type
+      - parentId
+      - parentUrlId
+      - permission
+      - path
+      - badge
+      - isArchived
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2FilesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaType
+    V2FilesGetParametersTypeFilters1:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesGetParametersTypeFilters1
+    V2FilesPostResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesPostResponsesContentApplicationJsonSchemaType
+    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf1Type:
+      type: string
+      enum:
+      - folder
+      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf1Type
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v2/auth/token
+          refreshUrl: /v2/auth/token
+          scopes: {}
+    OAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 authentication
+x-refined-from:
+- sigma-computing-public-rest-api-openapi.json
+- sigma-computing-rest-api-openapi.yaml
