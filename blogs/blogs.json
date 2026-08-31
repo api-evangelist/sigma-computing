@@ -1,0 +1,14 @@
+{
+  "repo": "sigma-computing",
+  "feeds": [
+    {
+      "source": "https://community.sigmacomputing.com/",
+      "feed_url": "https://community.sigmacomputing.com/posts.rss",
+      "title": "",
+      "saved": 9,
+      "method": "discovered"
+    }
+  ],
+  "post_count": 9,
+  "fetched": "2026-08-30T22:33:40Z"
+}

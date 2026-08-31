@@ -30,18 +30,18 @@ specificationVersion: '0.20'
 created: '2026-08-27'
 modified: '2026-08-27'
 tags:
-- Business Intelligence
+- business-intelligence
 - Analytics
-- Embedded Analytics
-- Data Modeling
-- Data Warehouse
+- embedded-analytics
+- data-modeling
+- data-warehouse
 - Reporting
-- Spreadsheets
+- spreadsheets
 - MCP
 - AI Agents
-- Snowflake
-- Databricks
-- Data Governance
+- snowflake
+- databricks
+- data-governance
 tags_raw:
 - business-intelligence
 - analytics
@@ -90,8 +90,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/docs/create-an-embed-api-with-json-web-tokens
   baseURL: https://app.sigmacomputing.com
   tags:
-  - Embedded Analytics
-  - Business Intelligence
+  - embedded-analytics
+  - business-intelligence
   tags_raw:
   - embedded-analytics
   - business-intelligence
@@ -108,6 +108,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - AccountTypes
+  tags_raw:
   - accountTypes
   properties:
   - type: OpenAPI
@@ -143,7 +145,8 @@ apis:
   description: The apiConnectors API from Sigma Computing — 2 operation(s) for apiconnectors.
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
-  tags:
+  tags: []
+  tags_raw:
   - apiConnectors
   properties:
   - type: OpenAPI
@@ -180,6 +183,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - API Credentials
+  tags_raw:
   - apiCredentials
   properties:
   - type: OpenAPI
@@ -216,6 +221,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -324,6 +331,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - Data Models
+  tags_raw:
   - dataModels
   properties:
   - type: OpenAPI
@@ -395,7 +404,8 @@ apis:
   description: The deploymentPolicies API from Sigma Computing — 7 operation(s) for deploymentpolicies.
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
-  tags:
+  tags: []
+  tags_raw:
   - deploymentPolicies
   properties:
   - type: OpenAPI
@@ -468,6 +478,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - File
+  tags_raw:
   - Files
   properties:
   - type: OpenAPI
@@ -576,6 +588,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
@@ -612,6 +626,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - Plugins
+  tags_raw:
   - plugins
   properties:
   - type: OpenAPI
@@ -755,7 +771,8 @@ apis:
   description: The sharedTemplates API from Sigma Computing — 3 operation(s) for sharedtemplates.
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
-  tags:
+  tags: []
+  tags_raw:
   - sharedTemplates
   properties:
   - type: OpenAPI
@@ -792,6 +809,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - Shortcuts
+  tags_raw:
   - shortcuts
   properties:
   - type: OpenAPI
@@ -827,7 +846,8 @@ apis:
   description: The sourceSwapPolicies API from Sigma Computing — 2 operation(s) for sourceswappolicies.
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
-  tags:
+  tags: []
+  tags_raw:
   - sourceSwapPolicies
   properties:
   - type: OpenAPI
@@ -900,6 +920,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - Team
+  tags_raw:
   - Teams
   properties:
   - type: OpenAPI
@@ -1044,6 +1066,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - User Attributes
+  tags_raw:
   - userAttributes
   properties:
   - type: OpenAPI
@@ -1080,6 +1104,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
   baseURL: https://api.sigmacomputing.com
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
@@ -1223,7 +1249,8 @@ apis:
   description: The allowedIps API from Sigma Computing — 1 operation(s) for allowedips.
   humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
   baseURL: https://api.sigmacomputing.com/mcp
-  tags:
+  tags: []
+  tags_raw:
   - allowedIps
   properties:
   - type: OpenAPI
@@ -1255,7 +1282,8 @@ apis:
   description: The api-connectors API from Sigma Computing — 2 operation(s) for api-connectors.
   humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
   baseURL: https://api.sigmacomputing.com/mcp
-  tags:
+  tags: []
+  tags_raw:
   - api-connectors
   properties:
   - type: OpenAPI
@@ -1266,6 +1294,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
   baseURL: https://api.sigmacomputing.com/mcp
   tags:
+  - API Credentials
+  tags_raw:
   - api-credentials
   properties:
   - type: OpenAPI
@@ -1275,7 +1305,8 @@ apis:
   description: The shared_templates API from Sigma Computing — 3 operation(s) for shared_templates.
   humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
   baseURL: https://api.sigmacomputing.com/mcp
-  tags:
+  tags: []
+  tags_raw:
   - shared_templates
   properties:
   - type: OpenAPI
@@ -1286,6 +1317,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
   baseURL: https://api.sigmacomputing.com/mcp
   tags:
+  - User Attributes
+  tags_raw:
   - user-attributes
   properties:
   - type: OpenAPI
