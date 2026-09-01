@@ -30,18 +30,18 @@ specificationVersion: '0.20'
 created: '2026-08-27'
 modified: '2026-08-27'
 tags:
-- business-intelligence
+- Business Intelligence
 - Analytics
-- embedded-analytics
-- data-modeling
-- data-warehouse
+- Embedded Analytics
+- Data Modeling
+- Data Warehouse
 - Reporting
-- spreadsheets
+- Spreadsheets
 - MCP
 - AI Agents
-- snowflake
-- databricks
-- data-governance
+- Snowflake
+- Databricks
+- Data Governance
 tags_raw:
 - business-intelligence
 - analytics
@@ -90,8 +90,8 @@ apis:
   humanURL: https://help.sigmacomputing.com/docs/create-an-embed-api-with-json-web-tokens
   baseURL: https://app.sigmacomputing.com
   tags:
-  - embedded-analytics
-  - business-intelligence
+  - Embedded Analytics
+  - Business Intelligence
   tags_raw:
   - embedded-analytics
   - business-intelligence
@@ -1329,6 +1329,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: License
+  name: MIT
+  url: https://github.com/sigmacomputing/embed-sdk/blob/main/LICENSE
 - type: Website
   url: https://www.sigmacomputing.com/
 - type: DeveloperPortal
