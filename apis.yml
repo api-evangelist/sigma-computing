@@ -22,6 +22,22 @@ deliveryModel:
   - repository-unlicensed
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  - scopes
+  - rate-limits
+  - security
+  - sandbox
+  generated: '2026-09-02'
+  method: derived
 image: https://cdn.sanity.io/images/9i48iita/production/2fcbd9fc0f6c54c2bc25877917e563fe805ad864-1200x630.png
 url: https://raw.githubusercontent.com/api-evangelist/sigma-computing/refs/heads/main/apis.yml
 x-type: company
@@ -1329,6 +1345,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/sigma-computing-capability-edges.yml
+  name: Sigma Computing Business Capability Map
 - type: License
   name: MIT
   url: https://github.com/sigmacomputing/embed-sdk/blob/main/LICENSE
