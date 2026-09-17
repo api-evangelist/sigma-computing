@@ -118,119 +118,6 @@ apis:
     url: https://github.com/sigmacomputing/embed-sdk
   - type: Components
     url: components/sigma-computing-components.yml
-- aid: sigma-computing:sigma-computing-accounttypes-api
-  name: Sigma Computing Account Types API
-  description: The accountTypes API from Sigma Computing — 3 operation(s) for accounttypes.
-  humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  baseURL: https://api.sigmacomputing.com
-  tags:
-  - AccountTypes
-  tags_raw:
-  - accountTypes
-  properties:
-  - type: OpenAPI
-    url: openapi/sigma-computing-accounttypes-api-openapi.yml
-  - type: Documentation
-    url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
-  - type: APIReference
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: GettingStarted
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: Examples
-    url: https://help.sigmacomputing.com/recipes
-  - type: Authentication
-    url: authentication/sigma-computing-authentication.yml
-  - type: OAuthScopes
-    url: scopes/sigma-computing-scopes.yml
-  - type: Conventions
-    url: conventions/sigma-computing-conventions.yml
-  - type: ErrorCatalog
-    url: errors/sigma-computing-problem-types.yml
-  - type: DataModel
-    url: data-model/sigma-computing-data-model.yml
-  - type: RateLimits
-    url: rate-limits/sigma-computing-rate-limits.yml
-  - type: Webhooks
-    url: asyncapi/sigma-computing-webhooks.yml
-  - type: Conformance
-    url: conformance/sigma-computing-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/sigma-computing-lifecycle.yml
-- aid: sigma-computing:sigma-computing-apiconnectors-api
-  name: Sigma Computing API Connectors API
-  description: The apiConnectors API from Sigma Computing — 2 operation(s) for apiconnectors.
-  humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  baseURL: https://api.sigmacomputing.com
-  tags: []
-  tags_raw:
-  - apiConnectors
-  properties:
-  - type: OpenAPI
-    url: openapi/sigma-computing-apiconnectors-api-openapi.yml
-  - type: Documentation
-    url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
-  - type: APIReference
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: GettingStarted
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: Examples
-    url: https://help.sigmacomputing.com/recipes
-  - type: Authentication
-    url: authentication/sigma-computing-authentication.yml
-  - type: OAuthScopes
-    url: scopes/sigma-computing-scopes.yml
-  - type: Conventions
-    url: conventions/sigma-computing-conventions.yml
-  - type: ErrorCatalog
-    url: errors/sigma-computing-problem-types.yml
-  - type: DataModel
-    url: data-model/sigma-computing-data-model.yml
-  - type: RateLimits
-    url: rate-limits/sigma-computing-rate-limits.yml
-  - type: Webhooks
-    url: asyncapi/sigma-computing-webhooks.yml
-  - type: Conformance
-    url: conformance/sigma-computing-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/sigma-computing-lifecycle.yml
-- aid: sigma-computing:sigma-computing-apicredentials-api
-  name: Sigma Computing API Credentials API
-  description: The apiCredentials API from Sigma Computing — 2 operation(s) for apicredentials.
-  humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  baseURL: https://api.sigmacomputing.com
-  tags:
-  - API Credentials
-  tags_raw:
-  - apiCredentials
-  properties:
-  - type: OpenAPI
-    url: openapi/sigma-computing-apicredentials-api-openapi.yml
-  - type: Documentation
-    url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
-  - type: APIReference
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: GettingStarted
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: Examples
-    url: https://help.sigmacomputing.com/recipes
-  - type: Authentication
-    url: authentication/sigma-computing-authentication.yml
-  - type: OAuthScopes
-    url: scopes/sigma-computing-scopes.yml
-  - type: Conventions
-    url: conventions/sigma-computing-conventions.yml
-  - type: ErrorCatalog
-    url: errors/sigma-computing-problem-types.yml
-  - type: DataModel
-    url: data-model/sigma-computing-data-model.yml
-  - type: RateLimits
-    url: rate-limits/sigma-computing-rate-limits.yml
-  - type: Webhooks
-    url: asyncapi/sigma-computing-webhooks.yml
-  - type: Conformance
-    url: conformance/sigma-computing-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/sigma-computing-lifecycle.yml
 - aid: sigma-computing:sigma-computing-auth-api
   name: Sigma Computing Auth API
   description: The Auth API from Sigma Computing — 1 operation(s) for auth.
@@ -315,44 +202,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/sigma-computing-credentials-api-openapi.yml
-  - type: Documentation
-    url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
-  - type: APIReference
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: GettingStarted
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: Examples
-    url: https://help.sigmacomputing.com/recipes
-  - type: Authentication
-    url: authentication/sigma-computing-authentication.yml
-  - type: OAuthScopes
-    url: scopes/sigma-computing-scopes.yml
-  - type: Conventions
-    url: conventions/sigma-computing-conventions.yml
-  - type: ErrorCatalog
-    url: errors/sigma-computing-problem-types.yml
-  - type: DataModel
-    url: data-model/sigma-computing-data-model.yml
-  - type: RateLimits
-    url: rate-limits/sigma-computing-rate-limits.yml
-  - type: Webhooks
-    url: asyncapi/sigma-computing-webhooks.yml
-  - type: Conformance
-    url: conformance/sigma-computing-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/sigma-computing-lifecycle.yml
-- aid: sigma-computing:sigma-computing-datamodels-api
-  name: Sigma Computing Data Models API
-  description: The dataModels API from Sigma Computing — 16 operation(s) for datamodels.
-  humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  baseURL: https://api.sigmacomputing.com
-  tags:
-  - Data Models
-  tags_raw:
-  - dataModels
-  properties:
-  - type: OpenAPI
-    url: openapi/sigma-computing-datamodels-api-openapi.yml
   - type: Documentation
     url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
   - type: APIReference
@@ -782,43 +631,6 @@ apis:
     url: conformance/sigma-computing-conformance.yml
   - type: Lifecycle
     url: lifecycle/sigma-computing-lifecycle.yml
-- aid: sigma-computing:sigma-computing-sharedtemplates-api
-  name: Sigma Computing Shared Templates API
-  description: The sharedTemplates API from Sigma Computing — 3 operation(s) for sharedtemplates.
-  humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  baseURL: https://api.sigmacomputing.com
-  tags: []
-  tags_raw:
-  - sharedTemplates
-  properties:
-  - type: OpenAPI
-    url: openapi/sigma-computing-sharedtemplates-api-openapi.yml
-  - type: Documentation
-    url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
-  - type: APIReference
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: GettingStarted
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: Examples
-    url: https://help.sigmacomputing.com/recipes
-  - type: Authentication
-    url: authentication/sigma-computing-authentication.yml
-  - type: OAuthScopes
-    url: scopes/sigma-computing-scopes.yml
-  - type: Conventions
-    url: conventions/sigma-computing-conventions.yml
-  - type: ErrorCatalog
-    url: errors/sigma-computing-problem-types.yml
-  - type: DataModel
-    url: data-model/sigma-computing-data-model.yml
-  - type: RateLimits
-    url: rate-limits/sigma-computing-rate-limits.yml
-  - type: Webhooks
-    url: asyncapi/sigma-computing-webhooks.yml
-  - type: Conformance
-    url: conformance/sigma-computing-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/sigma-computing-lifecycle.yml
 - aid: sigma-computing:sigma-computing-shortcuts-api
   name: Sigma Computing Shortcuts API
   description: The shortcuts API from Sigma Computing — 1 operation(s) for shortcuts.
@@ -1076,44 +888,6 @@ apis:
     url: conformance/sigma-computing-conformance.yml
   - type: Lifecycle
     url: lifecycle/sigma-computing-lifecycle.yml
-- aid: sigma-computing:sigma-computing-userattributes-api
-  name: Sigma Computing User Attributes API
-  description: The userAttributes API from Sigma Computing — 8 operation(s) for userattributes.
-  humanURL: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  baseURL: https://api.sigmacomputing.com
-  tags:
-  - User Attributes
-  tags_raw:
-  - userAttributes
-  properties:
-  - type: OpenAPI
-    url: openapi/sigma-computing-userattributes-api-openapi.yml
-  - type: Documentation
-    url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
-  - type: APIReference
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: GettingStarted
-    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
-  - type: Examples
-    url: https://help.sigmacomputing.com/recipes
-  - type: Authentication
-    url: authentication/sigma-computing-authentication.yml
-  - type: OAuthScopes
-    url: scopes/sigma-computing-scopes.yml
-  - type: Conventions
-    url: conventions/sigma-computing-conventions.yml
-  - type: ErrorCatalog
-    url: errors/sigma-computing-problem-types.yml
-  - type: DataModel
-    url: data-model/sigma-computing-data-model.yml
-  - type: RateLimits
-    url: rate-limits/sigma-computing-rate-limits.yml
-  - type: Webhooks
-    url: asyncapi/sigma-computing-webhooks.yml
-  - type: Conformance
-    url: conformance/sigma-computing-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/sigma-computing-lifecycle.yml
 - aid: sigma-computing:sigma-computing-webhooks-api
   name: Sigma Computing Webhooks API
   description: The Webhooks API from Sigma Computing — 2 operation(s) for webhooks.
@@ -1339,6 +1113,78 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/sigma-computing-user-attributes-api-openapi.yml
+- aid: sigma-computing:sigma-computing-account-types-api
+  name: Sigma Computing Account Types API
+  description: The Account Types API from Sigma Computing — 3 operation(s) for account types.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - Account Types
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-account-types-api-openapi.yml
+  - type: Documentation
+    url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
+  - type: APIReference
+    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
+  - type: GettingStarted
+    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
+  - type: Examples
+    url: https://help.sigmacomputing.com/recipes
+  - type: Authentication
+    url: authentication/sigma-computing-authentication.yml
+  - type: OAuthScopes
+    url: scopes/sigma-computing-scopes.yml
+  - type: Conventions
+    url: conventions/sigma-computing-conventions.yml
+  - type: ErrorCatalog
+    url: errors/sigma-computing-problem-types.yml
+  - type: DataModel
+    url: data-model/sigma-computing-data-model.yml
+  - type: RateLimits
+    url: rate-limits/sigma-computing-rate-limits.yml
+  - type: Webhooks
+    url: asyncapi/sigma-computing-webhooks.yml
+  - type: Conformance
+    url: conformance/sigma-computing-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/sigma-computing-lifecycle.yml
+- aid: sigma-computing:sigma-computing-data-models-api
+  name: Sigma Computing Data models API
+  description: The Data models API from Sigma Computing — 19 operation(s) for data models.
+  humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
+  baseURL: https://api.sigmacomputing.com/mcp
+  tags:
+  - Data models
+  properties:
+  - type: OpenAPI
+    url: openapi/sigma-computing-data-models-api-openapi.yml
+  - type: Documentation
+    url: https://help.sigmacomputing.com/docs/get-started-with-sigmas-api
+  - type: APIReference
+    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
+  - type: GettingStarted
+    url: https://help.sigmacomputing.com/reference/get-started-sigma-api
+  - type: Examples
+    url: https://help.sigmacomputing.com/recipes
+  - type: Authentication
+    url: authentication/sigma-computing-authentication.yml
+  - type: OAuthScopes
+    url: scopes/sigma-computing-scopes.yml
+  - type: Conventions
+    url: conventions/sigma-computing-conventions.yml
+  - type: ErrorCatalog
+    url: errors/sigma-computing-problem-types.yml
+  - type: DataModel
+    url: data-model/sigma-computing-data-model.yml
+  - type: RateLimits
+    url: rate-limits/sigma-computing-rate-limits.yml
+  - type: Webhooks
+    url: asyncapi/sigma-computing-webhooks.yml
+  - type: Conformance
+    url: conformance/sigma-computing-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/sigma-computing-lifecycle.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
