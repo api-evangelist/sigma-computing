@@ -31,7 +31,7 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: tenants
+- name: Tenants
 paths:
   /v2/tenants:
     post:
@@ -150,7 +150,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tenants
+      - Tenants
       security:
       - oauth2: []
     get:
@@ -291,7 +291,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tenants
+      - Tenants
       security:
       - oauth2: []
     servers:
@@ -324,7 +324,14 @@ paths:
   /v2/tenants/{tenantOrganizationId}:
     patch:
       summary: Update details of a tenant organization
-      description: "Update the details of an existing tenant organization. The organization name and slug can be updated through this endpoint.\n    \n### Usage notes\n- To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n- Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint."
+      description: 'Update the details of an existing tenant organization. The organization name and slug can be updated through this endpoint.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve the **tenantOrganizationId** by calling the /v2/tenants endpoint.'
       parameters:
       - name: tenantOrganizationId
         schema:
@@ -413,7 +420,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tenants
+      - Tenants
       security:
       - oauth2: []
     delete:
@@ -425,7 +432,7 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.
+        - Retrieve the **tenantOrganizationId** by calling the /v2/tenants endpoint.
 
         - This action permanently removes the tenant organization and cannot be undone.'
       parameters:
@@ -449,7 +456,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tenants
+      - Tenants
       security:
       - oauth2: []
     get:
@@ -461,7 +468,7 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.'
+        - Retrieve the **tenantOrganizationId** by calling the /v2/tenants endpoint.'
       parameters:
       - name: tenantOrganizationId
         schema:
@@ -536,7 +543,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tenants
+      - Tenants
       security:
       - oauth2: []
     servers:
@@ -576,7 +583,7 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.
+        - Retrieve the **tenantOrganizationId** by calling the /v2/tenants endpoint.
 
         - Use **pageToken** and **pageSize** to paginate results.'
       parameters:
@@ -637,7 +644,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tenants
+      - Tenants
       security:
       - oauth2: []
     servers:
@@ -677,7 +684,7 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - Retrieve **tenantOrganizationId** values by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.'
+        - Retrieve **tenantOrganizationId** values by calling the /v2/tenants endpoint.'
       parameters:
       - name: tenantOrganizationId
         schema:
@@ -728,7 +735,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tenants
+      - Tenants
       security:
       - oauth2: []
     servers:
@@ -768,7 +775,7 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - Retrieve **tenantOrganizationId** values by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.
+        - Retrieve **tenantOrganizationId** values by calling the /v2/tenants endpoint.
 
         - Existing deployments from this tenant organization to the specified tenant organizations will be removed.'
       parameters:
@@ -809,7 +816,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tenants
+      - Tenants
       security:
       - oauth2: []
     servers:
@@ -842,7 +849,24 @@ paths:
   /v2/tenants/{tenantOrganizationId}/workbooks:
     get:
       summary: Get deployed workbook in tenant organization
-      description: "Retrieve the workbook ID for a workbook deployed to a tenant organization for a given parent workbook and deployment policy.\n\n### Usage notes\n- To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n- The parent workbook must be part of the specified deployment policy.\n- The workbook must be deployed to the specified tenant organization.\n- Retrieve the **tenantOrganizationId** by calling the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.\n- Retrieve the **deploymentPolicyId** by calling the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint. \n- Retrieve the **parentWorkbookId** by calling the [/v2/deploymentPolicies/{deploymentPolicyId}/files](https://help.sigmacomputing.com/reference/list-inodes-for-deployment) endpoint and using the `workbookId` included in the response.\n- For version-tagged deployment policies, you may pass either the source workbook ID or the version-tagged workbook ID as the **parentWorkbookId**."
+      description: 'Retrieve the workbook ID for a workbook deployed to a tenant organization for a given parent workbook and deployment policy.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - The parent workbook must be part of the specified deployment policy.
+
+        - The workbook must be deployed to the specified tenant organization.
+
+        - Retrieve the **tenantOrganizationId** by calling the /v2/tenants endpoint.
+
+        - Retrieve the **deploymentPolicyId** by calling the /v2/deploymentPolicies endpoint.
+
+        - Retrieve the **parentWorkbookId** by calling the /v2/deploymentPolicies/{deploymentPolicyId}/files endpoint and using the `workbookId` included in the response.
+
+        - For version-tagged deployment policies, you may pass either the source workbook ID or the version-tagged workbook ID as the **parentWorkbookId**.'
       parameters:
       - name: tenantOrganizationId
         schema:
@@ -883,7 +907,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tenants
+      - Tenants
       security:
       - oauth2: []
     servers:
@@ -929,19 +953,6 @@ components:
               requestId:
                 type: string
   schemas:
-    V2TenantsTenantOrganizationIdCapabilitiesDeploymentsBatchAddPostResponsesContentApplicationJsonSchemaCapabilitiesItems:
-      type: object
-      properties:
-        tenantOrganizationId:
-          type: string
-          description: Unique identifier of a tenant organization that can be deployed to.
-      required:
-      - tenantOrganizationId
-      title: V2TenantsTenantOrganizationIdCapabilitiesDeploymentsBatchAddPostResponsesContentApplicationJsonSchemaCapabilitiesItems
-    tenants_removeTenantDeploymentCapabilities_Response_200:
-      type: object
-      properties: {}
-      title: tenants_removeTenantDeploymentCapabilities_Response_200
     tenants_addTenantDeploymentCapabilities_Response_200:
       type: object
       properties:
@@ -952,22 +963,15 @@ components:
       required:
       - capabilities
       title: tenants_addTenantDeploymentCapabilities_Response_200
-    V2TenantsGetParametersKey:
-      type: string
-      enum:
-      - createdAt
-      - createdBy
-      - name
-      - url
-      description: Field to sort the results by
-      title: V2TenantsGetParametersKey
-    tenants_listTenantDeploymentCapabilities_Response_200:
+    tenants_listTenants_Response_200:
       type: object
       properties:
         entries:
           type: array
           items:
-            $ref: '#/components/schemas/V2TenantsTenantOrganizationIdCapabilitiesDeploymentsGetResponsesContentApplicationJsonSchemaEntriesItems'
+            oneOf:
+            - $ref: '#/components/schemas/V2TenantsGetResponsesContentApplicationJsonSchemaEntriesItems'
+            - type: 'null'
           description: Array of results returned by the endpoint
         nextPageToken:
           type: string
@@ -976,14 +980,7 @@ components:
             **Must be treated as an opaque string.**'
       required:
       - entries
-      title: tenants_listTenantDeploymentCapabilities_Response_200
-    V2TenantsGetParametersOrder:
-      type: string
-      enum:
-      - asc
-      - desc
-      description: Sort order for the results
-      title: V2TenantsGetParametersOrder
+      title: tenants_listTenants_Response_200
     tenants_patchTenant_Response_200:
       type: object
       properties:
@@ -1036,62 +1033,66 @@ components:
       - tenantOrganizationName
       - tenantOrganizationSlug
       title: tenants_patchTenant_Response_200
-    tenants_deleteTenant_Response_200:
+    tenants_removeTenantDeploymentCapabilities_Response_200:
       type: object
       properties: {}
-      title: tenants_deleteTenant_Response_200
-    tenants_createTenant_Response_200:
+      title: tenants_removeTenantDeploymentCapabilities_Response_200
+    V2TenantsPostRequestBodyContentApplicationJsonSchemaCloudProvider:
+      type: string
+      enum:
+      - aws
+      - aws-au
+      - aws-ca
+      - aws-eu
+      - aws-uk
+      - aws-us-a
+      - azure-au
+      - azure-ca
+      - azure-eu
+      - azure-uk
+      - azure-us
+      - gcp
+      - gcp-us
+      description: Cloud provider to create the tenant organization in. Defaults to the same cloud provider as the parent organization
+      title: V2TenantsPostRequestBodyContentApplicationJsonSchemaCloudProvider
+    tenants_getTenantWorkbook_Response_200:
+      type: object
+      properties:
+        workbookId:
+          type: string
+          description: Unique identifier of the workbook deployed to the tenant organization
+        workbookUrl:
+          type: string
+          description: URL to access the workbook in the tenant organization
+      required:
+      - workbookId
+      - workbookUrl
+      title: tenants_getTenantWorkbook_Response_200
+    V2TenantsTenantOrganizationIdCapabilitiesDeploymentsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
         tenantOrganizationId:
           type: string
-          description: Unique identifier of the tenant organization
-        parentOrganizationId:
-          type: string
-          description: Unique identifier of the tenant's parent organization
-        createdBy:
-          type: string
-          description: Unique identifier of the user who created the tenant organization
-        updatedBy:
-          type: string
-          description: Unique identifier of the user who last updated the tenant organization
-        createdAt:
-          type: string
-          format: date-time
-          description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
-        updatedAt:
-          type: string
-          format: date-time
-          description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
-        tenantOrganizationName:
-          type: string
-          description: Name of the tenant organization to create
-        tenantOrganizationSlug:
-          type: string
-          description: URL identifier for the tenant organization
-        sharedAt:
-          type: string
-          format: date-time
-          description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
-        tenantCloudProvider:
-          type: string
-          description: Cloud provider the tenant organization is hosted on
-        tenantRegion:
-          type: string
-          description: Region the tenant organization is hosted in
-        tenantApiUrl:
-          type: string
-          description: Base URL for accessing the tenant organization API
+          description: Unique identifier of a tenant organization that can be deployed to.
       required:
       - tenantOrganizationId
-      - parentOrganizationId
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      - tenantOrganizationName
-      - tenantOrganizationSlug
-      title: tenants_createTenant_Response_200
+      title: V2TenantsTenantOrganizationIdCapabilitiesDeploymentsGetResponsesContentApplicationJsonSchemaEntriesItems
+    tenants_listTenantDeploymentCapabilities_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TenantsTenantOrganizationIdCapabilitiesDeploymentsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: tenants_listTenantDeploymentCapabilities_Response_200
     V2TenantsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1144,64 +1145,58 @@ components:
       - tenantOrganizationName
       - tenantOrganizationSlug
       title: V2TenantsGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2TenantsTenantOrganizationIdCapabilitiesDeploymentsGetResponsesContentApplicationJsonSchemaEntriesItems:
+    tenants_createTenant_Response_200:
       type: object
       properties:
         tenantOrganizationId:
           type: string
-          description: Unique identifier of a tenant organization that can be deployed to.
+          description: Unique identifier of the tenant organization
+        parentOrganizationId:
+          type: string
+          description: Unique identifier of the tenant's parent organization
+        createdBy:
+          type: string
+          description: Unique identifier of the user who created the tenant organization
+        updatedBy:
+          type: string
+          description: Unique identifier of the user who last updated the tenant organization
+        createdAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was created. Format: ISO 8601 timestamp'
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was last updated. Format: ISO 8601 timestamp'
+        tenantOrganizationName:
+          type: string
+          description: Name of the tenant organization to create
+        tenantOrganizationSlug:
+          type: string
+          description: URL identifier for the tenant organization
+        sharedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the tenant organization was shared, if applicable. Format: ISO 8601 timestamp'
+        tenantCloudProvider:
+          type: string
+          description: Cloud provider the tenant organization is hosted on
+        tenantRegion:
+          type: string
+          description: Region the tenant organization is hosted in
+        tenantApiUrl:
+          type: string
+          description: Base URL for accessing the tenant organization API
       required:
       - tenantOrganizationId
-      title: V2TenantsTenantOrganizationIdCapabilitiesDeploymentsGetResponsesContentApplicationJsonSchemaEntriesItems
-    tenants_getTenantWorkbook_Response_200:
-      type: object
-      properties:
-        workbookId:
-          type: string
-          description: Unique identifier of the workbook deployed to the tenant organization
-        workbookUrl:
-          type: string
-          description: URL to access the workbook in the tenant organization
-      required:
-      - workbookId
-      - workbookUrl
-      title: tenants_getTenantWorkbook_Response_200
-    V2TenantsPostRequestBodyContentApplicationJsonSchemaCloudProvider:
-      type: string
-      enum:
-      - aws
-      - aws-au
-      - aws-ca
-      - aws-eu
-      - aws-uk
-      - aws-us-a
-      - azure-au
-      - azure-ca
-      - azure-eu
-      - azure-uk
-      - azure-us
-      - gcp
-      - gcp-us
-      description: Cloud provider to create the tenant organization in. Defaults to the same cloud provider as the parent organization
-      title: V2TenantsPostRequestBodyContentApplicationJsonSchemaCloudProvider
-    tenants_listTenants_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/V2TenantsGetResponsesContentApplicationJsonSchemaEntriesItems'
-            - type: 'null'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: tenants_listTenants_Response_200
+      - parentOrganizationId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - tenantOrganizationName
+      - tenantOrganizationSlug
+      title: tenants_createTenant_Response_200
     tenants_getTenant_Response_200:
       type: object
       properties:
@@ -1254,6 +1249,35 @@ components:
       - tenantOrganizationName
       - tenantOrganizationSlug
       title: tenants_getTenant_Response_200
+    tenants_deleteTenant_Response_200:
+      type: object
+      properties: {}
+      title: tenants_deleteTenant_Response_200
+    V2TenantsTenantOrganizationIdCapabilitiesDeploymentsBatchAddPostResponsesContentApplicationJsonSchemaCapabilitiesItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of a tenant organization that can be deployed to.
+      required:
+      - tenantOrganizationId
+      title: V2TenantsTenantOrganizationIdCapabilitiesDeploymentsBatchAddPostResponsesContentApplicationJsonSchemaCapabilitiesItems
+    V2TenantsGetParametersKey:
+      type: string
+      enum:
+      - createdAt
+      - createdBy
+      - name
+      - url
+      description: Field to sort the results by
+      title: V2TenantsGetParametersKey
+    V2TenantsGetParametersOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      description: Sort order for the results
+      title: V2TenantsGetParametersOrder
   securitySchemes:
     basicAuth:
       type: http

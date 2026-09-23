@@ -31,12 +31,31 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: auth
+- name: Auth
 paths:
   /v2/auth/token:
     post:
       summary: Get access token
-      description: "Use your Sigma client ID and secret with this endpoint to generate an access token valid for one hour, or to refresh your token. You can then use the access token to authenticate requests made to the Sigma API.\n\nTo make any API call with the Sigma API, including calls from the API documentation, you must have a valid bearer token. To generate a token, you must have a valid **Client ID** and **Secret**. See [Generate Sigma API client credentials](generate-client-credentials).\n\nYou make all API calls to a specific URL that corresponds to the cloud where your Sigma environment is hosted. Set the **Base URL** to the relevant URL for your environment. For details, see [Identify your API request URL](get-started-sigma-api#identify-your-api-request-url).\n\nGenerate a token by sending a POST request to this `/v2/auth/token` endpoint, or use the **Try It!** option on this page.\n\n### Usage notes\n\n- The API token is valid for 1 hour. When the token expires, an endpoint response returns an unauthorized error.\n- Refresh your access token before it expires using the `refresh_token` option.\n- If your client credentials are owned by a user assigned the Admin account type, you can generate an access token as a specific user using impersonation.\n  "
+      description: 'Use your Sigma client ID and secret with this endpoint to generate an access token valid for one hour, or to refresh your token. You can then use the access token to authenticate requests made to the Sigma API.
+
+
+        To make any API call with the Sigma API, including calls from the API documentation, you must have a valid bearer token. To generate a token, you must have a valid **Client ID** and **Secret**. See Generate Sigma API client credentials.
+
+
+        You make all API calls to a specific URL that corresponds to the cloud where your Sigma environment is hosted. Set the **Base URL** to the relevant URL for your environment. For details, see Identify your API request URL.
+
+
+        Generate a token by sending a POST request to this `/v2/auth/token` endpoint, or use the **Try It!** option on this page.
+
+
+        ### Usage notes
+
+
+        - The API token is valid for 1 hour. When the token expires, an endpoint response returns an unauthorized error.
+
+        - Refresh your access token before it expires using the `refresh_token` option.
+
+        - If your client credentials are owned by a user assigned the Admin account type, you can generate an access token as a specific user using impersonation.'
       parameters: []
       operationId: postToken
       requestBody:
@@ -159,7 +178,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - auth
+      - Auth
       security:
       - basicAuth: []
       - bearerAuth: []

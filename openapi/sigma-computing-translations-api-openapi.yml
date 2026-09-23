@@ -31,12 +31,46 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: translations
+- name: Translations
 paths:
   /v2/translations/organization:
     get:
       summary: List organization translation files
-      description: "This paginated endpoint lists all the translation files that have been defined at the organization level.\n\n### Usage notes\nThis endpoint requires no parameters for basic requests but supports query parameters for pagination and response limit.\n\n#### Pagination\n\nThis endpoint supports pagination, which lets you retrieve large sets of data in manageable segments. The response includes pagination details as follows:\n\n- hasMore: A boolean value indicating whether there are more pages of data available beyond the current page.\n- total: The total number of entries available across all pages.\n- nextPage: An identifier or token that you can use in a subsequent request to retrieve the next page of data.\n\n#### Example response for pagination\n{\n  \"hasMore\": true,\n  \"total\": 104,\n  \"nextPage\": \"50\"\n}\n\nTo request additional pages, include the `nextPage` option in your followup request according to the endpoint's parameter requirements. This process can be repeated until `nextPage` is `null`.\n    "
+      description: 'This paginated endpoint lists all the translation files that have been defined at the organization level.
+
+
+        ### Usage notes
+
+        This endpoint requires no parameters for basic requests but supports query parameters for pagination and response limit.
+
+
+        #### Pagination
+
+
+        This endpoint supports pagination, which lets you retrieve large sets of data in manageable segments. The response includes pagination details as follows:
+
+
+        - hasMore: A boolean value indicating whether there are more pages of data available beyond the current page.
+
+        - total: The total number of entries available across all pages.
+
+        - nextPage: An identifier or token that you can use in a subsequent request to retrieve the next page of data.
+
+
+        #### Example response for pagination
+
+        {
+
+        "hasMore": true,
+
+        "total": 104,
+
+        "nextPage": "50"
+
+        }
+
+
+        To request additional pages, include the `nextPage` option in your followup request according to the endpoint''s parameter requirements. This process can be repeated until `nextPage` is `null`.'
       parameters:
       - name: page
         schema:
@@ -124,7 +158,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - translations
+      - Translations
       security:
       - oauth2: []
     post:
@@ -136,9 +170,7 @@ paths:
 
         ### Usage Notes
 
-        - Retrieve the supported locale identifiers to use for **lng** from [Supported languages and locales](/docs/manage-workbook-localization#supported-languages-and-locales).
-
-        '
+        - Retrieve the supported locale identifiers to use for **lng** from Supported languages and locales.'
       parameters: []
       operationId: createOrgTranslation
       requestBody:
@@ -183,7 +215,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - translations
+      - Translations
       security:
       - oauth2: []
     servers:
@@ -216,7 +248,12 @@ paths:
   /v2/translations/organization/{lng}:
     get:
       summary: Get organization translation file
-      description: "This endpoint returns a JSON file containing the translations for a specified locale (**lng**) without custom translations.\n\n### Usage notes\n- Retrieve the **lng** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      description: 'This endpoint returns a JSON file containing the translations for a specified locale (**lng**) without custom translations.
+
+
+        ### Usage notes
+
+        - Retrieve the **lng** by calling the /v2/translations/organization endpoint.'
       parameters:
       - name: lng
         schema:
@@ -248,12 +285,17 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - translations
+      - Translations
       security:
       - oauth2: []
     put:
       summary: Update organization translation file
-      description: "This endpoint updates the translation file for a specified locale (**lng**) without custom translations.\n\n### Usage notes\n- Retrieve the **lng** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      description: 'This endpoint updates the translation file for a specified locale (**lng**) without custom translations.
+
+
+        ### Usage notes
+
+        - Retrieve the **lng** by calling the /v2/translations/organization endpoint.'
       parameters:
       - name: lng
         schema:
@@ -292,12 +334,17 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - translations
+      - Translations
       security:
       - oauth2: []
     delete:
       summary: Delete organization translation file
-      description: "This endpoint deletes the translation file for the specified locale (**lng**) without any custom translations.\n\n### Usage notes\n- Retrieve the **lng** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      description: 'This endpoint deletes the translation file for the specified locale (**lng**) without any custom translations.
+
+
+        ### Usage notes
+
+        - Retrieve the **lng** by calling the /v2/translations/organization endpoint.'
       parameters:
       - name: lng
         schema:
@@ -321,7 +368,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - translations
+      - Translations
       security:
       - oauth2: []
     servers:
@@ -354,7 +401,12 @@ paths:
   /v2/translations/organization/{lng}/{lng_variant}:
     get:
       summary: Get organization translation file with variant
-      description: "This endpoint returns a JSON file containing the translations and custom translations (**lng_variant**) for a locale (**lng**).\n\n### Usage notes\n- Retrieve the **lng** and **lng_variant** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      description: 'This endpoint returns a JSON file containing the translations and custom translations (**lng_variant**) for a locale (**lng**).
+
+
+        ### Usage notes
+
+        - Retrieve the **lng** and **lng_variant** by calling the /v2/translations/organization endpoint.'
       parameters:
       - name: lng
         schema:
@@ -393,12 +445,17 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - translations
+      - Translations
       security:
       - oauth2: []
     put:
       summary: Update organization translation file with variant
-      description: "This endpoint updates the translation file for the specified custom translation (**lng_variant**) for a locale (**lng**).\n\n### Usage notes\n- Retrieve the **lng** and **lng_variant** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      description: 'This endpoint updates the translation file for the specified custom translation (**lng_variant**) for a locale (**lng**).
+
+
+        ### Usage notes
+
+        - Retrieve the **lng** and **lng_variant** by calling the /v2/translations/organization endpoint.'
       parameters:
       - name: lng
         schema:
@@ -444,12 +501,17 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - translations
+      - Translations
       security:
       - oauth2: []
     delete:
       summary: Delete organization translation file with variant
-      description: "This endpoint deletes the translation file for the specified custom translation (**lng_variant**) for a locale (**lng**).\n\n### Usage notes\n- Retrieve the **lng** and **lng_variant** by calling the [/v2/translations/organization](https://help.sigmacomputing.com/reference/list-org-locales) endpoint.\n  "
+      description: 'This endpoint deletes the translation file for the specified custom translation (**lng_variant**) for a locale (**lng**).
+
+
+        ### Usage notes
+
+        - Retrieve the **lng** and **lng_variant** by calling the /v2/translations/organization endpoint.'
       parameters:
       - name: lng
         schema:
@@ -480,7 +542,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - translations
+      - Translations
       security:
       - oauth2: []
     servers:
@@ -526,38 +588,48 @@ components:
               requestId:
                 type: string
   schemas:
-    translations_deleteOrgTranslation_Response_200:
+    translations_updateOrgTranslationWithVariant_Response_200:
       type: object
       properties: {}
-      title: translations_deleteOrgTranslation_Response_200
+      title: translations_updateOrgTranslationWithVariant_Response_200
+    translations_createOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_createOrgTranslation_Response_200
     translations_deleteOrgTranslationWithVariant_Response_200:
       type: object
       properties: {}
       title: translations_deleteOrgTranslationWithVariant_Response_200
-    translations_listOrgLocales_Response_200:
+    translations_getOrgTranslations_Response_200:
       type: object
       properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
+        translations:
+          type: object
+          additionalProperties:
+            type: string
+          description: A JSON object with phrases as keys and their translations as values
       required:
-      - entries
-      - nextPage
-      title: translations_listOrgLocales_Response_200
+      - translations
+      title: translations_getOrgTranslations_Response_200
+    translations_deleteOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_deleteOrgTranslation_Response_200
+    translations_getOrgTranslationsWithVariant_Response_200:
+      type: object
+      properties:
+        translations:
+          type: object
+          additionalProperties:
+            type: string
+          description: A JSON object with phrases as keys and their translations as values
+      required:
+      - translations
+      title: translations_getOrgTranslationsWithVariant_Response_200
+    translations_updateOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_updateOrgTranslation_Response_200
     V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -595,40 +667,30 @@ components:
       - createdAt
       - updatedAt
       title: V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems
-    translations_getOrgTranslations_Response_200:
+    translations_listOrgLocales_Response_200:
       type: object
       properties:
-        translations:
-          type: object
-          additionalProperties:
-            type: string
-          description: A JSON object with phrases as keys and their translations as values
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
       required:
-      - translations
-      title: translations_getOrgTranslations_Response_200
-    translations_getOrgTranslationsWithVariant_Response_200:
-      type: object
-      properties:
-        translations:
-          type: object
-          additionalProperties:
-            type: string
-          description: A JSON object with phrases as keys and their translations as values
-      required:
-      - translations
-      title: translations_getOrgTranslationsWithVariant_Response_200
-    translations_updateOrgTranslationWithVariant_Response_200:
-      type: object
-      properties: {}
-      title: translations_updateOrgTranslationWithVariant_Response_200
-    translations_createOrgTranslation_Response_200:
-      type: object
-      properties: {}
-      title: translations_createOrgTranslation_Response_200
-    translations_updateOrgTranslation_Response_200:
-      type: object
-      properties: {}
-      title: translations_updateOrgTranslation_Response_200
+      - entries
+      - nextPage
+      title: translations_listOrgLocales_Response_200
   securitySchemes:
     basicAuth:
       type: http

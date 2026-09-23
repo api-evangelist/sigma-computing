@@ -31,12 +31,12 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: query
+- name: Query
 paths:
   /v2/query/{queryId}/download:
     get:
       summary: Download an exported file
-      description: 'After making a request to the [/v2/workbooks/{workbookId}/export](https://help.sigmacomputing.com/reference/export-workbook) or [/v2/reports/{reportId}/export](https://help.sigmacomputing.com/reference/export-report) endpoint, you can use this endpoint to download the exported file using the queryId returned in the response.
+      description: 'After making a request to the /v2/workbooks/{workbookId}/export or /v2/reports/{reportId}/export endpoint, you can use this endpoint to download the exported file using the queryId returned in the response.
 
 
         ### Usage notes
@@ -46,7 +46,7 @@ paths:
 
         - The export must be ready to download before you can download the results. The endpoint returns an error if the query is still processing or if the `queryId` is invalid or expired. Query results are typically available for a limited time, so make sure to download query results while they are available.
 
-        - Retrieve the **queryId** by making a request to the [/v2/workbooks/{workbookId}/export](https://help.sigmacomputing.com/reference/export-workbook) or [/v2/reports/{reportId}/export](https://help.sigmacomputing.com/reference/export-report) endpoint.
+        - Retrieve the **queryId** by making a request to the /v2/workbooks/{workbookId}/export or /v2/reports/{reportId}/export endpoint.
 
         - Specify the file format when you make the export request. You cannot specify the file format when you download the file.
 
@@ -60,7 +60,7 @@ paths:
 
         ### Best practices
 
-        - Monitor the status of the export query before attempting a download to make sure it is ready. For a code example, see [Export to CSV with Date Range Parameters](https://help.sigmacomputing.com/recipes/workbook-export-to-csv-with-date-range-parameters).
+        - Monitor the status of the export query before attempting a download to make sure it is ready. For a code example, see Export to CSV with Date Range Parameters.
 
         - Handle errors gracefully in your application, providing users with clear messages regarding the status of their requested downloads.'
       parameters:
@@ -143,7 +143,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - query
+      - Query
       security:
       - oauth2: []
     servers:
@@ -189,46 +189,18 @@ components:
               requestId:
                 type: string
   schemas:
-    QueryDownloadQueryResponse2000:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status'
-          description: Success
-        download:
-          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download'
-          description: Download results
-      required:
-      - status
-      - download
-      title: QueryDownloadQueryResponse2000
+    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status:
+      type: string
+      enum:
+      - '204'
+      description: Queued or running
+      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status
     V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status:
       type: string
       enum:
       - '200'
       description: Success
       title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status
-    query_downloadQuery_Response_200:
-      oneOf:
-      - $ref: '#/components/schemas/QueryDownloadQueryResponse2000'
-      - $ref: '#/components/schemas/QueryDownloadQueryResponse2001'
-      - $ref: '#/components/schemas/QueryDownloadQueryResponse2002'
-      title: query_downloadQuery_Response_200
-    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status:
-      type: string
-      enum:
-      - '500'
-      description: Internal server error
-      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status
-    QueryDownloadQueryResponse2001:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status'
-          description: Queued or running
-      required:
-      - status
-      title: QueryDownloadQueryResponse2001
     V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download:
       type: object
       properties:
@@ -244,6 +216,31 @@ components:
       - filename
       description: Download results
       title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download
+    query_downloadQuery_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/QueryDownloadQueryResponse2000'
+      - $ref: '#/components/schemas/QueryDownloadQueryResponse2001'
+      - $ref: '#/components/schemas/QueryDownloadQueryResponse2002'
+      title: query_downloadQuery_Response_200
+    QueryDownloadQueryResponse2000:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status'
+          description: Success
+        download:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download'
+          description: Download results
+      required:
+      - status
+      - download
+      title: QueryDownloadQueryResponse2000
+    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status:
+      type: string
+      enum:
+      - '500'
+      description: Internal server error
+      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status
     QueryDownloadQueryResponse2002:
       type: object
       properties:
@@ -257,12 +254,15 @@ components:
       - status
       - message
       title: QueryDownloadQueryResponse2002
-    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status:
-      type: string
-      enum:
-      - '204'
-      description: Queued or running
-      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status
+    QueryDownloadQueryResponse2001:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status'
+          description: Queued or running
+      required:
+      - status
+      title: QueryDownloadQueryResponse2001
   securitySchemes:
     basicAuth:
       type: http

@@ -31,12 +31,31 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: whoami
+- name: Whoami
 paths:
   /v2/whoami:
     get:
       summary: Get current user
-      description: "Get the identity and authentication status of the current user.\n\n  ### Usage notes\n  Call this endpoint after authenticating to retrieve user details. It does not require any parameters other than the user's valid session or authentication token included in the request headers.\n\n  ### Usage scenarios\n  - **Session validation:** Quickly confirm user authentication and retrieve session-specific details at the start of a new session.\n  - **User configuration:** Retrieve settings or configurations specific to the user, allowing for a customized application experience based on user roles and permissions.\n\n  ### Best practices\n  - Call this endpoint at the beginning of each session to ensure that the user's credentials are still valid and have not been revoked.\n  - Use the information provided by this endpoint to tailor the user interface and functionality accessible to the user, enhancing security and user experience."
+      description: 'Get the identity and authentication status of the current user.
+
+
+        ### Usage notes
+
+        Call this endpoint after authenticating to retrieve user details. It does not require any parameters other than the user''s valid session or authentication token included in the request headers.
+
+
+        ### Usage scenarios
+
+        - **Session validation:** Quickly confirm user authentication and retrieve session-specific details at the start of a new session.
+
+        - **User configuration:** Retrieve settings or configurations specific to the user, allowing for a customized application experience based on user roles and permissions.
+
+
+        ### Best practices
+
+        - Call this endpoint at the beginning of each session to ensure that the user''s credentials are still valid and have not been revoked.
+
+        - Use the information provided by this endpoint to tailor the user interface and functionality accessible to the user, enhancing security and user experience.'
       parameters: []
       operationId: whoAmI
       responses:
@@ -61,7 +80,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - whoami
+      - Whoami
       security:
       - oauth2: []
     servers:

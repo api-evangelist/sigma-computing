@@ -31,7 +31,7 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: plugins
+- name: Plugins
 paths:
   /v2/plugins:
     get:
@@ -39,7 +39,7 @@ paths:
       description: 'List custom plugins owned by the current organization.
 
 
-        **Beta**: This documentation describes a private beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.'
+        **Beta**: This documentation describes a private beta feature and is subject to the Beta features disclaimer.'
       parameters:
       - name: pageToken
         schema:
@@ -116,7 +116,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - plugins
+      - Plugins
       security:
       - oauth2: []
     post:
@@ -124,7 +124,7 @@ paths:
       description: 'Register a new custom plugin in the organization. If `url` is omitted, the plugin is created with an empty production URL, and Sigma cannot load the plugin in workbooks until one is set.
 
 
-        **Beta**: This documentation describes a private beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a private beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
@@ -204,7 +204,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - plugins
+      - Plugins
       security:
       - oauth2: []
     servers:
@@ -240,12 +240,12 @@ paths:
       description: 'Get the metadata for a custom plugin by ID.
 
 
-        **Beta**: This documentation describes a private beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a private beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
 
-        - Retrieve the **pluginId** by calling the [/v2/plugins](https://help.sigmacomputing.com/reference/list-custom-plugins) endpoint.'
+        - Retrieve the **pluginId** by calling the /v2/plugins endpoint.'
       parameters:
       - name: pluginId
         schema:
@@ -298,7 +298,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - plugins
+      - Plugins
       security:
       - oauth2: []
     patch:
@@ -306,12 +306,12 @@ paths:
       description: 'Update metadata fields on an existing custom plugin. Only fields included in the request are changed. The `url` field cannot be updated by this endpoint.
 
 
-        **Beta**: This documentation describes a private beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a private beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
 
-        - Retrieve the **pluginId** by calling the [/v2/plugins](https://help.sigmacomputing.com/reference/list-custom-plugins) endpoint.
+        - Retrieve the **pluginId** by calling the /v2/plugins endpoint.
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type or an account type with the **Manage plugins** permission enabled.'
       parameters:
@@ -386,7 +386,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - plugins
+      - Plugins
       security:
       - oauth2: []
     delete:
@@ -394,12 +394,12 @@ paths:
       description: 'Permanently delete a custom plugin. Workbook elements that reference the deleted plugin remain in their workbooks but can no longer render plugin content.
 
 
-        **Beta**: This documentation describes a private beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a private beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
 
-        - Retrieve the **pluginId** by calling the [/v2/plugins](https://help.sigmacomputing.com/reference/list-custom-plugins) endpoint.
+        - Retrieve the **pluginId** by calling the /v2/plugins endpoint.
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type or an account type with the **Manage plugins** permission enabled.'
       parameters:
@@ -424,7 +424,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - plugins
+      - Plugins
       security:
       - oauth2: []
     servers:
@@ -470,38 +470,11 @@ components:
               requestId:
                 type: string
   schemas:
-    plugins_updateCustomPlugin_Response_200:
-      type: object
-      properties:
-        pluginId:
-          type: string
-          description: Unique identifier (UUID) of the plugin.
-        name:
-          type: string
-          description: Display name of the plugin.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the plugin.
-        url:
-          type: string
-          description: Production URL where the plugin is hosted. Sigma loads the plugin from this URL when it is added to a workbook. An empty string indicates that no production URL has been set for the plugin yet.
-        devUrl:
-          type:
-          - string
-          - 'null'
-          description: Development URL for the plugin. Sigma loads the plugin from this URL when the plugin runs in development mode.
-        type:
-          $ref: '#/components/schemas/V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType'
-      required:
-      - pluginId
-      - name
-      - description
-      - url
-      - devUrl
-      - type
-      title: plugins_updateCustomPlugin_Response_200
+    V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType:
+      type: string
+      enum:
+      - element
+      title: V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType
     plugins_createCustomPlugin_Response_200:
       type: object
       properties:
@@ -534,62 +507,6 @@ components:
       - devUrl
       - type
       title: plugins_createCustomPlugin_Response_200
-    V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType:
-      type: string
-      enum:
-      - element
-      title: V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType
-    V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType:
-      type: string
-      enum:
-      - element
-      title: V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType
-    V2PluginsPostResponsesContentApplicationJsonSchemaType:
-      type: string
-      enum:
-      - element
-      title: V2PluginsPostResponsesContentApplicationJsonSchemaType
-    V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        pluginId:
-          type: string
-          description: Unique identifier (UUID) of the plugin.
-        name:
-          type: string
-          description: Display name of the plugin.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the plugin.
-        url:
-          type: string
-          description: Production URL where the plugin is hosted. Sigma loads the plugin from this URL when it is added to a workbook. An empty string indicates that no production URL has been set for the plugin yet.
-        devUrl:
-          type:
-          - string
-          - 'null'
-          description: Development URL for the plugin. Sigma loads the plugin from this URL when the plugin runs in development mode.
-        type:
-          $ref: '#/components/schemas/V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType'
-      required:
-      - pluginId
-      - name
-      - description
-      - url
-      - devUrl
-      - type
-      title: V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems
-    plugins_deleteCustomPlugin_Response_200:
-      type: object
-      properties: {}
-      title: plugins_deleteCustomPlugin_Response_200
-    V2PluginsPluginIdGetResponsesContentApplicationJsonSchemaType:
-      type: string
-      enum:
-      - element
-      title: V2PluginsPluginIdGetResponsesContentApplicationJsonSchemaType
     plugins_getCustomPlugin_Response_200:
       type: object
       properties:
@@ -622,6 +539,89 @@ components:
       - devUrl
       - type
       title: plugins_getCustomPlugin_Response_200
+    V2PluginsPluginIdGetResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - element
+      title: V2PluginsPluginIdGetResponsesContentApplicationJsonSchemaType
+    V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - element
+      title: V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType
+    V2PluginsPostResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - element
+      title: V2PluginsPostResponsesContentApplicationJsonSchemaType
+    plugins_deleteCustomPlugin_Response_200:
+      type: object
+      properties: {}
+      title: plugins_deleteCustomPlugin_Response_200
+    V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        pluginId:
+          type: string
+          description: Unique identifier (UUID) of the plugin.
+        name:
+          type: string
+          description: Display name of the plugin.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the plugin.
+        url:
+          type: string
+          description: Production URL where the plugin is hosted. Sigma loads the plugin from this URL when it is added to a workbook. An empty string indicates that no production URL has been set for the plugin yet.
+        devUrl:
+          type:
+          - string
+          - 'null'
+          description: Development URL for the plugin. Sigma loads the plugin from this URL when the plugin runs in development mode.
+        type:
+          $ref: '#/components/schemas/V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType'
+      required:
+      - pluginId
+      - name
+      - description
+      - url
+      - devUrl
+      - type
+      title: V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems
+    plugins_updateCustomPlugin_Response_200:
+      type: object
+      properties:
+        pluginId:
+          type: string
+          description: Unique identifier (UUID) of the plugin.
+        name:
+          type: string
+          description: Display name of the plugin.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the plugin.
+        url:
+          type: string
+          description: Production URL where the plugin is hosted. Sigma loads the plugin from this URL when it is added to a workbook. An empty string indicates that no production URL has been set for the plugin yet.
+        devUrl:
+          type:
+          - string
+          - 'null'
+          description: Development URL for the plugin. Sigma loads the plugin from this URL when the plugin runs in development mode.
+        type:
+          $ref: '#/components/schemas/V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType'
+      required:
+      - pluginId
+      - name
+      - description
+      - url
+      - devUrl
+      - type
+      title: plugins_updateCustomPlugin_Response_200
     plugins_listCustomPlugins_Response_200:
       type: object
       properties:

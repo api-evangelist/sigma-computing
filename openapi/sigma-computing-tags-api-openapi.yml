@@ -31,7 +31,7 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: tags
+- name: Tags
 paths:
   /v2/tags:
     post:
@@ -89,7 +89,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tags
+      - Tags
       security:
       - oauth2: []
     get:
@@ -198,7 +198,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tags
+      - Tags
       security:
       - oauth2: []
     servers:
@@ -231,7 +231,7 @@ paths:
   /v2/tags/{tagId}:
     delete:
       summary: Delete a tag
-      description: Delete a specific version tag. Retrieve the **tagId** by calling the [/v2/tags](https://help.sigmacomputing.com/reference/list-version-tag) endpoint and using the `versionTagId` in the response.
+      description: Delete a specific version tag. Retrieve the **tagId** by calling the /v2/tags endpoint and using the `versionTagId` in the response.
       parameters:
       - name: tagId
         schema:
@@ -253,12 +253,12 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tags
+      - Tags
       security:
       - oauth2: []
     patch:
       summary: Update a tag
-      description: Update the description of a specific version tag. Retrieve the **tagId** by calling the [/v2/tags](https://help.sigmacomputing.com/reference/list-version-tag) endpoint and using the `versionTagId` in the response.
+      description: Update the description of a specific version tag. Retrieve the **tagId** by calling the /v2/tags endpoint and using the `versionTagId` in the response.
       parameters:
       - name: tagId
         schema:
@@ -338,7 +338,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - tags
+      - Tags
       security:
       - oauth2: []
     servers:
@@ -371,7 +371,7 @@ paths:
   /v2/tags/{tagId}/workbooks:
     get:
       summary: List workbooks for a tag
-      description: Get a list of workbooks for a specific version tag. Retrieve the **tagId** by calling the [/v2/tags](https://help.sigmacomputing.com/reference/list-version-tag) endpoint and using the `versionTagId` in the response.
+      description: Get a list of workbooks for a specific version tag. Retrieve the **tagId** by calling the /v2/tags endpoint and using the `versionTagId` in the response.
       parameters:
       - name: tagId
         schema:
@@ -506,7 +506,7 @@ paths:
         url: https://help.sigmacomputing.com/reference/createversiontag
         description: 'Sigma API documentation:'
       tags:
-      - tags
+      - Tags
       security:
       - oauth2: []
     servers:
@@ -552,27 +552,6 @@ components:
               requestId:
                 type: string
   schemas:
-    tags_createVersionTag_Response_200:
-      type: object
-      properties:
-        name:
-          type: string
-        versionTagId:
-          type: string
-      required:
-      - name
-      - versionTagId
-      title: tags_createVersionTag_Response_200
-    V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor:
-      type: string
-      enum:
-      - cyan
-      - grass
-      - violet
-      - plum
-      - amber
-      - bronze
-      title: V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor
     V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
       type: object
       properties:
@@ -597,41 +576,21 @@ components:
       - taggedWorkbookId
       - workbookTaggedAt
       title: V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
-    V2TagsPostRequestBodyContentApplicationJsonSchemaColor:
-      type: string
-      enum:
-      - cyan
-      - grass
-      - violet
-      - plum
-      - amber
-      - bronze
-      description: Color to associate with the tag in Sigma
-      title: V2TagsPostRequestBodyContentApplicationJsonSchemaColor
-    tags_listVersionTag_Response_200:
+    tags_deleteVersionTag_Response_200:
+      type: object
+      properties: {}
+      title: tags_deleteVersionTag_Response_200
+    tags_createVersionTag_Response_200:
       type: object
       properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
+        name:
+          type: string
+        versionTagId:
+          type: string
       required:
-      - entries
-      - nextPage
-      title: tags_listVersionTag_Response_200
+      - name
+      - versionTagId
+      title: tags_createVersionTag_Response_200
     tags_listWorkbooksForTag_Response_200:
       type: object
       properties:
@@ -656,10 +615,68 @@ components:
       - entries
       - nextPage
       title: tags_listWorkbooksForTag_Response_200
-    tags_deleteVersionTag_Response_200:
+    tags_updateVersionTag_Response_200:
       type: object
-      properties: {}
-      title: tags_deleteVersionTag_Response_200
+      properties:
+        versionTagId:
+          type: string
+        name:
+          type: string
+        ownerId:
+          type: string
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        isArchived:
+          type: boolean
+        description:
+          type: string
+        color:
+          $ref: '#/components/schemas/V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor'
+      required:
+      - versionTagId
+      - name
+      - ownerId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: tags_updateVersionTag_Response_200
+    tags_listVersionTag_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: tags_listVersionTag_Response_200
     V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -698,6 +715,26 @@ components:
       - createdAt
       - updatedAt
       title: V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor:
+      type: string
+      enum:
+      - cyan
+      - grass
+      - violet
+      - plum
+      - amber
+      - bronze
+      title: V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor
+    V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor:
+      type: string
+      enum:
+      - cyan
+      - grass
+      - violet
+      - plum
+      - amber
+      - bronze
+      title: V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor
     V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -755,7 +792,7 @@ components:
       - createdAt
       - updatedAt
       title: V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor:
+    V2TagsPostRequestBodyContentApplicationJsonSchemaColor:
       type: string
       enum:
       - cyan
@@ -764,45 +801,8 @@ components:
       - plum
       - amber
       - bronze
-      title: V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor
-    tags_updateVersionTag_Response_200:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-        name:
-          type: string
-        ownerId:
-          type: string
-        createdBy:
-          type: string
-          description: The identifier of the user who created this object.
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this object.
-        createdAt:
-          type: string
-          format: date-time
-          description: When the object was created.
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the object was last updated.
-        isArchived:
-          type: boolean
-        description:
-          type: string
-        color:
-          $ref: '#/components/schemas/V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor'
-      required:
-      - versionTagId
-      - name
-      - ownerId
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: tags_updateVersionTag_Response_200
+      description: Color to associate with the tag in Sigma
+      title: V2TagsPostRequestBodyContentApplicationJsonSchemaColor
   securitySchemes:
     basicAuth:
       type: http

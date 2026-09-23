@@ -31,7 +31,7 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: organizations
+- name: Organizations
 paths:
   /v2/organizations/settings:
     patch:
@@ -43,7 +43,7 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - To update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+        - To update settings for a tenant organization, use impersonation to obtain a token for that tenant, then call this endpoint with that token.'
       parameters: []
       operationId: updateOrganizationSettings
       requestBody:
@@ -81,7 +81,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - organizations
+      - Organizations
       security:
       - oauth2: []
     servers:
@@ -121,9 +121,9 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+        - To read or update settings for a tenant organization, use impersonation to obtain a token for that tenant, then call this endpoint with that token.'
       tags:
-      - organizations
+      - Organizations
       parameters:
       - name: Authorization
         in: header
@@ -147,9 +147,9 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+        - To read or update settings for a tenant organization, use impersonation to obtain a token for that tenant, then call this endpoint with that token.'
       tags:
-      - organizations
+      - Organizations
       parameters:
       - name: Authorization
         in: header
@@ -213,9 +213,9 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+        - To read or update settings for a tenant organization, use impersonation to obtain a token for that tenant, then call this endpoint with that token.'
       tags:
-      - organizations
+      - Organizations
       parameters:
       - name: Authorization
         in: header
@@ -239,9 +239,9 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+        - To read or update settings for a tenant organization, use impersonation to obtain a token for that tenant, then call this endpoint with that token.'
       tags:
-      - organizations
+      - Organizations
       parameters:
       - name: Authorization
         in: header
@@ -305,9 +305,9 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+        - To read or update settings for a tenant organization, use impersonation to obtain a token for that tenant, then call this endpoint with that token.'
       tags:
-      - organizations
+      - Organizations
       parameters:
       - name: Authorization
         in: header
@@ -331,9 +331,9 @@ paths:
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - To read or update settings for a tenant organization, use [impersonation](/docs/impersonate-users) to obtain a token for that tenant, then call this endpoint with that token.'
+        - To read or update settings for a tenant organization, use impersonation to obtain a token for that tenant, then call this endpoint with that token.'
       tags:
-      - organizations
+      - Organizations
       parameters:
       - name: Authorization
         in: header
@@ -403,24 +403,6 @@ components:
               requestId:
                 type: string
   schemas:
-    organizations_updateLicenseUpgradeRequestsSetting_Response_200:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the setting is enabled for the organization.
-      required:
-      - enabled
-      title: organizations_updateLicenseUpgradeRequestsSetting_Response_200
-    organizations_getPublicEmbedsSetting_Response_200:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the setting is enabled for the organization.
-      required:
-      - enabled
-      title: organizations_getPublicEmbedsSetting_Response_200
     organizations_getBulkCopySetting_Response_200:
       type: object
       properties:
@@ -430,27 +412,6 @@ components:
       required:
       - enabled
       title: organizations_getBulkCopySetting_Response_200
-    organizations_updateBulkCopySetting_Response_200:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the setting is enabled for the organization.
-      required:
-      - enabled
-      title: organizations_updateBulkCopySetting_Response_200
-    organizations_updateOrganizationSettings_Response_200:
-      type: object
-      properties:
-        organizationId:
-          type: string
-          description: Unique identifier of the organization
-        timezone:
-          type: string
-          description: Current IANA timezone for the organization
-      required:
-      - organizationId
-      title: organizations_updateOrganizationSettings_Response_200
     organizations_updatePublicEmbedsSetting_Response_200:
       type: object
       properties:
@@ -469,6 +430,45 @@ components:
       required:
       - enabled
       title: organizations_getLicenseUpgradeRequestsSetting_Response_200
+    organizations_updateBulkCopySetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_updateBulkCopySetting_Response_200
+    organizations_getPublicEmbedsSetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_getPublicEmbedsSetting_Response_200
+    organizations_updateOrganizationSettings_Response_200:
+      type: object
+      properties:
+        organizationId:
+          type: string
+          description: Unique identifier of the organization
+        timezone:
+          type: string
+          description: Current IANA timezone for the organization
+      required:
+      - organizationId
+      title: organizations_updateOrganizationSettings_Response_200
+    organizations_updateLicenseUpgradeRequestsSetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_updateLicenseUpgradeRequestsSetting_Response_200
   securitySchemes:
     basicAuth:
       type: http

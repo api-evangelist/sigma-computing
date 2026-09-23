@@ -36,7 +36,14 @@ paths:
   /v2/deploymentPolicies:
     post:
       summary: Create a deployment policy
-      description: "Create a deployment policy to define what documents to deploy to a tenant organization and how to swap sources for those documents.\n\n### Usage notes\n- Retrieve the **versionTagId** by calling the [/v2/tags](https://help.sigmacomputing.com/reference/list-version-tag) endpoint.\n- Retrieve the identifier for `sourceSwapPolicies` by calling the [/v2/sourceSwapPolicies](https://help.sigmacomputing.com/reference/list-source-swap-policies) endpoint and using the `policyId` in the response.\n    "
+      description: 'Create a deployment policy to define what documents to deploy to a tenant organization and how to swap sources for those documents.
+
+
+        ### Usage notes
+
+        - Retrieve the **versionTagId** by calling the /v2/tags endpoint.
+
+        - Retrieve the identifier for `sourceSwapPolicies` by calling the /v2/sourceSwapPolicies endpoint and using the `policyId` in the response.'
       parameters: []
       operationId: createDeployment
       requestBody:
@@ -90,7 +97,7 @@ paths:
       - oauth2: []
     get:
       summary: List deployment policies
-      description: "List all deployment policies set up for an organization.\n    "
+      description: List all deployment policies set up for an organization.
       parameters:
       - name: pageToken
         schema:
@@ -197,7 +204,12 @@ paths:
   /v2/deploymentPolicies/{deploymentPolicyId}:
     get:
       summary: Get a deployment policy
-      description: "Get details for a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n    "
+      description: 'Get details for a deployment policy.
+
+
+        ### Usage notes
+
+        - Retrieve the `deploymentPolicyId` from the /v2/deploymentPolicies endpoint.'
       parameters:
       - name: deploymentPolicyId
         schema:
@@ -252,7 +264,16 @@ paths:
       - oauth2: []
     patch:
       summary: Update a deployment policy
-      description: "Update a deployment policy. Only the fields included in the request are changed.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- Retrieve the identifier for `sourceSwapPolicies` by calling the [/v2/sourceSwapPolicies](https://help.sigmacomputing.com/reference/list-source-swap-policies) endpoint and using the `policyId` in the response.\n- The version tag cannot be changed after a deployment policy is created.\n    "
+      description: 'Update a deployment policy. Only the fields included in the request are changed.
+
+
+        ### Usage notes
+
+        - Retrieve the `deploymentPolicyId` from the /v2/deploymentPolicies endpoint.
+
+        - Retrieve the identifier for `sourceSwapPolicies` by calling the /v2/sourceSwapPolicies endpoint and using the `policyId` in the response.
+
+        - The version tag cannot be changed after a deployment policy is created.'
       parameters:
       - name: deploymentPolicyId
         schema:
@@ -328,7 +349,12 @@ paths:
       - oauth2: []
     delete:
       summary: Archive a deployment policy
-      description: "Archive a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n    "
+      description: 'Archive a deployment policy.
+
+
+        ### Usage notes
+
+        - Retrieve the `deploymentPolicyId` from the /v2/deploymentPolicies endpoint.'
       parameters:
       - name: deploymentPolicyId
         schema:
@@ -384,7 +410,23 @@ paths:
   /v2/deploymentPolicies/{deploymentPolicyId}/files:
     get:
       summary: List documents for a deployment policy
-      description: "List documents for a deployment policy\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- If the user associated with the API key does not have access to the document, the `inode` field is `null`.\n- The `inode` field is one of `workbook`, `dataModel`, `report`, or `folder`. Use the `type` field to determine which shape is returned and which ID field is present.\n- Folders are returned as a single entry. The documents they contain are not listed individually.\n\n### Usage scenarios\n- Review and audit documents deployed to specific tenant organizations.\n    "
+      description: 'List documents for a deployment policy
+
+
+        ### Usage notes
+
+        - Retrieve the `deploymentPolicyId` from the /v2/deploymentPolicies endpoint.
+
+        - If the user associated with the API key does not have access to the document, the `inode` field is `null`.
+
+        - The `inode` field is one of `workbook`, `dataModel`, `report`, or `folder`. Use the `type` field to determine which shape is returned and which ID field is present.
+
+        - Folders are returned as a single entry. The documents they contain are not listed individually.
+
+
+        ### Usage scenarios
+
+        - Review and audit documents deployed to specific tenant organizations.'
       parameters:
       - name: deploymentPolicyId
         schema:
@@ -523,15 +565,15 @@ paths:
 
         ### Usage notes
 
-        - Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.
+        - Retrieve the `deploymentPolicyId` from the /v2/deploymentPolicies endpoint.
 
-        - To add workbooks to a deployment policy, retrieve the relevant `workbookId` from the [/v2/workbooks](https://help.sigmacomputing.com/reference/list-workbooks) endpoint.
+        - To add workbooks to a deployment policy, retrieve the relevant `workbookId` from the /v2/workbooks endpoint.
 
-        - To add data models to a deployment policy, retrieve the relevant `dataModelId` from the [/v2/datamodels](https://help.sigmacomputing.com/reference/list-data-models) endpoint.
+        - To add data models to a deployment policy, retrieve the relevant `dataModelId` from the /v2/datamodels endpoint.
 
-        - To add reports to a deployment policy, retrieve the relevant `reportId` from the [/v2/reports](https://help.sigmacomputing.com/reference/list-reports) endpoint.
+        - To add reports to a deployment policy, retrieve the relevant `reportId` from the /v2/reports endpoint.
 
-        - To add folders to a deployment policy, retrieve the relevant folder ID from the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and review the `id` field in the response for files with a `type` of `folder`.
+        - To add folders to a deployment policy, retrieve the relevant folder ID from the /v2/files endpoint and review the `id` field in the response for files with a `type` of `folder`.
 
         - Adding a folder deploys the documents it contains. Templates cannot be added to a deployment policy.
 
@@ -540,9 +582,7 @@ paths:
 
         - Centrally manage documents that are deployed to specific tenant organizations.
 
-        - Deploy an entire folder of documents to tenant organizations without listing each document individually.
-
-        '
+        - Deploy an entire folder of documents to tenant organizations without listing each document individually.'
       parameters:
       - name: deploymentPolicyId
         schema:
@@ -612,7 +652,25 @@ paths:
   /v2/deploymentPolicies/{deploymentPolicyId}/files/{inodeId}:
     delete:
       summary: Remove a document from a deployment policy
-      description: "Remove a document from a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- To remove workbooks from a deployment policy, retrieve the relevant `workbookId` from the [/v2/workbooks](https://help.sigmacomputing.com/reference/list-workbooks) endpoint.\n- To remove data models from a deployment policy, retrieve the relevant `dataModelId` from the [/v2/datamodels](https://help.sigmacomputing.com/reference/list-data-models) endpoint.\n- To remove reports from a deployment policy, retrieve the relevant `reportId` from the [/v2/reports](https://help.sigmacomputing.com/reference/list-reports) endpoint.\n- To remove folders from a deployment policy, retrieve the relevant folder ID from the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and review the `id` field in the response for files with a `type` of `folder`.\n\n### Usage scenarios\n- Revoke access to outdated documents from tenant organizations.\n    "
+      description: 'Remove a document from a deployment policy.
+
+
+        ### Usage notes
+
+        - Retrieve the `deploymentPolicyId` from the /v2/deploymentPolicies endpoint.
+
+        - To remove workbooks from a deployment policy, retrieve the relevant `workbookId` from the /v2/workbooks endpoint.
+
+        - To remove data models from a deployment policy, retrieve the relevant `dataModelId` from the /v2/datamodels endpoint.
+
+        - To remove reports from a deployment policy, retrieve the relevant `reportId` from the /v2/reports endpoint.
+
+        - To remove folders from a deployment policy, retrieve the relevant folder ID from the /v2/files endpoint and review the `id` field in the response for files with a `type` of `folder`.
+
+
+        ### Usage scenarios
+
+        - Revoke access to outdated documents from tenant organizations.'
       parameters:
       - name: deploymentPolicyId
         schema:
@@ -672,7 +730,19 @@ paths:
   /v2/deploymentPolicies/{deploymentPolicyId}/tenants:
     post:
       summary: Add a tenant to a deployment policy
-      description: "Add a tenant to a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- Retrieve the `tenantId` from the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint.\n\n### Usage scenarios\n- Deploy documents in a deployment policy to a specific tenant organization.\n    "
+      description: 'Add a tenant to a deployment policy.
+
+
+        ### Usage notes
+
+        - Retrieve the `deploymentPolicyId` from the /v2/deploymentPolicies endpoint.
+
+        - Retrieve the `tenantId` from the /v2/tenants endpoint.
+
+
+        ### Usage scenarios
+
+        - Deploy documents in a deployment policy to a specific tenant organization.'
       parameters:
       - name: deploymentPolicyId
         schema:
@@ -712,7 +782,17 @@ paths:
       - oauth2: []
     get:
       summary: List tenants for a deployment policy
-      description: "List tenants for a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n\n### Usage scenarios\n- Review and audit documents deployed to specific tenant organizations.\n    "
+      description: 'List tenants for a deployment policy.
+
+
+        ### Usage notes
+
+        - Retrieve the `deploymentPolicyId` from the /v2/deploymentPolicies endpoint.
+
+
+        ### Usage scenarios
+
+        - Review and audit documents deployed to specific tenant organizations.'
       parameters:
       - name: deploymentPolicyId
         schema:
@@ -797,7 +877,21 @@ paths:
   /v2/deploymentPolicies/{deploymentPolicyId}/tenants/{tenantOrganizationId}:
     delete:
       summary: Remove a tenant from a deployment policy
-      description: "Remove a tenant from a deployment policy.\n\n### Usage notes\n- Retrieve the `deploymentPolicyId` from the [/v2/deploymentPolicies](https://help.sigmacomputing.com/reference/list-deployments) endpoint.\n- Retrieve the `tenantOrganizationId` from the [/v2/tenants](https://help.sigmacomputing.com/reference/list-tenants) endpoint or from the [/v2/deploymentPolicies/{deploymentPolicyId}/tenants](https://help.sigmacomputing.com/reference/list-tenants-for-deployment) endpoint.\n\n### Usage scenarios\n- Remove documents in a deployment policy from a tenant organization.\n- Clean up tenant assignments when a tenant is no longer needed.\n    "
+      description: 'Remove a tenant from a deployment policy.
+
+
+        ### Usage notes
+
+        - Retrieve the `deploymentPolicyId` from the /v2/deploymentPolicies endpoint.
+
+        - Retrieve the `tenantOrganizationId` from the /v2/tenants endpoint or from the /v2/deploymentPolicies/{deploymentPolicyId}/tenants endpoint.
+
+
+        ### Usage scenarios
+
+        - Remove documents in a deployment policy from a tenant organization.
+
+        - Clean up tenant assignments when a tenant is no longer needed.'
       parameters:
       - name: deploymentPolicyId
         schema:
@@ -980,112 +1074,6 @@ components:
               requestId:
                 type: string
   schemas:
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type'
-        dataModelId:
-          type: string
-      required:
-      - name
-      - type
-      - dataModelId
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1
-    deploymentPolicies_listDeployments_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: deploymentPolicies_listDeployments_Response_200
-    deploymentPolicies_removeTenantFromDeployment_Response_200:
-      type: object
-      properties: {}
-      title: deploymentPolicies_removeTenantFromDeployment_Response_200
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode:
-      oneOf:
-      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0'
-      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1'
-      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2'
-      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3'
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode
-    V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        deploymentPolicyId:
-          type: string
-        name:
-          type: string
-          description: Name of the deployment policy
-        nameInTenant:
-          type: string
-          description: Name to use for the workspace created by the deployment policy in the receiving tenant.
-        versionTagId:
-          type:
-          - string
-          - 'null'
-        sourceSwapPolicies:
-          type: array
-          items:
-            type: string
-          description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
-        copyInputTableData:
-          type: boolean
-          description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
-      required:
-      - deploymentPolicyId
-      - name
-      - nameInTenant
-      - versionTagId
-      - sourceSwapPolicies
-      - copyInputTableData
-      title: V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type'
-        reportId:
-          type: string
-      required:
-      - name
-      - type
-      - reportId
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        inodeId:
-          type: string
-        inode:
-          oneOf:
-          - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode'
-          - type: 'null'
-        deploymentPolicyId:
-          type: string
-      required:
-      - inodeId
-      - inode
-      - deploymentPolicyId
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems
-    deploymentPolicies_addTenantToDeployment_Response_200:
-      type: object
-      properties: {}
-      title: deploymentPolicies_addTenantToDeployment_Response_200
     deploymentPolicies_getDeployment_Response_200:
       type: object
       properties:
@@ -1117,11 +1105,55 @@ components:
       - sourceSwapPolicies
       - copyInputTableData
       title: deploymentPolicies_getDeployment_Response_200
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type:
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        inodeId:
+          type: string
+        inode:
+          oneOf:
+          - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode'
+          - type: 'null'
+        deploymentPolicyId:
+          type: string
+      required:
+      - inodeId
+      - inode
+      - deploymentPolicyId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode:
+      oneOf:
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0'
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1'
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2'
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3'
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type:
       type: string
       enum:
-      - report
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type
+      - dataModel
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type
+    deploymentPolicies_listTenantsForDeployment_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            type: string
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: deploymentPolicies_listTenantsForDeployment_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type:
+      type: string
+      enum:
+      - folder
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type
     deploymentPolicies_updateDeployment_Response_200:
       type: object
       properties:
@@ -1153,6 +1185,54 @@ components:
       - sourceSwapPolicies
       - copyInputTableData
       title: deploymentPolicies_updateDeployment_Response_200
+    V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        deploymentPolicyId:
+          type: string
+        name:
+          type: string
+          description: Name of the deployment policy
+        nameInTenant:
+          type: string
+          description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+        versionTagId:
+          type:
+          - string
+          - 'null'
+        sourceSwapPolicies:
+          type: array
+          items:
+            type: string
+          description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
+        copyInputTableData:
+          type: boolean
+          description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
+      required:
+      - deploymentPolicyId
+      - name
+      - nameInTenant
+      - versionTagId
+      - sourceSwapPolicies
+      - copyInputTableData
+      title: V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type:
+      type: string
+      enum:
+      - report
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type
+    deploymentPolicies_createDeployment_Response_200:
+      type: object
+      properties:
+        deploymentPolicyId:
+          type: string
+      required:
+      - deploymentPolicyId
+      title: deploymentPolicies_createDeployment_Response_200
+    deploymentPolicies_removeInodesFromDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_removeInodesFromDeployment_Response_200
     deploymentPolicies_listDeployableTenants_Response_200:
       type: object
       properties:
@@ -1169,6 +1249,50 @@ components:
       required:
       - entries
       title: deploymentPolicies_listDeployableTenants_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type'
+        dataModelId:
+          type: string
+      required:
+      - name
+      - type
+      - dataModelId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1
+    deploymentPolicies_listDeployments_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: deploymentPolicies_listDeployments_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type'
+        folderId:
+          type: string
+      required:
+      - name
+      - type
+      - folderId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3
     deploymentPolicies_archiveDeployment_Response_200:
       type: object
       properties: {}
@@ -1189,10 +1313,11 @@ components:
       required:
       - entries
       title: deploymentPolicies_listInodesForDeployment_Response_200
-    deploymentPolicies_addInodesToDeployment_Response_200:
-      type: object
-      properties: {}
-      title: deploymentPolicies_addInodesToDeployment_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type:
+      type: string
+      enum:
+      - workbook
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type
     V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0:
       type: object
       properties:
@@ -1207,48 +1332,28 @@ components:
       - type
       - workbookId
       title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0
-    deploymentPolicies_listTenantsForDeployment_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            type: string
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: deploymentPolicies_listTenantsForDeployment_Response_200
-    deploymentPolicies_removeInodesFromDeployment_Response_200:
+    deploymentPolicies_addTenantToDeployment_Response_200:
       type: object
       properties: {}
-      title: deploymentPolicies_removeInodesFromDeployment_Response_200
-    deploymentPolicies_createDeployment_Response_200:
-      type: object
-      properties:
-        deploymentPolicyId:
-          type: string
-      required:
-      - deploymentPolicyId
-      title: deploymentPolicies_createDeployment_Response_200
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3:
+      title: deploymentPolicies_addTenantToDeployment_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2:
       type: object
       properties:
         name:
           type: string
         type:
-          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type'
-        folderId:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type'
+        reportId:
           type: string
       required:
       - name
       - type
-      - folderId
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3
+      - reportId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2
+    deploymentPolicies_removeTenantFromDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_removeTenantFromDeployment_Response_200
     V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1266,21 +1371,10 @@ components:
       - tenantOrganizationSlug
       - tenantOrganizationName
       title: V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type:
-      type: string
-      enum:
-      - workbook
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type:
-      type: string
-      enum:
-      - folder
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type:
-      type: string
-      enum:
-      - dataModel
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type
+    deploymentPolicies_addInodesToDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_addInodesToDeployment_Response_200
   securitySchemes:
     basicAuth:
       type: http

@@ -31,12 +31,26 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: accountTypes
+- name: Account Types
 paths:
   /v2/accountTypes:
     get:
       summary: List account types
-      description: "Returns a list of all account types available in the organization.\n\n  ### Usage notes\n  - Use the **accountTypeId** with the [/v2/accountTypes/:accountTypeId/permissions](https://help.sigmacomputing.com/reference/list-account-type-permissions) endpoint to retrieve more detailed permissions.\n  - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n\n  ### Usage scenarios\n  - Display available account types in an admin interface.\n  - Show an overview of account types for management.\n  "
+      description: 'Returns a list of all account types available in the organization.
+
+
+        ### Usage notes
+
+        - Use the **accountTypeId** with the /v2/accountTypes/:accountTypeId/permissions endpoint to retrieve more detailed permissions.
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+
+        ### Usage scenarios
+
+        - Display available account types in an admin interface.
+
+        - Show an overview of account types for management.'
       parameters:
       - name: pageToken
         schema:
@@ -100,12 +114,24 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - accountTypes
+      - Account Types
       security:
       - oauth2: []
     post:
       summary: Create an account type
-      description: "Create a custom account type with specified permissions.\n\n  ### Usage notes\n  - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n  - Use the permission names from the [/v2/accountTypes/:accountTypeId/permissions](https://help.sigmacomputing.com/reference/list-account-type-permissions) endpoint.\n\n  ### Usage scenarios\n  - Create custom account types to define specific permission sets for your organization's users.\n  "
+      description: 'Create a custom account type with specified permissions.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Use the permission names from the /v2/accountTypes/:accountTypeId/permissions endpoint.
+
+
+        ### Usage scenarios
+
+        - Create custom account types to define specific permission sets for your organization''s users.'
       parameters: []
       operationId: createAccountType
       requestBody:
@@ -161,7 +187,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - accountTypes
+      - Account Types
       security:
       - oauth2: []
     servers:
@@ -194,7 +220,25 @@ paths:
   /v2/accountTypes/{accountTypeId}:
     delete:
       summary: Delete an account type
-      description: "Delete a custom account type and reassign its users to another account type.\n\n  ### Usage notes\n  - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n  - Default Sigma account types cannot be deleted.\n  - All users assigned to the deleted account type will be reassigned to the specified **reassignToAccountTypeId**.\n  - Retrieve account type IDs by calling the [/v2/accountTypes](https://help.sigmacomputing.com/reference/list-account-types) endpoint.\n\n  ### Usage scenarios\n  - Remove custom account types that are no longer needed.\n  - Consolidate account types by moving users to a different account type before deletion.\n  "
+      description: 'Delete a custom account type and reassign its users to another account type.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Default Sigma account types cannot be deleted.
+
+        - All users assigned to the deleted account type will be reassigned to the specified **reassignToAccountTypeId**.
+
+        - Retrieve account type IDs by calling the /v2/accountTypes endpoint.
+
+
+        ### Usage scenarios
+
+        - Remove custom account types that are no longer needed.
+
+        - Consolidate account types by moving users to a different account type before deletion.'
       parameters:
       - name: accountTypeId
         schema:
@@ -222,7 +266,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - accountTypes
+      - Account Types
       security:
       - oauth2: []
     servers:
@@ -255,7 +299,23 @@ paths:
   /v2/accountTypes/{accountTypeId}/permissions:
     get:
       summary: List account type permissions
-      description: "Returns all feature permissions for a specific account type.\n\n  ### Usage notes\n  - Retrieve the **accountTypeId** by calling the [/v2/accountTypes](https://help.sigmacomputing.com/reference/list-account-types) endpoint.\n  - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n\n  ### Usage scenarios\n  - Display permission details in an admin interface.\n  - Validate user capabilities based on account type.\n  - Compare permissions across different account types.\n  "
+      description: 'Returns all feature permissions for a specific account type.
+
+
+        ### Usage notes
+
+        - Retrieve the **accountTypeId** by calling the /v2/accountTypes endpoint.
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+
+        ### Usage scenarios
+
+        - Display permission details in an admin interface.
+
+        - Validate user capabilities based on account type.
+
+        - Compare permissions across different account types.'
       parameters:
       - name: accountTypeId
         schema:
@@ -289,7 +349,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - accountTypes
+      - Account Types
       security:
       - oauth2: []
     servers:
@@ -335,31 +395,6 @@ components:
               requestId:
                 type: string
   schemas:
-    accountTypes_deleteAccountType_Response_200:
-      type: object
-      properties: {}
-      title: accountTypes_deleteAccountType_Response_200
-    accountTypes_createAccountType_Response_201:
-      type: object
-      properties:
-        accountTypeId:
-          type: string
-          description: The unique identifier of the account type.
-        accountTypeName:
-          type: string
-          description: The name of the account type.
-        description:
-          type: string
-          description: A human-readable description of the permissions and capabilities provided by this account type.
-        isCustom:
-          type: boolean
-          description: Whether this is a custom account type created by the organization (true) or a default Sigma account type (false).
-      required:
-      - accountTypeId
-      - accountTypeName
-      - description
-      - isCustom
-      title: accountTypes_createAccountType_Response_201
     V2AccountTypesAccountTypeIdPermissionsGetResponsesContentApplicationJsonSchemaItems:
       type: object
       properties:
@@ -373,6 +408,10 @@ components:
       - permission
       - description
       title: V2AccountTypesAccountTypeIdPermissionsGetResponsesContentApplicationJsonSchemaItems
+    accountTypes_deleteAccountType_Response_200:
+      type: object
+      properties: {}
+      title: accountTypes_deleteAccountType_Response_200
     V2AccountTypesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -394,6 +433,27 @@ components:
       - description
       - isCustom
       title: V2AccountTypesGetResponsesContentApplicationJsonSchemaEntriesItems
+    accountTypes_createAccountType_Response_201:
+      type: object
+      properties:
+        accountTypeId:
+          type: string
+          description: The unique identifier of the account type.
+        accountTypeName:
+          type: string
+          description: The name of the account type.
+        description:
+          type: string
+          description: A human-readable description of the permissions and capabilities provided by this account type.
+        isCustom:
+          type: boolean
+          description: Whether this is a custom account type created by the organization (true) or a default Sigma account type (false).
+      required:
+      - accountTypeId
+      - accountTypeName
+      - description
+      - isCustom
+      title: accountTypes_createAccountType_Response_201
     accountTypes_listAccountTypes_Response_200:
       type: object
       properties:

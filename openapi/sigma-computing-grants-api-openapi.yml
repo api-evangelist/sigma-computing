@@ -31,12 +31,36 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: grants
+- name: Grants
 paths:
   /v2/grants:
     get:
       summary: List grants
-      description: "List all grants for a given object.\n\n  ### Usage notes\n\n  You can specify one of the following:\n\n  - A user by userId. Retrieve the **userId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint and using the `memberId` included in the response.\n  - A team by teamId. Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n  - A document (such as a workbook, report, data model, or dataset (deprecated)), folder, or workspace by inodeId.\n    - Retrieve the **inodeId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and using the `id` included in the response.\n    - Retrieve the **inodeId** for a data model by calling the [/v2/dataModels](https://help.sigmacomputing.com/reference/list-data-models) endpoint and using the `dataModelId` included in the response.\n\n  ### Usage scenarios\n  - **Manage inherited permissions**: Identify files and folders that have permissions directly granted to them.\n  - **Review long-lived permissions**: Audit permissions granted more than a year ago and determine if they are still needed.\n    "
+      description: 'List all grants for a given object.
+
+
+        ### Usage notes
+
+
+        You can specify one of the following:
+
+
+        - A user by userId. Retrieve the **userId** by calling the /v2/members endpoint and using the `memberId` included in the response.
+
+        - A team by teamId. Retrieve the **teamId** by calling the /v2/teams endpoint.
+
+        - A document (such as a workbook, report, data model, or dataset (deprecated)), folder, or workspace by inodeId.
+
+        - Retrieve the **inodeId** by calling the /v2/files endpoint and using the `id` included in the response.
+
+        - Retrieve the **inodeId** for a data model by calling the /v2/dataModels endpoint and using the `dataModelId` included in the response.
+
+
+        ### Usage scenarios
+
+        - **Manage inherited permissions**: Identify files and folders that have permissions directly granted to them.
+
+        - **Review long-lived permissions**: Audit permissions granted more than a year ago and determine if they are still needed.'
       parameters:
       - name: page
         schema:
@@ -213,12 +237,27 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - grants
+      - Grants
       security:
       - oauth2: []
     post:
       summary: Create or update a grant
-      description: "Create a grant or update an existing grant on a document, folder, or workspace to a user or a team by ID.\n\n  ### Usage notes\n  - This endpoint can only be used to escalate the level of access that a user has to a document. To remove or reduce a user's access to a specific document, call [/v2/grants/{grantId}](https://help.sigmacomputing.com/reference/delete-grant) to delete the existing grant and re-grant the desired level of access.\n  - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n  - Retrieve the **teamId** by calling the [/v2/teams](https://help.sigmacomputing.com/reference/list-teams) endpoint.\n  - Retrieve the **inodeId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and using the `id` included in the response.\n  - Retrieve the **inodeId** for a data model by calling the [/v2/dataModels](https://help.sigmacomputing.com/reference/list-data-models) endpoint and using the `dataModelId` included in the response.\n  - Optionally specify a **tagId** to associate the permission with a specific version tag of a workbook, dataset (deprecated), or database table. Retrieve the **tagId** by calling the [/v2/tags](https://help.sigmacomputing.com/reference/list-version-tag) endpoint and using the `versionTagId` included in the response.\n    "
+      description: 'Create a grant or update an existing grant on a document, folder, or workspace to a user or a team by ID.
+
+
+        ### Usage notes
+
+        - This endpoint can only be used to escalate the level of access that a user has to a document. To remove or reduce a user''s access to a specific document, call /v2/grants/{grantId} to delete the existing grant and re-grant the desired level of access.
+
+        - Retrieve the **memberId** by calling the /v2/members endpoint.
+
+        - Retrieve the **teamId** by calling the /v2/teams endpoint.
+
+        - Retrieve the **inodeId** by calling the /v2/files endpoint and using the `id` included in the response.
+
+        - Retrieve the **inodeId** for a data model by calling the /v2/dataModels endpoint and using the `dataModelId` included in the response.
+
+        - Optionally specify a **tagId** to associate the permission with a specific version tag of a workbook, dataset (deprecated), or database table. Retrieve the **tagId** by calling the /v2/tags endpoint and using the `versionTagId` included in the response.'
       parameters: []
       operationId: createGrant
       requestBody:
@@ -409,7 +448,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - grants
+      - Grants
       security:
       - oauth2: []
     servers:
@@ -442,7 +481,20 @@ paths:
   /v2/grants/{grantId}:
     get:
       summary: Get a grant
-      description: "Return a grant object by grant ID.\n\n  ### Usage notes\n\n  Depending on the grant object that you want to return details about, you can retrieve the grantId in different ways:\n\n  - For most documents, you can retrieve the **grantId** by calling the [/v2/grants](https://help.sigmacomputing.com/reference/list-grants) endpoint with the **inodeId** for the document. For example, use the **workbookId** as the **inodeId**.\n  - For a dataset (deprecated), you can also retrieve the **grantId** by calling the [/v2/datasets/{datasetId}/grants](https://help.sigmacomputing.com/reference/list-dataset-grants) endpoint.\n  - For a connection path, you can retrieve the **grantId** by calling the [/v2/connections/paths/{connectionPathId}/grants](https://help.sigmacomputing.com/reference/list-connection-path-grants) endpoint.\n    "
+      description: 'Return a grant object by grant ID.
+
+
+        ### Usage notes
+
+
+        Depending on the grant object that you want to return details about, you can retrieve the grantId in different ways:
+
+
+        - For most documents, you can retrieve the **grantId** by calling the /v2/grants endpoint with the **inodeId** for the document. For example, use the **workbookId** as the **inodeId**.
+
+        - For a dataset (deprecated), you can also retrieve the **grantId** by calling the /v2/datasets/{datasetId}/grants endpoint.
+
+        - For a connection path, you can retrieve the **grantId** by calling the /v2/connections/paths/{connectionPathId}/grants endpoint.'
       parameters:
       - name: grantId
         schema:
@@ -573,12 +625,29 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - grants
+      - Grants
       security:
       - oauth2: []
     delete:
       summary: Delete a grant
-      description: "Delete a grant by grant ID.\n\n  ### Usage notes\n  Depending on the grant object that you want to delete, you can retrieve the grantId in different ways:\n\n  - For most documents, you can retrieve the **grantId** by calling the [/v2/grants](https://help.sigmacomputing.com/reference/list-grants) endpoint with the **inodeId** for the document. For example, use the **workbookId** as the **inodeId**.\n  - For a dataset (deprecated), you can also retrieve the **grantId** by calling the [/v2/datasets/{datasetId}/grants](https://help.sigmacomputing.com/reference/list-dataset-grants) endpoint.\n  - For a connection path, you can retrieve the **grantId** by calling the [/v2/connections/paths/{connectionPathId}/grants](https://help.sigmacomputing.com/reference/list-connection-path-grants) endpoint.\n\n  ### Usage scenarios\n  - **Principle of least privilege**: Revoke unnecessary privileges on a document by removing the grant.\n    "
+      description: 'Delete a grant by grant ID.
+
+
+        ### Usage notes
+
+        Depending on the grant object that you want to delete, you can retrieve the grantId in different ways:
+
+
+        - For most documents, you can retrieve the **grantId** by calling the /v2/grants endpoint with the **inodeId** for the document. For example, use the **workbookId** as the **inodeId**.
+
+        - For a dataset (deprecated), you can also retrieve the **grantId** by calling the /v2/datasets/{datasetId}/grants endpoint.
+
+        - For a connection path, you can retrieve the **grantId** by calling the /v2/connections/paths/{connectionPathId}/grants endpoint.
+
+
+        ### Usage scenarios
+
+        - **Principle of least privilege**: Revoke unnecessary privileges on a document by removing the grant.'
       parameters:
       - name: grantId
         schema:
@@ -709,7 +778,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - grants
+      - Grants
       security:
       - oauth2: []
     servers:
@@ -755,7 +824,7 @@ components:
               requestId:
                 type: string
   schemas:
-    V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1:
+    V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission1:
       type: string
       enum:
       - create
@@ -766,243 +835,8 @@ components:
       - edit
       - apply
       description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
-      title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1
-    grants_deleteGrant_Response_200:
-      type: object
-      properties:
-        grantId:
-          type: string
-          description: The unique identifier of the grant
-        inodeId:
-          type: string
-          description: The unique identifier of the inode
-        organizationId:
-          type: string
-          description: The unique identifier of the organization
-        memberId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the member
-        teamId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the team
-        permission:
-          $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission'
-          description: The permission granted to the member
-        createdBy:
-          type: string
-          description: The identifier of the user who created this grant
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this grant
-        createdAt:
-          type: string
-          format: date-time
-          description: When the grant was created
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the grant was last updated
-        inodeType:
-          $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaInodeType'
-      required:
-      - grantId
-      - inodeId
-      - organizationId
-      - memberId
-      - teamId
-      - permission
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      - inodeType
-      title: grants_deleteGrant_Response_200
-    grants_getGrant_Response_200:
-      type: object
-      properties:
-        grantId:
-          type: string
-          description: The unique identifier of the grant
-        inodeId:
-          type: string
-          description: The unique identifier of the inode
-        organizationId:
-          type: string
-          description: The unique identifier of the organization
-        memberId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the member
-        teamId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the team
-        permission:
-          $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission'
-          description: The permission granted to the member
-        createdBy:
-          type: string
-          description: The identifier of the user who created this grant
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this grant
-        createdAt:
-          type: string
-          format: date-time
-          description: When the grant was created
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the grant was last updated
-        inodeType:
-          $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaInodeType'
-      required:
-      - grantId
-      - inodeId
-      - organizationId
-      - memberId
-      - teamId
-      - permission
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      - inodeType
-      title: grants_getGrant_Response_200
-    V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission2:
-      type: string
-      enum:
-      - view
-      - edit
-      - apply
-      description: 'Valid inode types: version tag.'
-      title: V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission2
-    grants_createGrant_Response_200:
-      type: object
-      properties:
-        grantId:
-          type: string
-          description: The unique identifier of the grant
-        inodeId:
-          type: string
-          description: The unique identifier of the inode
-        organizationId:
-          type: string
-          description: The unique identifier of the organization
-        memberId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the member
-        teamId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the team
-        permission:
-          $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaPermission'
-          description: The permission granted to the member
-        createdBy:
-          type: string
-          description: The identifier of the user who created this grant
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this grant
-        createdAt:
-          type: string
-          format: date-time
-          description: When the grant was created
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the grant was last updated
-        inodeType:
-          $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaInodeType'
-      required:
-      - grantId
-      - inodeId
-      - organizationId
-      - memberId
-      - teamId
-      - permission
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      - inodeType
-      title: grants_createGrant_Response_200
-    V2GrantsPostResponsesContentApplicationJsonSchemaPermission0:
-      type: string
-      enum:
-      - admin
-      - annotate
-      - update
-      - usage
-      - writeback
-      description: 'Valid inode types: table, connection database, and connection schema.'
-      title: V2GrantsPostResponsesContentApplicationJsonSchemaPermission0
-    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission2:
-      type: string
-      enum:
-      - view
-      - edit
-      - apply
-      description: 'Valid inode types: version tag.'
-      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission2
-    V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee:
-      oneOf:
-      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee0'
-      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee1'
-      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee
-    V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission2:
-      type: string
-      enum:
-      - view
-      - edit
-      - apply
-      description: 'Valid inode types: version tag.'
-      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission2
-    grants_listGrants_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: grants_listGrants_Response_200
-    V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission0:
-      type: string
-      enum:
-      - admin
-      - annotate
-      - update
-      - usage
-      - writeback
-      description: 'Valid inode types: table, connection database, and connection schema.'
-      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission0
-    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaInodeType:
+      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission1
+    V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsInodeType:
       type: string
       enum:
       - folder
@@ -1032,76 +866,7 @@ components:
       - schedule
       - application
       - appBranch
-      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaInodeType
-    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission0:
-      type: string
-      enum:
-      - admin
-      - annotate
-      - update
-      - usage
-      - writeback
-      description: 'Valid inode types: table, connection database, and connection schema.'
-      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission0
-    V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission0:
-      type: string
-      enum:
-      - admin
-      - annotate
-      - update
-      - usage
-      - writeback
-      description: 'Valid inode types: table, connection database, and connection schema.'
-      title: V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission0
-    V2GrantsPostResponsesContentApplicationJsonSchemaInodeType:
-      type: string
-      enum:
-      - folder
-      - customFunction
-      - symlink
-      - versionTag
-      - worksheet
-      - block
-      - dashboard
-      - report
-      - table
-      - semanticView
-      - metricView
-      - scope
-      - sql
-      - workbook
-      - template
-      - dataset
-      - datafile
-      - storedProcedure
-      - apiConnector
-      - apiConnectorAuth
-      - mcpConnector
-      - warehouseAgent
-      - agentSkill
-      - tlsProfile
-      - schedule
-      - application
-      - appBranch
-      title: V2GrantsPostResponsesContentApplicationJsonSchemaInodeType
-    V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission:
-      oneOf:
-      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission0'
-      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission1'
-      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission2'
-      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission
-    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission1:
-      type: string
-      enum:
-      - create
-      - annotate
-      - organize
-      - explore
-      - view
-      - edit
-      - apply
-      description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
-      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission1
+      title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsInodeType
     V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1156,35 +921,93 @@ components:
       - updatedAt
       - inodeType
       title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2:
+    V2GrantsPostResponsesContentApplicationJsonSchemaPermission:
+      oneOf:
+      - $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaPermission0'
+      - $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaPermission1'
+      - $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaPermission2'
+      description: The permission granted to the member
+      title: V2GrantsPostResponsesContentApplicationJsonSchemaPermission
+    grants_deleteGrant_Response_200:
+      type: object
+      properties:
+        grantId:
+          type: string
+          description: The unique identifier of the grant
+        inodeId:
+          type: string
+          description: The unique identifier of the inode
+        organizationId:
+          type: string
+          description: The unique identifier of the organization
+        memberId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the member
+        teamId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the team
+        permission:
+          $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission'
+          description: The permission granted to the member
+        createdBy:
+          type: string
+          description: The identifier of the user who created this grant
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this grant
+        createdAt:
+          type: string
+          format: date-time
+          description: When the grant was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the grant was last updated
+        inodeType:
+          $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaInodeType'
+      required:
+      - grantId
+      - inodeId
+      - organizationId
+      - memberId
+      - teamId
+      - permission
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - inodeType
+      title: grants_deleteGrant_Response_200
+    V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission0:
       type: string
       enum:
-      - view
-      - edit
-      - apply
-      description: 'Valid inode types: version tag.'
-      title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2
-    V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
+      - admin
+      - annotate
+      - update
+      - usage
+      - writeback
+      description: 'Valid inode types: table, connection database, and connection schema.'
+      title: V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission0
+    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission0:
+      type: string
+      enum:
+      - admin
+      - annotate
+      - update
+      - usage
+      - writeback
+      description: 'Valid inode types: table, connection database, and connection schema.'
+      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission0
+    V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission:
       oneOf:
-      - $ref: '#/components/schemas/V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0'
-      - $ref: '#/components/schemas/V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1'
-      - $ref: '#/components/schemas/V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2'
-      description: The permission granted to the member
-      title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
-    V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission:
-      oneOf:
-      - $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission0'
-      - $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission1'
-      - $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission2'
-      description: The permission granted to the member
-      title: V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission
-    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission:
-      oneOf:
-      - $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission0'
-      - $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission1'
-      - $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission2'
-      description: The permission granted to the member
-      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission
+      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission0'
+      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission1'
+      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission2'
+      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission
     V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0:
       type: string
       enum:
@@ -1195,23 +1018,16 @@ components:
       - writeback
       description: 'Valid inode types: table, connection database, and connection schema.'
       title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0
-    V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee1:
-      type: object
-      properties:
-        teamId:
-          type: string
-      required:
-      - teamId
-      description: Team ID
-      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee1
-    V2GrantsPostResponsesContentApplicationJsonSchemaPermission2:
+    V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission0:
       type: string
       enum:
-      - view
-      - edit
-      - apply
-      description: 'Valid inode types: version tag.'
-      title: V2GrantsPostResponsesContentApplicationJsonSchemaPermission2
+      - admin
+      - annotate
+      - update
+      - usage
+      - writeback
+      description: 'Valid inode types: table, connection database, and connection schema.'
+      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission0
     V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission1:
       type: string
       enum:
@@ -1224,7 +1040,72 @@ components:
       - apply
       description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
       title: V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission1
-    V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission1:
+    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaInodeType:
+      type: string
+      enum:
+      - folder
+      - customFunction
+      - symlink
+      - versionTag
+      - worksheet
+      - block
+      - dashboard
+      - report
+      - table
+      - semanticView
+      - metricView
+      - scope
+      - sql
+      - workbook
+      - template
+      - dataset
+      - datafile
+      - storedProcedure
+      - apiConnector
+      - apiConnectorAuth
+      - mcpConnector
+      - warehouseAgent
+      - agentSkill
+      - tlsProfile
+      - schedule
+      - application
+      - appBranch
+      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaInodeType
+    V2GrantsPostResponsesContentApplicationJsonSchemaPermission0:
+      type: string
+      enum:
+      - admin
+      - annotate
+      - update
+      - usage
+      - writeback
+      description: 'Valid inode types: table, connection database, and connection schema.'
+      title: V2GrantsPostResponsesContentApplicationJsonSchemaPermission0
+    grants_listGrants_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: grants_listGrants_Response_200
+    V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1:
       type: string
       enum:
       - create
@@ -1235,14 +1116,165 @@ components:
       - edit
       - apply
       description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
-      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission1
-    V2GrantsPostResponsesContentApplicationJsonSchemaPermission:
+      title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1
+    V2GrantsPostResponsesContentApplicationJsonSchemaPermission1:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
+      title: V2GrantsPostResponsesContentApplicationJsonSchemaPermission1
+    grants_getGrant_Response_200:
+      type: object
+      properties:
+        grantId:
+          type: string
+          description: The unique identifier of the grant
+        inodeId:
+          type: string
+          description: The unique identifier of the inode
+        organizationId:
+          type: string
+          description: The unique identifier of the organization
+        memberId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the member
+        teamId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the team
+        permission:
+          $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission'
+          description: The permission granted to the member
+        createdBy:
+          type: string
+          description: The identifier of the user who created this grant
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this grant
+        createdAt:
+          type: string
+          format: date-time
+          description: When the grant was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the grant was last updated
+        inodeType:
+          $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaInodeType'
+      required:
+      - grantId
+      - inodeId
+      - organizationId
+      - memberId
+      - teamId
+      - permission
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - inodeType
+      title: grants_getGrant_Response_200
+    V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
       oneOf:
-      - $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaPermission0'
-      - $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaPermission1'
-      - $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaPermission2'
+      - $ref: '#/components/schemas/V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0'
+      - $ref: '#/components/schemas/V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1'
+      - $ref: '#/components/schemas/V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2'
       description: The permission granted to the member
-      title: V2GrantsPostResponsesContentApplicationJsonSchemaPermission
+      title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
+    grants_createGrant_Response_200:
+      type: object
+      properties:
+        grantId:
+          type: string
+          description: The unique identifier of the grant
+        inodeId:
+          type: string
+          description: The unique identifier of the inode
+        organizationId:
+          type: string
+          description: The unique identifier of the organization
+        memberId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the member
+        teamId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the team
+        permission:
+          $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaPermission'
+          description: The permission granted to the member
+        createdBy:
+          type: string
+          description: The identifier of the user who created this grant
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this grant
+        createdAt:
+          type: string
+          format: date-time
+          description: When the grant was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the grant was last updated
+        inodeType:
+          $ref: '#/components/schemas/V2GrantsPostResponsesContentApplicationJsonSchemaInodeType'
+      required:
+      - grantId
+      - inodeId
+      - organizationId
+      - memberId
+      - teamId
+      - permission
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - inodeType
+      title: grants_createGrant_Response_200
+    V2GrantsPostResponsesContentApplicationJsonSchemaInodeType:
+      type: string
+      enum:
+      - folder
+      - customFunction
+      - symlink
+      - versionTag
+      - worksheet
+      - block
+      - dashboard
+      - report
+      - table
+      - semanticView
+      - metricView
+      - scope
+      - sql
+      - workbook
+      - template
+      - dataset
+      - datafile
+      - storedProcedure
+      - apiConnector
+      - apiConnectorAuth
+      - mcpConnector
+      - warehouseAgent
+      - agentSkill
+      - tlsProfile
+      - schedule
+      - application
+      - appBranch
+      title: V2GrantsPostResponsesContentApplicationJsonSchemaInodeType
     V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee0:
       type: object
       properties:
@@ -1252,6 +1284,29 @@ components:
       - memberId
       description: User or member ID
       title: V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee0
+    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission2:
+      type: string
+      enum:
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: version tag.'
+      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission2
+    V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission:
+      oneOf:
+      - $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission0'
+      - $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission1'
+      - $ref: '#/components/schemas/V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission2'
+      description: The permission granted to the member
+      title: V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission
+    V2GrantsPostResponsesContentApplicationJsonSchemaPermission2:
+      type: string
+      enum:
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: version tag.'
+      title: V2GrantsPostResponsesContentApplicationJsonSchemaPermission2
     V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaInodeType:
       type: string
       enum:
@@ -1283,7 +1338,20 @@ components:
       - application
       - appBranch
       title: V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaInodeType
-    V2GrantsPostResponsesContentApplicationJsonSchemaPermission1:
+    V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission2:
+      type: string
+      enum:
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: version tag.'
+      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaPermission2
+    V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee:
+      oneOf:
+      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee0'
+      - $ref: '#/components/schemas/V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee1'
+      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee
+    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission1:
       type: string
       enum:
       - create
@@ -1294,38 +1362,39 @@ components:
       - edit
       - apply
       description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
-      title: V2GrantsPostResponsesContentApplicationJsonSchemaPermission1
-    V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsInodeType:
+      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission1
+    V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission2:
       type: string
       enum:
-      - folder
-      - customFunction
-      - symlink
-      - versionTag
-      - worksheet
-      - block
-      - dashboard
-      - report
-      - table
-      - semanticView
-      - metricView
-      - scope
-      - sql
-      - workbook
-      - template
-      - dataset
-      - datafile
-      - storedProcedure
-      - apiConnector
-      - apiConnectorAuth
-      - mcpConnector
-      - warehouseAgent
-      - agentSkill
-      - tlsProfile
-      - schedule
-      - application
-      - appBranch
-      title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsInodeType
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: version tag.'
+      title: V2GrantsGrantIdGetResponsesContentApplicationJsonSchemaPermission2
+    V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee1:
+      type: object
+      properties:
+        teamId:
+          type: string
+      required:
+      - teamId
+      description: Team ID
+      title: V2GrantsPostRequestBodyContentApplicationJsonSchemaGrantee1
+    V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2:
+      type: string
+      enum:
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: version tag.'
+      title: V2GrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2
+    V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission:
+      oneOf:
+      - $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission0'
+      - $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission1'
+      - $ref: '#/components/schemas/V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission2'
+      description: The permission granted to the member
+      title: V2GrantsGrantIdDeleteResponsesContentApplicationJsonSchemaPermission
   securitySchemes:
     basicAuth:
       type: http

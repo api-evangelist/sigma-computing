@@ -31,7 +31,7 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: saml
+- name: SAML
 paths:
   /v2/saml/service-providers:
     get:
@@ -39,7 +39,7 @@ paths:
       description: 'List all SAML service providers in the organization.
 
 
-        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a public beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
@@ -96,7 +96,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - saml
+      - SAML
       security:
       - oauth2: []
     servers:
@@ -132,14 +132,14 @@ paths:
       description: 'List all certificates for a given SAML service provider.
 
 
-        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a public beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.'
+        - Retrieve the `samlServiceProviderId` by calling the /saml/service-providers endpoint.'
       parameters:
       - name: samlServiceProviderId
         schema:
@@ -244,7 +244,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - saml
+      - SAML
       security:
       - oauth2: []
     post:
@@ -252,14 +252,14 @@ paths:
       description: 'Create a certificate for a given SAML service provider.
 
 
-        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a public beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.'
+        - Retrieve the `samlServiceProviderId` by calling the /saml/service-providers endpoint.'
       parameters:
       - name: samlServiceProviderId
         schema:
@@ -310,7 +310,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - saml
+      - SAML
       security:
       - oauth2: []
     servers:
@@ -343,7 +343,23 @@ paths:
   /v2/saml/service-providers/{samlServiceProviderId}/certificates/{samlServiceProviderCertificateId}:
     get:
       summary: Get a SAML service provider certificate (Beta)
-      description: "Get a certificate to use with your IdP when configuring Sigma as a service provider.\n\n**Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.\n\n### Usage notes\n- To perform this operation, you must use API credentials owned by a user assigned the Admin account type.\n- Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.\n- Retrieve the `samlServiceProviderCertificateId` by calling the [/saml/service-providers/certificates](https://help.sigmacomputing.com/reference/list-saml-service-provider-certificates) endpoint.\n- Signing certificates are used by your IdP to verify signatures that Sigma attaches to SAML requests.\n- Encryption certificates are used by your IdP to encrypt SAML responses sent to Sigma.\n    "
+      description: 'Get a certificate to use with your IdP when configuring Sigma as a service provider.
+
+
+        **Beta**: This documentation describes a public beta feature and is subject to the Beta features disclaimer.
+
+
+        ### Usage notes
+
+        - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
+
+        - Retrieve the `samlServiceProviderId` by calling the /saml/service-providers endpoint.
+
+        - Retrieve the `samlServiceProviderCertificateId` by calling the /saml/service-providers/certificates endpoint.
+
+        - Signing certificates are used by your IdP to verify signatures that Sigma attaches to SAML requests.
+
+        - Encryption certificates are used by your IdP to encrypt SAML responses sent to Sigma.'
       parameters:
       - name: samlServiceProviderId
         schema:
@@ -424,7 +440,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - saml
+      - SAML
       security:
       - oauth2: []
     delete:
@@ -432,16 +448,16 @@ paths:
       description: 'Remove a certificate.
 
 
-        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a public beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.
+        - Retrieve the `samlServiceProviderId` by calling the /saml/service-providers endpoint.
 
-        - Retrieve the `samlServiceProviderCertificateId` by calling the [/saml/service-providers/certificates](https://help.sigmacomputing.com/reference/list-saml-service-provider-certificates) endpoint.'
+        - Retrieve the `samlServiceProviderCertificateId` by calling the /saml/service-providers/certificates endpoint.'
       parameters:
       - name: samlServiceProviderId
         schema:
@@ -470,7 +486,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - saml
+      - SAML
       security:
       - oauth2: []
     servers:
@@ -506,7 +522,7 @@ paths:
       description: 'Activate a certificate.
 
 
-        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a public beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
@@ -515,9 +531,9 @@ paths:
 
         - Activating a certificate deactivates all certificates used for the same purpose by the same SAML service provider. For example, activating a signing certificate deactivates all other signing certificates in use by the same SAML SP.
 
-        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.
+        - Retrieve the `samlServiceProviderId` by calling the /saml/service-providers endpoint.
 
-        - Retrieve the `samlServiceProviderCertificateId` by calling the [/saml/service-providers/certificates](https://help.sigmacomputing.com/reference/list-saml-service-provider-certificates) endpoint.'
+        - Retrieve the `samlServiceProviderCertificateId` by calling the /saml/service-providers/certificates endpoint.'
       parameters:
       - name: samlServiceProviderId
         schema:
@@ -553,7 +569,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - saml
+      - SAML
       security:
       - oauth2: []
     servers:
@@ -589,16 +605,16 @@ paths:
       description: 'Deactivate a certificate.
 
 
-        **Beta**: This documentation describes a public beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.
+        **Beta**: This documentation describes a public beta feature and is subject to the Beta features disclaimer.
 
 
         ### Usage notes
 
         - To perform this operation, you must use API credentials owned by a user assigned the Admin account type.
 
-        - Retrieve the `samlServiceProviderId` by calling the [/saml/service-providers](https://help.sigmacomputing.com/reference/list-saml-service-providers) endpoint.
+        - Retrieve the `samlServiceProviderId` by calling the /saml/service-providers endpoint.
 
-        - Retrieve the `samlServiceProviderCertificateId` by calling the [/saml/service-providers/certificates](https://help.sigmacomputing.com/reference/list-saml-service-provider-certificates) endpoint.'
+        - Retrieve the `samlServiceProviderCertificateId` by calling the /saml/service-providers/certificates endpoint.'
       parameters:
       - name: samlServiceProviderId
         schema:
@@ -634,7 +650,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - saml
+      - SAML
       security:
       - oauth2: []
     servers:
@@ -680,74 +696,6 @@ components:
               requestId:
                 type: string
   schemas:
-    saml_listSamlServiceProviderCertificates_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: saml_listSamlServiceProviderCertificates_Response_200
-    saml_listSamlServiceProviders_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: saml_listSamlServiceProviders_Response_200
-    V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        samlServiceProviderId:
-          type: string
-          description: Unique identifier of the SAML service provider
-      required:
-      - samlServiceProviderId
-      title: V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose:
-      type: string
-      enum:
-      - signing
-      - encryption
-      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
-      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose
-    V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose:
-      type: string
-      enum:
-      - signing
-      - encryption
-      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
-      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose
-    saml_createSamlServiceProviderCertificate_Response_201:
-      type: object
-      properties:
-        samlServiceProviderId:
-          type: string
-          description: Unique identifier of the SAML service provider
-        samlServiceProviderCertificateId:
-          type: string
-          description: Unique identifier of the SAML service provider certificate
-      required:
-      - samlServiceProviderId
-      - samlServiceProviderCertificateId
-      title: saml_createSamlServiceProviderCertificate_Response_201
     saml_getSamlServiceProviderCertificate_Response_200:
       type: object
       properties:
@@ -801,6 +749,58 @@ components:
       - updatedAt
       - updatedBy
       title: saml_getSamlServiceProviderCertificate_Response_200
+    saml_listSamlServiceProviders_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: saml_listSamlServiceProviders_Response_200
+    ? V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
+    : type: string
+      enum:
+      - signing
+      - encryption
+      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
+    saml_listSamlServiceProviderCertificates_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: saml_listSamlServiceProviderCertificates_Response_200
+    saml_createSamlServiceProviderCertificate_Response_201:
+      type: object
+      properties:
+        samlServiceProviderId:
+          type: string
+          description: Unique identifier of the SAML service provider
+        samlServiceProviderCertificateId:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+      required:
+      - samlServiceProviderId
+      - samlServiceProviderCertificateId
+      title: saml_createSamlServiceProviderCertificate_Response_201
     V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -854,13 +854,29 @@ components:
       - updatedAt
       - updatedBy
       title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItems
-    ? V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
-    : type: string
+    V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        samlServiceProviderId:
+          type: string
+          description: Unique identifier of the SAML service provider
+      required:
+      - samlServiceProviderId
+      title: V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose:
+      type: string
       enum:
       - signing
       - encryption
       description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
-      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose
+    V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose:
+      type: string
+      enum:
+      - signing
+      - encryption
+      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose
   securitySchemes:
     basicAuth:
       type: http

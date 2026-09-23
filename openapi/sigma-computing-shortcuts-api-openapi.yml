@@ -31,12 +31,33 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: shortcuts
+- name: Shortcuts
 paths:
   /v2/shortcuts:
     post:
       summary: Create a shortcut (Beta)
-      description: "Create a shortcut that surfaces an existing item in another folder or workspace without duplicating it.\n\n\n**Beta**: This documentation describes a private beta feature and is subject to the [Beta features](/docs/sigma-product-releases#beta-features) disclaimer.\n\n  ### Usage notes\n  - A shortcut requires a **parentId** (the folder or workspace to place it in) and a **target** (the item the shortcut points to).\n    - Retrieve the ID of a folder to use as a **parentId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and reviewing the `id` field in the response for files with a `type` of `folder`.\n    - Retrieve the ID of a workspace to use as a **parentId** by calling the [/v2/workspaces](https://help.sigmacomputing.com/reference/list-workspaces) endpoint.\n  - The target can be a document (workbook, data model, report, dataset, or folder) or a database object (table, view, schema, database, or stored procedure).\n  - You must have at least **Can view** access to the target document or folder, or **Can use** access to the target database object.\n\n  ### Usage scenarios\n  - **Deployment and embedding**: Surface shared workbooks or data models in tenant workspaces or folders without exposing a central workspace to end users.\n    "
+      description: 'Create a shortcut that surfaces an existing item in another folder or workspace without duplicating it.
+
+
+        **Beta**: This documentation describes a private beta feature and is subject to the Beta features disclaimer.
+
+
+        ### Usage notes
+
+        - A shortcut requires a **parentId** (the folder or workspace to place it in) and a **target** (the item the shortcut points to).
+
+        - Retrieve the ID of a folder to use as a **parentId** by calling the /v2/files endpoint and reviewing the `id` field in the response for files with a `type` of `folder`.
+
+        - Retrieve the ID of a workspace to use as a **parentId** by calling the /v2/workspaces endpoint.
+
+        - The target can be a document (workbook, data model, report, dataset, or folder) or a database object (table, view, schema, database, or stored procedure).
+
+        - You must have at least **Can view** access to the target document or folder, or **Can use** access to the target database object.
+
+
+        ### Usage scenarios
+
+        - **Deployment and embedding**: Surface shared workbooks or data models in tenant workspaces or folders without exposing a central workspace to end users.'
       parameters: []
       operationId: shortcutsCreate
       requestBody:
@@ -156,7 +177,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - shortcuts
+      - Shortcuts
       security:
       - oauth2: []
     servers:
@@ -202,19 +223,6 @@ components:
               requestId:
                 type: string
   schemas:
-    V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType:
-      type: string
-      enum:
-      - workbook
-      - data-model
-      - dataset
-      - report
-      - folder
-      - table
-      - scope
-      - stored-procedure
-      description: The type of the item this shortcut points to. For database targets, `table` also covers views, and `scope` covers schemas and databases.
-      title: V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType
     shortcuts_create_Response_200:
       type: object
       properties:
@@ -263,6 +271,19 @@ components:
       - createdAt
       - updatedAt
       title: shortcuts_create_Response_200
+    V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType:
+      type: string
+      enum:
+      - workbook
+      - data-model
+      - dataset
+      - report
+      - folder
+      - table
+      - scope
+      - stored-procedure
+      description: The type of the item this shortcut points to. For database targets, `table` also covers views, and `scope` covers schemas and databases.
+      title: V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType
     V2ShortcutsPostRequestBodyContentApplicationJsonSchemaTarget:
       type: object
       properties:

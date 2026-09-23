@@ -31,12 +31,19 @@ servers:
 - url: https://api.au.azure.sigmacomputing.com
   description: Server for Azure Australia hosted organizations
 tags:
-- name: favorites
+- name: Favorites
 paths:
   /v2/favorites:
     post:
       summary: Favorite a document
-      description: "Favorite a folder or document for a specific user.\n\n  ### Usage notes\n  - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n  - Retrieve the **inodeId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and using the `id` included in the response.\n      "
+      description: 'Favorite a folder or document for a specific user.
+
+
+        ### Usage notes
+
+        - Retrieve the **memberId** by calling the /v2/members endpoint.
+
+        - Retrieve the **inodeId** by calling the /v2/files endpoint and using the `id` included in the response.'
       parameters: []
       operationId: addFavorite
       requestBody:
@@ -69,7 +76,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - favorites
+      - Favorites
       security:
       - oauth2: []
     servers:
@@ -102,7 +109,12 @@ paths:
   /v2/favorites/member/{memberId}:
     get:
       summary: Get favorite documents for a user
-      description: "Get the favorite documents for a specific user. This endpoint has the same functionality as the [List all favorite documents of a member](https://help.sigmacomputing.com/reference/listfavoriteinodes) endpoint.\n\n  ### Usage notes\n  - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n    "
+      description: 'Get the favorite documents for a specific user. This endpoint has the same functionality as the List all favorite documents of a member endpoint.
+
+
+        ### Usage notes
+
+        - Retrieve the **memberId** by calling the /v2/members endpoint.'
       parameters:
       - name: memberId
         schema:
@@ -271,7 +283,7 @@ paths:
         url: https://sigma.bi/member-api
         description: 'Sigma API documentation:'
       tags:
-      - favorites
+      - Favorites
       security:
       - oauth2: []
     servers:
@@ -304,7 +316,14 @@ paths:
   /v2/favorites/member/{memberId}/file/{inodeId}:
     delete:
       summary: Unfavorite a document
-      description: "Unfavorite a folder or document for a specific user.\n\n  ### Usage notes\n  - Retrieve the **memberId** by calling the [/v2/members](https://help.sigmacomputing.com/reference/list-members) endpoint.\n  - Retrieve the **inodeId** by calling the [/v2/files](https://help.sigmacomputing.com/reference/list-files) endpoint and using the **id** included in the response.\n    "
+      description: 'Unfavorite a folder or document for a specific user.
+
+
+        ### Usage notes
+
+        - Retrieve the **memberId** by calling the /v2/members endpoint.
+
+        - Retrieve the **inodeId** by calling the /v2/files endpoint and using the **id** included in the response.'
       parameters:
       - name: memberId
         schema:
@@ -333,7 +352,7 @@ paths:
         url: ''
         description: 'Sigma API documentation:'
       tags:
-      - favorites
+      - Favorites
       security:
       - oauth2: []
     servers:
@@ -379,6 +398,21 @@ components:
               requestId:
                 type: string
   schemas:
+    favorites_addFavorite_Response_200:
+      type: object
+      properties: {}
+      title: favorites_addFavorite_Response_200
+    V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
     favorites_removeFavorite_Response_200:
       type: object
       properties: {}
@@ -423,21 +457,6 @@ components:
       - entries
       - nextPage
       title: favorites_listFavorites_Response_200
-    V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
-      type: string
-      enum:
-      - create
-      - annotate
-      - organize
-      - explore
-      - view
-      - edit
-      - apply
-      title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
-    favorites_addFavorite_Response_200:
-      type: object
-      properties: {}
-      title: favorites_addFavorite_Response_200
     V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
