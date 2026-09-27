@@ -1159,8 +1159,6 @@ apis:
   humanURL: https://help.sigmacomputing.com/docs/use-sigma-mcp-server
   baseURL: https://api.sigmacomputing.com/mcp
   tags:
-  - Data Models
-  tags_raw:
   - Data models
   properties:
   - type: OpenAPI

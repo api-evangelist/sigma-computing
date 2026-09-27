@@ -1074,23 +1074,6 @@ components:
               requestId:
                 type: string
   schemas:
-    WorkspacesListWorkspacesResponse2000:
-      type: array
-      items:
-        $ref: '#/components/schemas/V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf0Items'
-      title: WorkspacesListWorkspacesResponse2000
-    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1:
-      type: string
-      enum:
-      - create
-      - annotate
-      - organize
-      - explore
-      - view
-      - edit
-      - apply
-      description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
-      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1
     WorkspacesListWorkspacesResponse2001:
       type: object
       properties:
@@ -1106,21 +1089,285 @@ components:
       - entries
       - nextPage
       title: WorkspacesListWorkspacesResponse2001
-    WorkspacesCreateWorkspaceResponse2001:
+    WorkspacesListWorkspacesResponse2000:
+      type: array
+      items:
+        $ref: '#/components/schemas/V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf0Items'
+      title: WorkspacesListWorkspacesResponse2000
+    V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf0Items:
       type: object
       properties:
-        workspaceIds:
-          type: array
-          items:
-            type: string
-        workspaceUrlIds:
-          type: array
-          items:
-            type: string
+        workspaceId:
+          type: string
+        workspaceUrlId:
+          type: string
+          description: Base62-encoded identifier used in Sigma workspace URLs.
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       required:
-      - workspaceIds
-      - workspaceUrlIds
-      title: WorkspacesCreateWorkspaceResponse2001
+      - workspaceId
+      - workspaceUrlId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf0Items
+    workspaces_createWorkspace_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/WorkspacesCreateWorkspaceResponse2000'
+      - $ref: '#/components/schemas/WorkspacesCreateWorkspaceResponse2001'
+      title: workspaces_createWorkspace_Response_200
+    WorkspacesCreateWorkspaceResponse2000:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        workspaceUrlId:
+          type: string
+          description: Base62-encoded identifier used in Sigma workspace URLs.
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - workspaceId
+      - workspaceUrlId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: WorkspacesCreateWorkspaceResponse2000
+    workspaces_createWorkspaceGrant_Response_200:
+      type: object
+      properties: {}
+      title: workspaces_createWorkspaceGrant_Response_200
+    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0:
+      type: string
+      enum:
+      - admin
+      - annotate
+      - update
+      - usage
+      - writeback
+      description: 'Valid inode types: table, connection database, and connection schema.'
+      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee:
+      oneOf:
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0'
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1'
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee
+    workspaces_v2_1_listWorkspaces_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V21WorkspacesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: workspaces_v2_1_listWorkspaces_Response_200
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission:
+      type: string
+      enum:
+      - view
+      - explore
+      - organize
+      - edit
+      description: Defines the level of access that is granted. Each permission level allows different types of operations.
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1:
+      type: object
+      properties:
+        teamId:
+          type: string
+      required:
+      - teamId
+      description: The UUID of the team receiving the grant
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1
+    workspaces_listWorkspaceGrants_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: workspaces_listWorkspaceGrants_Response_200
+    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
+      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1
+    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        grantId:
+          type: string
+          description: The unique identifier of the grant
+        inodeId:
+          type: string
+          description: The unique identifier of the inode
+        organizationId:
+          type: string
+          description: The unique identifier of the organization
+        memberId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the member
+        teamId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the team
+        permission:
+          $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
+          description: The permission granted to the member
+        createdBy:
+          type: string
+          description: The identifier of the user who created this grant
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this grant
+        createdAt:
+          type: string
+          format: date-time
+          description: When the grant was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the grant was last updated
+      required:
+      - grantId
+      - inodeId
+      - organizationId
+      - memberId
+      - teamId
+      - permission
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0:
+      type: object
+      properties:
+        memberId:
+          type: string
+      required:
+      - memberId
+      description: The UUID of the member receiving the grant
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0
+    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
+      oneOf:
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0'
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1'
+      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2'
+      description: The permission granted to the member
+      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
+    V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        workspaceUrlId:
+          type: string
+          description: Base62-encoded identifier used in Sigma workspace URLs.
+        name:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - workspaceId
+      - workspaceUrlId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems
+    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems:
+      type: object
+      properties:
+        grantee:
+          $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee'
+        permission:
+          $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission'
+          description: Defines the level of access that is granted. Each permission level allows different types of operations.
+      required:
+      - grantee
+      - permission
+      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems
+    workspaces_deleteWorkspace_Response_200:
+      type: object
+      properties: {}
+      title: workspaces_deleteWorkspace_Response_200
+    workspaces_listWorkspaces_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/WorkspacesListWorkspacesResponse2000'
+      - $ref: '#/components/schemas/WorkspacesListWorkspacesResponse2001'
+      title: workspaces_listWorkspaces_Response_200
     V21WorkspacesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1179,146 +1426,6 @@ components:
       - createdAt
       - updatedAt
       title: workspaces_updateWorkspace_Response_200
-    V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf0Items:
-      type: object
-      properties:
-        workspaceId:
-          type: string
-        workspaceUrlId:
-          type: string
-          description: Base62-encoded identifier used in Sigma workspace URLs.
-        name:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      required:
-      - workspaceId
-      - workspaceUrlId
-      - name
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf0Items
-    WorkspacesCreateWorkspaceResponse2000:
-      type: object
-      properties:
-        workspaceId:
-          type: string
-        workspaceUrlId:
-          type: string
-          description: Base62-encoded identifier used in Sigma workspace URLs.
-        name:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      required:
-      - workspaceId
-      - workspaceUrlId
-      - name
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: WorkspacesCreateWorkspaceResponse2000
-    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        grantId:
-          type: string
-          description: The unique identifier of the grant
-        inodeId:
-          type: string
-          description: The unique identifier of the inode
-        organizationId:
-          type: string
-          description: The unique identifier of the organization
-        memberId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the member
-        teamId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the team
-        permission:
-          $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
-          description: The permission granted to the member
-        createdBy:
-          type: string
-          description: The identifier of the user who created this grant
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this grant
-        createdAt:
-          type: string
-          format: date-time
-          description: When the grant was created
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the grant was last updated
-      required:
-      - grantId
-      - inodeId
-      - organizationId
-      - memberId
-      - teamId
-      - permission
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0:
-      type: string
-      enum:
-      - admin
-      - annotate
-      - update
-      - usage
-      - writeback
-      description: 'Valid inode types: table, connection database, and connection schema.'
-      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0
-    workspaces_listWorkspaceGrants_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems'
-        nextPage:
-          type:
-          - string
-          - 'null'
-        total:
-          type: number
-          format: double
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: workspaces_listWorkspaceGrants_Response_200
     workspaces_getWorkspace_Response_200:
       type: object
       properties:
@@ -1348,69 +1455,25 @@ components:
       - createdAt
       - updatedAt
       title: workspaces_getWorkspace_Response_200
-    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee:
-      oneOf:
-      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0'
-      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1'
-      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee
+    WorkspacesCreateWorkspaceResponse2001:
+      type: object
+      properties:
+        workspaceIds:
+          type: array
+          items:
+            type: string
+        workspaceUrlIds:
+          type: array
+          items:
+            type: string
+      required:
+      - workspaceIds
+      - workspaceUrlIds
+      title: WorkspacesCreateWorkspaceResponse2001
     workspaces_deleteWorkspaceGrant_Response_200:
       type: object
       properties: {}
       title: workspaces_deleteWorkspaceGrant_Response_200
-    workspaces_createWorkspaceGrant_Response_200:
-      type: object
-      properties: {}
-      title: workspaces_createWorkspaceGrant_Response_200
-    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems:
-      type: object
-      properties:
-        grantee:
-          $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee'
-        permission:
-          $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission'
-          description: Defines the level of access that is granted. Each permission level allows different types of operations.
-      required:
-      - grantee
-      - permission
-      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems
-    workspaces_v2_1_listWorkspaces_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V21WorkspacesGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: workspaces_v2_1_listWorkspaces_Response_200
-    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission:
-      type: string
-      enum:
-      - view
-      - explore
-      - organize
-      - edit
-      description: Defines the level of access that is granted. Each permission level allows different types of operations.
-      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission
-    workspaces_listWorkspaces_Response_200:
-      oneOf:
-      - $ref: '#/components/schemas/WorkspacesListWorkspacesResponse2000'
-      - $ref: '#/components/schemas/WorkspacesListWorkspacesResponse2001'
-      title: workspaces_listWorkspaces_Response_200
     V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2:
       type: string
       enum:
@@ -1419,69 +1482,6 @@ components:
       - apply
       description: 'Valid inode types: version tag.'
       title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2
-    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0:
-      type: object
-      properties:
-        memberId:
-          type: string
-      required:
-      - memberId
-      description: The UUID of the member receiving the grant
-      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0
-    V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1:
-      type: object
-      properties:
-        teamId:
-          type: string
-      required:
-      - teamId
-      description: The UUID of the team receiving the grant
-      title: V2WorkspacesWorkspaceIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1
-    V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
-      oneOf:
-      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0'
-      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1'
-      - $ref: '#/components/schemas/V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2'
-      description: The permission granted to the member
-      title: V2WorkspacesWorkspaceIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
-    workspaces_deleteWorkspace_Response_200:
-      type: object
-      properties: {}
-      title: workspaces_deleteWorkspace_Response_200
-    V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems:
-      type: object
-      properties:
-        workspaceId:
-          type: string
-        workspaceUrlId:
-          type: string
-          description: Base62-encoded identifier used in Sigma workspace URLs.
-        name:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      required:
-      - workspaceId
-      - workspaceUrlId
-      - name
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: V2WorkspacesGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems
-    workspaces_createWorkspace_Response_200:
-      oneOf:
-      - $ref: '#/components/schemas/WorkspacesCreateWorkspaceResponse2000'
-      - $ref: '#/components/schemas/WorkspacesCreateWorkspaceResponse2001'
-      title: workspaces_createWorkspace_Response_200
   securitySchemes:
     basicAuth:
       type: http

@@ -189,18 +189,59 @@ components:
               requestId:
                 type: string
   schemas:
-    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status:
-      type: string
-      enum:
-      - '204'
-      description: Queued or running
-      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status
+    QueryDownloadQueryResponse2002:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status'
+          description: Internal server error
+        message:
+          type: string
+          description: Error message
+      required:
+      - status
+      - message
+      title: QueryDownloadQueryResponse2002
+    QueryDownloadQueryResponse2000:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status'
+          description: Success
+        download:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download'
+          description: Download results
+      required:
+      - status
+      - download
+      title: QueryDownloadQueryResponse2000
+    query_downloadQuery_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/QueryDownloadQueryResponse2000'
+      - $ref: '#/components/schemas/QueryDownloadQueryResponse2001'
+      - $ref: '#/components/schemas/QueryDownloadQueryResponse2002'
+      title: query_downloadQuery_Response_200
+    QueryDownloadQueryResponse2001:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status'
+          description: Queued or running
+      required:
+      - status
+      title: QueryDownloadQueryResponse2001
     V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status:
       type: string
       enum:
       - '200'
       description: Success
       title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status
+    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status:
+      type: string
+      enum:
+      - '500'
+      description: Internal server error
+      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status
     V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download:
       type: object
       properties:
@@ -216,53 +257,12 @@ components:
       - filename
       description: Download results
       title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download
-    query_downloadQuery_Response_200:
-      oneOf:
-      - $ref: '#/components/schemas/QueryDownloadQueryResponse2000'
-      - $ref: '#/components/schemas/QueryDownloadQueryResponse2001'
-      - $ref: '#/components/schemas/QueryDownloadQueryResponse2002'
-      title: query_downloadQuery_Response_200
-    QueryDownloadQueryResponse2000:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Status'
-          description: Success
-        download:
-          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf0Download'
-          description: Download results
-      required:
-      - status
-      - download
-      title: QueryDownloadQueryResponse2000
-    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status:
+    V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status:
       type: string
       enum:
-      - '500'
-      description: Internal server error
-      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status
-    QueryDownloadQueryResponse2002:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf2Status'
-          description: Internal server error
-        message:
-          type: string
-          description: Error message
-      required:
-      - status
-      - message
-      title: QueryDownloadQueryResponse2002
-    QueryDownloadQueryResponse2001:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status'
-          description: Queued or running
-      required:
-      - status
-      title: QueryDownloadQueryResponse2001
+      - '204'
+      description: Queued or running
+      title: V2QueryQueryIdDownloadGetResponsesContentApplicationJsonSchemaOneOf1Status
   securitySchemes:
     basicAuth:
       type: http

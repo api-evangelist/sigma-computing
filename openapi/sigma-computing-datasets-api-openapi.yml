@@ -1159,71 +1159,12 @@ components:
               requestId:
                 type: string
   schemas:
-    V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationToDataModel:
-      type: object
-      properties:
-        dataModelId:
-          type: string
-        dataModelUrl:
-          type: string
-        migratedAt:
-          type: string
-          format: date-time
-        migratedBy:
-          type: string
-      required:
-      - dataModelId
-      - dataModelUrl
-      - migratedAt
-      - migratedBy
-      description: Details about migration to data model
-      title: V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationToDataModel
-    datasets_listDatasetMaterializations_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: datasets_listDatasetMaterializations_Response_200
-    V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItems:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItemsType'
-        inodeId:
-          type: string
-      required:
-      - type
-      - inodeId
-      title: V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItems
-    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee:
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget:
       oneOf:
-      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0'
-      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1'
-      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee
-    V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItemsType:
-      type: string
-      enum:
-      - dataset
-      - table
-      title: V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItemsType
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget0'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget1'
+      description: The dataset or table the link targets.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget
     datasets_listDatasets_Response_200:
       type: object
       properties:
@@ -1248,209 +1189,7 @@ components:
       - entries
       - nextPage
       title: datasets_listDatasets_Response_200
-    V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsStatus:
-      type: string
-      enum:
-      - success
-      - failed
-      - marked
-      - swept
-      title: V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsStatus
-    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0:
-      type: object
-      properties:
-        memberId:
-          type: string
-      required:
-      - memberId
-      description: The UUID of the member receiving the grant
-      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource0:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf0Type'
-        datasetId:
-          type: string
-          description: ID of the dataset.
-      required:
-      - type
-      - datasetId
-      description: A linked dataset.
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource0
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget1:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf1Type'
-        tableId:
-          type: string
-          description: ID of the connection table.
-      required:
-      - type
-      - tableId
-      description: A linked connection table.
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget1
-    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1:
-      type: object
-      properties:
-        teamId:
-          type: string
-      required:
-      - teamId
-      description: The UUID of the team receiving the grant
-      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf0Type:
-      type: string
-      enum:
-      - dataset
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf0Type
-    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1:
-      type: string
-      enum:
-      - create
-      - annotate
-      - organize
-      - explore
-      - view
-      - edit
-      - apply
-      description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
-      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1
-    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0:
-      type: string
-      enum:
-      - admin
-      - annotate
-      - update
-      - usage
-      - writeback
-      description: 'Valid inode types: table, connection database, and connection schema.'
-      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0
-    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2:
-      type: string
-      enum:
-      - view
-      - edit
-      - apply
-      description: 'Valid inode types: version tag.'
-      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2
-    V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationStatus:
-      type: string
-      enum:
-      - migrated
-      - not-migrated
-      - not-required
-      description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
-      title: V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationStatus
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget0:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf0Type'
-        datasetId:
-          type: string
-          description: ID of the dataset.
-      required:
-      - type
-      - datasetId
-      description: A linked dataset.
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget0
-    datasets_createDatasetGrant_Response_200:
-      type: object
-      properties: {}
-      title: datasets_createDatasetGrant_Response_200
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf1Type:
-      type: string
-      enum:
-      - table
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf1Type
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget:
-      oneOf:
-      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget0'
-      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget1'
-      description: The dataset or table the link targets.
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf1Type:
-      type: string
-      enum:
-      - table
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf1Type
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf0Type:
-      type: string
-      enum:
-      - dataset
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf0Type
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItems:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource'
-          description: The dataset or table that is the source of the link.
-        target:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget'
-          description: The dataset or table the link targets.
-      required:
-      - source
-      - target
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItems
-    V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsStatus'
-        finishedAt:
-          type: string
-          format: date-time
-        error:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsError'
-        runtimeSecs:
-          type:
-          - number
-          - 'null'
-          format: double
-        numRows:
-          type:
-          - number
-          - 'null'
-          format: double
-        numBytes:
-          type:
-          - number
-          - 'null'
-          format: double
-      required:
-      - status
-      - finishedAt
-      - error
-      - runtimeSecs
-      - numRows
-      - numBytes
-      title: V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type:
-          - string
-          - 'null'
-        errorCode:
-          type:
-          - string
-          - 'null'
-      required:
-      - code
-      - message
-      title: V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsError
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource:
-      oneOf:
-      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource0'
-      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource1'
-      description: The dataset or table that is the source of the link.
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource
-    V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationToDataModel:
+    V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationToDataModel:
       type: object
       properties:
         dataModelId:
@@ -1468,217 +1207,15 @@ components:
       - migratedAt
       - migratedBy
       description: Details about migration to data model
-      title: V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationToDataModel
-    datasets_getDataset_Response_200:
-      type: object
-      properties:
-        datasetId:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        name:
-          type: string
-        description:
-          type: string
-        url:
-          type: string
-        owner:
-          type: string
-        referenceCount:
-          type: number
-          format: double
-          description: Count of inbound references to the dataset
-        path:
-          type: string
-          description: Path describing dataset's ancestor workspace and folders
-        migrationToDataModel:
-          oneOf:
-          - $ref: '#/components/schemas/V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationToDataModel'
-          - type: 'null'
-          description: Details about migration to data model
-        migrationStatus:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationStatus'
-          description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
-        isArchived:
-          type: boolean
-      required:
-      - datasetId
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      - name
-      - description
-      - url
-      - owner
-      - referenceCount
-      - path
-      - migrationToDataModel
-      - migrationStatus
-      title: datasets_getDataset_Response_200
-    V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationStatus:
+      title: V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationToDataModel
+    V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsStatus:
       type: string
       enum:
-      - migrated
-      - not-migrated
-      - not-required
-      description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
-      title: V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationStatus
-    datasets_listDatasetGrants_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: datasets_listDatasetGrants_Response_200
-    datasets_migrateDatasetToDataModel_Response_200:
-      type: object
-      properties:
-        dataModelId:
-          type:
-          - string
-          - 'null'
-          description: ID of the newly-created data model. Null when `dryRun` is true.
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItems'
-          description: All datasets or connection tables linked to this dataset. Each can be a source, target, or part of a series of links.
-        linkCount:
-          type: number
-          format: double
-          description: Number of links the dataset has to other datasets.
-        referenceCount:
-          type: number
-          format: double
-          description: Number of references from other datasets to this dataset.
-      required:
-      - dataModelId
-      - links
-      - linkCount
-      - referenceCount
-      title: datasets_migrateDatasetToDataModel_Response_200
-    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems:
-      type: object
-      properties:
-        grantee:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee'
-        permission:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission'
-        tagId:
-          type: string
-      required:
-      - grantee
-      - permission
-      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems
-    datasets_materializeDataset_Response_200:
-      type: object
-      properties:
-        taskId:
-          type: string
-      required:
-      - taskId
-      title: datasets_materializeDataset_Response_200
-    datasets_deleteDatasetGrant_Response_200:
-      type: object
-      properties: {}
-      title: datasets_deleteDatasetGrant_Response_200
-    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        grantId:
-          type: string
-          description: The unique identifier of the grant
-        inodeId:
-          type: string
-          description: The unique identifier of the inode
-        organizationId:
-          type: string
-          description: The unique identifier of the organization
-        memberId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the member
-        teamId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the team
-        permission:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
-          description: The permission granted to the member
-        createdBy:
-          type: string
-          description: The identifier of the user who created this grant
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this grant
-        createdAt:
-          type: string
-          format: date-time
-          description: When the grant was created
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the grant was last updated
-      required:
-      - grantId
-      - inodeId
-      - organizationId
-      - memberId
-      - teamId
-      - permission
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource1:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf1Type'
-        tableId:
-          type: string
-          description: ID of the connection table.
-      required:
-      - type
-      - tableId
-      description: A linked connection table.
-      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource1
-    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
-      oneOf:
-      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0'
-      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1'
-      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2'
-      description: The permission granted to the member
-      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
+      - success
+      - failed
+      - marked
+      - swept
+      title: V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsStatus
     V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1734,12 +1271,475 @@ components:
       - migrationToDataModel
       - migrationStatus
       title: V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationStatus:
+      type: string
+      enum:
+      - migrated
+      - not-migrated
+      - not-required
+      description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
+      title: V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationStatus
+    datasets_materializeDataset_Response_200:
+      type: object
+      properties:
+        taskId:
+          type: string
+      required:
+      - taskId
+      title: datasets_materializeDataset_Response_200
+    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems:
+      type: object
+      properties:
+        grantee:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee'
+        permission:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission'
+        tagId:
+          type: string
+      required:
+      - grantee
+      - permission
+      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItems
+    datasets_createDatasetGrant_Response_200:
+      type: object
+      properties: {}
+      title: datasets_createDatasetGrant_Response_200
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource0:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf0Type'
+        datasetId:
+          type: string
+          description: ID of the dataset.
+      required:
+      - type
+      - datasetId
+      description: A linked dataset.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource0
+    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1:
+      type: object
+      properties:
+        teamId:
+          type: string
+      required:
+      - teamId
+      description: The UUID of the team receiving the grant
+      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1
+    datasets_getDataset_Response_200:
+      type: object
+      properties:
+        datasetId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        owner:
+          type: string
+        referenceCount:
+          type: number
+          format: double
+          description: Count of inbound references to the dataset
+        path:
+          type: string
+          description: Path describing dataset's ancestor workspace and folders
+        migrationToDataModel:
+          oneOf:
+          - $ref: '#/components/schemas/V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationToDataModel'
+          - type: 'null'
+          description: Details about migration to data model
+        migrationStatus:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationStatus'
+          description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
+        isArchived:
+          type: boolean
+      required:
+      - datasetId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - url
+      - owner
+      - referenceCount
+      - path
+      - migrationToDataModel
+      - migrationStatus
+      title: datasets_getDataset_Response_200
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource:
+      oneOf:
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource0'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource1'
+      description: The dataset or table that is the source of the link.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource
+    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee:
+      oneOf:
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee1'
+      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee
+    V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationStatus:
+      type: string
+      enum:
+      - migrated
+      - not-migrated
+      - not-required
+      description: "An indicator of the dataset's migration status as displayed on the dataset migration admin page.\n  - `not-required` indicates that the dataset is not used as a data source (in other words, it is not referenced by other documents) and likely does not need to be migrated to a data model.\n  - `migrated` indicates that the dataset has already been migrated to a data model\n  - `not-migrated` indicates that the dataset has not been migrated and is still in use as a data source\n        "
+      title: V2DatasetsGetResponsesContentApplicationJsonSchemaEntriesItemsMigrationStatus
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
+      oneOf:
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1'
+      - $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2'
+      description: The permission granted to the member
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf1Type:
+      type: string
+      enum:
+      - table
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf1Type
+    V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationToDataModel:
+      type: object
+      properties:
+        dataModelId:
+          type: string
+        dataModelUrl:
+          type: string
+        migratedAt:
+          type: string
+          format: date-time
+        migratedBy:
+          type: string
+      required:
+      - dataModelId
+      - dataModelUrl
+      - migratedAt
+      - migratedBy
+      description: Details about migration to data model
+      title: V2DatasetsDatasetIdGetResponsesContentApplicationJsonSchemaMigrationToDataModel
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource1:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf1Type'
+        tableId:
+          type: string
+          description: ID of the connection table.
+      required:
+      - type
+      - tableId
+      description: A linked connection table.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource1
+    datasets_deleteDatasetGrant_Response_200:
+      type: object
+      properties: {}
+      title: datasets_deleteDatasetGrant_Response_200
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget1:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf1Type'
+        tableId:
+          type: string
+          description: ID of the connection table.
+      required:
+      - type
+      - tableId
+      description: A linked connection table.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget1
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0:
+      type: string
+      enum:
+      - admin
+      - annotate
+      - update
+      - usage
+      - writeback
+      description: 'Valid inode types: table, connection database, and connection schema.'
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission0
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf0Type:
+      type: string
+      enum:
+      - dataset
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSourceOneOf0Type
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget0:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf0Type'
+        datasetId:
+          type: string
+          description: ID of the dataset.
+      required:
+      - type
+      - datasetId
+      description: A linked dataset.
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget0
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf1Type:
+      type: string
+      enum:
+      - table
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf1Type
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf0Type:
+      type: string
+      enum:
+      - dataset
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTargetOneOf0Type
+    datasets_listDatasetMaterializations_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: datasets_listDatasetMaterializations_Response_200
+    V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type:
+          - string
+          - 'null'
+        errorCode:
+          type:
+          - string
+          - 'null'
+      required:
+      - code
+      - message
+      title: V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsError
+    datasets_migrateDatasetToDataModel_Response_200:
+      type: object
+      properties:
+        dataModelId:
+          type:
+          - string
+          - 'null'
+          description: ID of the newly-created data model. Null when `dryRun` is true.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItems'
+          description: All datasets or connection tables linked to this dataset. Each can be a source, target, or part of a series of links.
+        linkCount:
+          type: number
+          format: double
+          description: Number of links the dataset has to other datasets.
+        referenceCount:
+          type: number
+          format: double
+          description: Number of references from other datasets to this dataset.
+      required:
+      - dataModelId
+      - links
+      - linkCount
+      - referenceCount
+      title: datasets_migrateDatasetToDataModel_Response_200
+    V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0:
+      type: object
+      properties:
+        memberId:
+          type: string
+      required:
+      - memberId
+      description: The UUID of the member receiving the grant
+      title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsGrantee0
+    V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItemsType:
+      type: string
+      enum:
+      - dataset
+      - table
+      title: V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItemsType
+    V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsStatus'
+        finishedAt:
+          type: string
+          format: date-time
+        error:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItemsError'
+        runtimeSecs:
+          type:
+          - number
+          - 'null'
+          format: double
+        numRows:
+          type:
+          - number
+          - 'null'
+          format: double
+        numBytes:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - status
+      - finishedAt
+      - error
+      - runtimeSecs
+      - numRows
+      - numBytes
+      title: V2DatasetsDatasetIdMaterializationGetResponsesContentApplicationJsonSchemaEntriesItems
     V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission:
       type: string
       enum:
       - view
       - edit
       title: V2DatasetsDatasetIdGrantsPostRequestBodyContentApplicationJsonSchemaGrantsItemsPermission
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: folder, workspace, workbook, dataset, and data model. Can Contribute permissions are listed as **organize** and Can Manage permissions are listed as **edit**.'
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission1
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        grantId:
+          type: string
+          description: The unique identifier of the grant
+        inodeId:
+          type: string
+          description: The unique identifier of the inode
+        organizationId:
+          type: string
+          description: The unique identifier of the organization
+        memberId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the member
+        teamId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the team
+        permission:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
+          description: The permission granted to the member
+        createdBy:
+          type: string
+          description: The identifier of the user who created this grant
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this grant
+        createdAt:
+          type: string
+          format: date-time
+          description: When the grant was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the grant was last updated
+      required:
+      - grantId
+      - inodeId
+      - organizationId
+      - memberId
+      - teamId
+      - permission
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2:
+      type: string
+      enum:
+      - view
+      - edit
+      - apply
+      description: 'Valid inode types: version tag.'
+      title: V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItemsPermission2
+    V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItems:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsSource'
+          description: The dataset or table that is the source of the link.
+        target:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItemsTarget'
+          description: The dataset or table the link targets.
+      required:
+      - source
+      - target
+      title: V2DatasetsDatasetIdMigratePostResponsesContentApplicationJsonSchemaLinksItems
+    V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItems:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItemsType'
+        inodeId:
+          type: string
+      required:
+      - type
+      - inodeId
+      title: V2DatasetsDatasetIdSourcesGetResponsesContentApplicationJsonSchemaItems
+    datasets_listDatasetGrants_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DatasetsDatasetIdGrantsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: datasets_listDatasetGrants_Response_200
   securitySchemes:
     basicAuth:
       type: http

@@ -398,10 +398,6 @@ components:
               requestId:
                 type: string
   schemas:
-    favorites_addFavorite_Response_200:
-      type: object
-      properties: {}
-      title: favorites_addFavorite_Response_200
     V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
       type: string
       enum:
@@ -413,26 +409,6 @@ components:
       - edit
       - apply
       title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
-    favorites_removeFavorite_Response_200:
-      type: object
-      properties: {}
-      title: favorites_removeFavorite_Response_200
-    V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsType:
-      type: string
-      enum:
-      - workspace
-      - folder
-      - workbook
-      - dataset
-      - data-model
-      - sql
-      - worksheet
-      - dashboard
-      - template
-      - table
-      - symlink
-      - report
-      title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsType
     favorites_listFavorites_Response_200:
       type: object
       properties:
@@ -521,6 +497,30 @@ components:
       - createdAt
       - updatedAt
       title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItems
+    favorites_addFavorite_Response_200:
+      type: object
+      properties: {}
+      title: favorites_addFavorite_Response_200
+    favorites_removeFavorite_Response_200:
+      type: object
+      properties: {}
+      title: favorites_removeFavorite_Response_200
+    V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsType:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsType
   securitySchemes:
     basicAuth:
       type: http
