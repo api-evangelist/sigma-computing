@@ -613,35 +613,6 @@ components:
               requestId:
                 type: string
   schemas:
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn:
-      oneOf:
-      - type: string
-      - type: array
-        items:
-          type: string
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems:
-      type: object
-      properties:
-        fromColumn:
-          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn'
-        toColumn:
-          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn'
-      required:
-      - fromColumn
-      - toColumn
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems
-    V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-        name:
-          type: string
-      required:
-      - versionTagId
-      - name
-      title: V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems
     templates_saveWorkbookFromTemplate_Response_200:
       type: object
       properties:
@@ -650,65 +621,6 @@ components:
       required:
       - workbookId
       title: templates_saveWorkbookFromTemplate_Response_200
-    V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-        name:
-          type: string
-      required:
-      - versionTagId
-      - name
-      title: V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
-    templates_getTemplate_Response_200:
-      type: object
-      properties:
-        templateId:
-          type: string
-        templateUrlId:
-          type: string
-        name:
-          type: string
-        url:
-          type: string
-        path:
-          type: string
-        latestVersion:
-          type: number
-          format: double
-        createdBy:
-          type: string
-          description: The identifier of the user who created this object.
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this object.
-        createdAt:
-          type: string
-          format: date-time
-          description: When the object was created.
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the object was last updated.
-        isArchived:
-          type: boolean
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems'
-      required:
-      - templateId
-      - templateUrlId
-      - name
-      - url
-      - path
-      - latestVersion
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: templates_getTemplate_Response_200
     V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -774,50 +686,85 @@ components:
       - fromPath
       - toPath
       title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems:
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems:
       type: object
       properties:
-        fromId:
+        fromMetric:
           type: string
-          description: ID of the connection to swap from.
-        toId:
+          description: Metric in the data source.
+        toMetric:
           type: string
-          description: ID of the connection to swap to.
-        swapTables:
+          description: Metric in the data source.
+      required:
+      - fromMetric
+      - toMetric
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems
+    V2TemplatesGetParametersSource:
+      type: string
+      enum:
+      - internal
+      - external
+      description: Filters results to templates based on their source. Set to internal to only retrieve templates created within your organization. Set to external to only retrieve templates shared to your organization. Do not specify a source to list all templates regardless of their source.
+      title: V2TemplatesGetParametersSource
+    templates_getTemplate_Response_200:
+      type: object
+      properties:
+        templateId:
+          type: string
+        templateUrlId:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+        path:
+          type: string
+        latestVersion:
+          type: number
+          format: double
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        isArchived:
           type: boolean
-          description: Whether to swap all tables in the connection
-        paths:
+        tags:
           type: array
           items:
-            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems'
+            $ref: '#/components/schemas/V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems'
       required:
-      - fromId
-      - toId
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn:
-      oneOf:
-      - type: string
-      - type: array
-        items:
-          type: string
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn
-    templates_sourceSwapTemplate_Response_200:
+      - templateId
+      - templateUrlId
+      - name
+      - url
+      - path
+      - latestVersion
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: templates_getTemplate_Response_200
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems:
       type: object
       properties:
-        unswappedSources:
-          type: array
-          items:
-            type: string
-          description: IDs of sources in the workbook that were not swapped.
-        unswappedConnections:
-          type: array
-          items:
-            type: string
-          description: IDs of custom SQL connections in the workbook that were not swapped.
+        fromColumn:
+          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn'
+        toColumn:
+          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn'
       required:
-      - unswappedSources
-      - unswappedConnections
-      title: templates_sourceSwapTemplate_Response_200
+      - fromColumn
+      - toColumn
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems
     V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems:
       type: object
       properties:
@@ -839,26 +786,79 @@ components:
       - fromId
       - toId
       title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems:
+    V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems:
       type: object
       properties:
-        fromMetric:
+        versionTagId:
           type: string
-          description: Metric in the data source.
-        toMetric:
+        name:
           type: string
-          description: Metric in the data source.
       required:
-      - fromMetric
-      - toMetric
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems
-    V2TemplatesGetParametersSource:
-      type: string
-      enum:
-      - internal
-      - external
-      description: Filters results to templates based on their source. Set to internal to only retrieve templates created within your organization. Set to external to only retrieve templates shared to your organization. Do not specify a source to list all templates regardless of their source.
-      title: V2TemplatesGetParametersSource
+      - versionTagId
+      - name
+      title: V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn:
+      oneOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn:
+      oneOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems:
+      type: object
+      properties:
+        fromId:
+          type: string
+          description: ID of the connection to swap from.
+        toId:
+          type: string
+          description: ID of the connection to swap to.
+        swapTables:
+          type: boolean
+          description: Whether to swap all tables in the connection
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems'
+      required:
+      - fromId
+      - toId
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems
+    V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+        name:
+          type: string
+      required:
+      - versionTagId
+      - name
+      title: V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
+    templates_sourceSwapTemplate_Response_200:
+      type: object
+      properties:
+        unswappedSources:
+          type: array
+          items:
+            type: string
+          description: IDs of sources in the workbook that were not swapped.
+        unswappedConnections:
+          type: array
+          items:
+            type: string
+          description: IDs of custom SQL connections in the workbook that were not swapped.
+      required:
+      - unswappedSources
+      - unswappedConnections
+      title: templates_sourceSwapTemplate_Response_200
     templates_listTemplates_Response_200:
       type: object
       properties:

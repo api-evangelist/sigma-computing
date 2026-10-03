@@ -507,16 +507,38 @@ components:
       enum:
       - element
       title: V2PluginsPluginIdGetResponsesContentApplicationJsonSchemaType
-    V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType:
-      type: string
-      enum:
-      - element
-      title: V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType
-    V2PluginsPostResponsesContentApplicationJsonSchemaType:
-      type: string
-      enum:
-      - element
-      title: V2PluginsPostResponsesContentApplicationJsonSchemaType
+    plugins_createCustomPlugin_Response_200:
+      type: object
+      properties:
+        pluginId:
+          type: string
+          description: Unique identifier (UUID) of the plugin.
+        name:
+          type: string
+          description: Display name of the plugin.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the plugin.
+        url:
+          type: string
+          description: Production URL where the plugin is hosted. Sigma loads the plugin from this URL when it is added to a workbook. An empty string indicates that no production URL has been set for the plugin yet.
+        devUrl:
+          type:
+          - string
+          - 'null'
+          description: Development URL for the plugin. Sigma loads the plugin from this URL when the plugin runs in development mode.
+        type:
+          $ref: '#/components/schemas/V2PluginsPostResponsesContentApplicationJsonSchemaType'
+      required:
+      - pluginId
+      - name
+      - description
+      - url
+      - devUrl
+      - type
+      title: plugins_createCustomPlugin_Response_200
     plugins_getCustomPlugin_Response_200:
       type: object
       properties:
@@ -549,22 +571,6 @@ components:
       - devUrl
       - type
       title: plugins_getCustomPlugin_Response_200
-    plugins_listCustomPlugins_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: plugins_listCustomPlugins_Response_200
     V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType:
       type: string
       enum:
@@ -602,42 +608,36 @@ components:
       - devUrl
       - type
       title: V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems
-    plugins_createCustomPlugin_Response_200:
-      type: object
-      properties:
-        pluginId:
-          type: string
-          description: Unique identifier (UUID) of the plugin.
-        name:
-          type: string
-          description: Display name of the plugin.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the plugin.
-        url:
-          type: string
-          description: Production URL where the plugin is hosted. Sigma loads the plugin from this URL when it is added to a workbook. An empty string indicates that no production URL has been set for the plugin yet.
-        devUrl:
-          type:
-          - string
-          - 'null'
-          description: Development URL for the plugin. Sigma loads the plugin from this URL when the plugin runs in development mode.
-        type:
-          $ref: '#/components/schemas/V2PluginsPostResponsesContentApplicationJsonSchemaType'
-      required:
-      - pluginId
-      - name
-      - description
-      - url
-      - devUrl
-      - type
-      title: plugins_createCustomPlugin_Response_200
     plugins_deleteCustomPlugin_Response_200:
       type: object
       properties: {}
       title: plugins_deleteCustomPlugin_Response_200
+    plugins_listCustomPlugins_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: plugins_listCustomPlugins_Response_200
+    V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - element
+      title: V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType
+    V2PluginsPostResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - element
+      title: V2PluginsPostResponsesContentApplicationJsonSchemaType
   securitySchemes:
     basicAuth:
       type: http

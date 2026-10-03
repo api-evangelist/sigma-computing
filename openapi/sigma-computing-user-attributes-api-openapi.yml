@@ -1262,37 +1262,19 @@ components:
       scheme: bearer
       description: OAuth 2.0 authentication
   schemas:
-    V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
+    V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValueType:
       type: string
       enum:
       - string
       description: Type of user attribute.
-      title: V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
-    V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
-          description: Type of user attribute.
-        val:
-          type: string
-          description: Value of the user attribute.
-      required:
-      - type
-      - val
-      description: The value of the user attribute
-      title: V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
-    userAttributes_deleteUserAttributeForTenant_Response_200:
-      type: object
-      properties: {}
-      title: userAttributes_deleteUserAttributeForTenant_Response_200
-    userAttributes_getUserAttributeUserAssignments_Response_200:
+      title: V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValueType
+    userAttributes_getUserAttributeTenantAssignments_Response_200:
       type: object
       properties:
         entries:
           type: array
           items:
-            $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItems'
+            $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItems'
         nextPage:
           type:
           - string
@@ -1303,45 +1285,15 @@ components:
       required:
       - entries
       - nextPage
-      title: userAttributes_getUserAttributeUserAssignments_Response_200
-    userAttributes_updateUserAttributeForUsers_Response_200:
-      type: object
-      properties: {}
-      title: userAttributes_updateUserAttributeForUsers_Response_200
-    V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
-    userAttributes_deleteUserAttribute_Response_200:
-      type: object
-      properties: {}
-      title: userAttributes_deleteUserAttribute_Response_200
-    V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
-    userAttributes_deleteUserAttributeForTeam_Response_200:
-      type: object
-      properties: {}
-      title: userAttributes_deleteUserAttributeForTeam_Response_200
-    V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValueType
-    V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      title: userAttributes_getUserAttributeTenantAssignments_Response_200
+    V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
-        tenantOrganizationId:
+        userId:
           type: string
-          description: Unique identifier of the tenant.
+          description: Unique identifier of the user.
         value:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
           description: Assigned value.
         createdBy:
           type: string
@@ -1358,13 +1310,13 @@ components:
           format: date-time
           description: When the object was last updated.
       required:
-      - tenantOrganizationId
+      - userId
       - value
       - createdBy
       - updatedBy
       - createdAt
       - updatedAt
-      title: V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItems
+      title: V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItems
     V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
       type: object
       properties:
@@ -1379,10 +1331,33 @@ components:
       - val
       description: The value of the user attribute
       title: V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
-    userAttributes_updateUserAttributeForTenants_Response_200:
+    userAttributes_updateUserAttributeForTeams_Response_200:
       type: object
       properties: {}
-      title: userAttributes_updateUserAttributeForTenants_Response_200
+      title: userAttributes_updateUserAttributeForTeams_Response_200
+    V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: The value of the user attribute
+      title: V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
+    V2UserAttributesUserAttributeIdTeamsPatchRequestBodyContentApplicationJsonSchemaDeleteItems:
+      type: object
+      properties:
+        teamId:
+          type: string
+          description: Unique identifier of the team.
+      required:
+      - teamId
+      title: V2UserAttributesUserAttributeIdTeamsPatchRequestBodyContentApplicationJsonSchemaDeleteItems
     V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1419,6 +1394,20 @@ components:
       - createdAt
       - updatedAt
       title: V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Default value of the user attribute.
+      title: V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValue
     V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
       type: object
       properties:
@@ -1432,11 +1421,39 @@ components:
       - tenantOrganizationId
       - value
       title: V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
-    V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
+    V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Unique identifier of the user.
+        value:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
+          description: The value of the user attribute
+      required:
+      - userId
+      - value
+      title: V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
+    V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValueType
+    V2UserAttributesUserAttributeIdTenantsPatchRequestBodyContentApplicationJsonSchemaDeleteItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: The unique identifier of the tenant.
+      required:
+      - tenantOrganizationId
+      title: V2UserAttributesUserAttributeIdTenantsPatchRequestBodyContentApplicationJsonSchemaDeleteItems
+    V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValue:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
+          $ref: '#/components/schemas/V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValueType'
           description: Type of user attribute.
         val:
           type: string
@@ -1444,42 +1461,8 @@ components:
       required:
       - type
       - val
-      description: Assigned value.
-      title: V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValue
-    V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
-    userAttributes_setUserAttributeForTeams_Response_200:
-      type: object
-      properties: {}
-      title: userAttributes_setUserAttributeForTeams_Response_200
-    V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
-          description: Type of user attribute.
-        val:
-          type: string
-          description: Value of the user attribute.
-      required:
-      - type
-      - val
-      description: Assigned value.
-      title: V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValue
-    userAttributes_setUserAttributeForTenants_Response_200:
-      type: object
-      properties: {}
-      title: userAttributes_setUserAttributeForTenants_Response_200
-    V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
+      description: Default value of the user attribute.
+      title: V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValue
     userAttributes_listUserAttributes_Response_200:
       type: object
       properties:
@@ -1498,93 +1481,6 @@ components:
       - entries
       - nextPage
       title: userAttributes_listUserAttributes_Response_200
-    userAttributes_getUserAttributeTeamAssignments_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItems'
-        nextPage:
-          type:
-          - string
-          - 'null'
-        total:
-          type: number
-          format: double
-      required:
-      - entries
-      - nextPage
-      title: userAttributes_getUserAttributeTeamAssignments_Response_200
-    V2UserAttributesUserAttributeIdTeamsPatchRequestBodyContentApplicationJsonSchemaDeleteItems:
-      type: object
-      properties:
-        teamId:
-          type: string
-          description: Unique identifier of the team.
-      required:
-      - teamId
-      title: V2UserAttributesUserAttributeIdTeamsPatchRequestBodyContentApplicationJsonSchemaDeleteItems
-    userAttributes_createUserAttribute_Response_200:
-      type: object
-      properties:
-        userAttributeId:
-          type: string
-          description: Unique identifier of the user attribute.
-        name:
-          type: string
-          description: Name of the user attribute.
-        createdBy:
-          type: string
-          description: The identifier of the user who created this object.
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this object.
-        createdAt:
-          type: string
-          format: date-time
-          description: When the object was created.
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the object was last updated.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the user attribute.
-        defaultValue:
-          oneOf:
-          - $ref: '#/components/schemas/V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValue'
-          - type: 'null'
-          description: Default value of the user attribute.
-      required:
-      - userAttributeId
-      - name
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: userAttributes_createUserAttribute_Response_200
-    V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: Unique identifier of the user.
-        value:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
-          description: The value of the user attribute
-      required:
-      - userId
-      - value
-      title: V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
-    V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValueType
     V2UserAttributesUserAttributeIdUsersPatchRequestBodyContentApplicationJsonSchemaDeleteItems:
       type: object
       properties:
@@ -1594,24 +1490,20 @@ components:
       required:
       - userId
       title: V2UserAttributesUserAttributeIdUsersPatchRequestBodyContentApplicationJsonSchemaDeleteItems
-    userAttributes_getUserAttributeTenantAssignments_Response_200:
+    V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
+    userAttributes_setUserAttributeForTeams_Response_200:
       type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItems'
-        nextPage:
-          type:
-          - string
-          - 'null'
-        total:
-          type: number
-          format: double
-      required:
-      - entries
-      - nextPage
-      title: userAttributes_getUserAttributeTenantAssignments_Response_200
+      properties: {}
+      title: userAttributes_setUserAttributeForTeams_Response_200
+    userAttributes_deleteUserAttributeForTeam_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_deleteUserAttributeForTeam_Response_200
     userAttributes_getUserAttribute_Response_200:
       type: object
       properties:
@@ -1653,6 +1545,77 @@ components:
       - createdAt
       - updatedAt
       title: userAttributes_getUserAttribute_Response_200
+    V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
+    V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Assigned value.
+      title: V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValue
+    userAttributes_updateUserAttributeForUsers_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_updateUserAttributeForUsers_Response_200
+    V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
+    userAttributes_createUserAttribute_Response_200:
+      type: object
+      properties:
+        userAttributeId:
+          type: string
+          description: Unique identifier of the user attribute.
+        name:
+          type: string
+          description: Name of the user attribute.
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the user attribute.
+        defaultValue:
+          oneOf:
+          - $ref: '#/components/schemas/V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValue'
+          - type: 'null'
+          description: Default value of the user attribute.
+      required:
+      - userAttributeId
+      - name
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: userAttributes_createUserAttribute_Response_200
     V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValue:
       type: object
       properties:
@@ -1667,18 +1630,53 @@ components:
       - val
       description: Default value of the user attribute.
       title: V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValue
-    userAttributes_setUserAttributeForUsers_Response_200:
+    userAttributes_updateUserAttributeForTenants_Response_200:
       type: object
       properties: {}
-      title: userAttributes_setUserAttributeForUsers_Response_200
-    V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItems:
+      title: userAttributes_updateUserAttributeForTenants_Response_200
+    userAttributes_deleteUserAttribute_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_deleteUserAttribute_Response_200
+    userAttributes_deleteUserAttributeForUser_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_deleteUserAttributeForUser_Response_200
+    V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
       type: object
       properties:
-        userId:
+        teamId:
           type: string
-          description: Unique identifier of the user.
+          description: Unique identifier of the team.
         value:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
+          description: The value of the user attribute
+      required:
+      - teamId
+      - value
+      title: V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
+    V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Assigned value.
+      title: V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValue
+    V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of the tenant.
+        value:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
           description: Assigned value.
         createdBy:
           type: string
@@ -1695,45 +1693,63 @@ components:
           format: date-time
           description: When the object was last updated.
       required:
-      - userId
+      - tenantOrganizationId
       - value
       - createdBy
       - updatedBy
       - createdAt
       - updatedAt
-      title: V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
-      type: object
-      properties:
-        teamId:
-          type: string
-          description: Unique identifier of the team.
-        value:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
-          description: The value of the user attribute
-      required:
-      - teamId
-      - value
-      title: V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
-    V2UserAttributesUserAttributeIdTenantsPatchRequestBodyContentApplicationJsonSchemaDeleteItems:
-      type: object
-      properties:
-        tenantOrganizationId:
-          type: string
-          description: The unique identifier of the tenant.
-      required:
-      - tenantOrganizationId
-      title: V2UserAttributesUserAttributeIdTenantsPatchRequestBodyContentApplicationJsonSchemaDeleteItems
-    V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
-    userAttributes_deleteUserAttributeForUser_Response_200:
+      title: V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItems
+    userAttributes_deleteUserAttributeForTenant_Response_200:
       type: object
       properties: {}
-      title: userAttributes_deleteUserAttributeForUser_Response_200
+      title: userAttributes_deleteUserAttributeForTenant_Response_200
+    userAttributes_getUserAttributeTeamAssignments_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: userAttributes_getUserAttributeTeamAssignments_Response_200
+    V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Assigned value.
+      title: V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItemsValue
+    V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: Default value of the user attribute.
+      title: V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValue
     V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1775,11 +1791,57 @@ components:
       - createdAt
       - updatedAt
       title: V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
+    userAttributes_getUserAttributeUserAssignments_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: userAttributes_getUserAttributeUserAssignments_Response_200
+    V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValueType
+    V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdTenantsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
+    userAttributes_setUserAttributeForUsers_Response_200:
+      type: object
+      properties: {}
+      title: userAttributes_setUserAttributeForUsers_Response_200
+    V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
+    V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValueType
+    V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
+          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
           description: Type of user attribute.
         val:
           type: string
@@ -1788,76 +1850,14 @@ components:
       - type
       - val
       description: The value of the user attribute
-      title: V2UserAttributesUserAttributeIdTeamsPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
-    V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValueType
-    V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValue:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValueType'
-          description: Type of user attribute.
-        val:
-          type: string
-          description: Value of the user attribute.
-      required:
-      - type
-      - val
-      description: Default value of the user attribute.
-      title: V2UserAttributesPostRequestBodyContentApplicationJsonSchemaDefaultValue
-    V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType'
-          description: Type of user attribute.
-        val:
-          type: string
-          description: Value of the user attribute.
-      required:
-      - type
-      - val
-      description: Assigned value.
-      title: V2UserAttributesUserAttributeIdTenantsGetResponsesContentApplicationJsonSchemaEntriesItemsValue
-    V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2UserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsDefaultValueType
-    userAttributes_updateUserAttributeForTeams_Response_200:
+      title: V2UserAttributesUserAttributeIdUsersPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
+    userAttributes_setUserAttributeForTenants_Response_200:
       type: object
       properties: {}
-      title: userAttributes_updateUserAttributeForTeams_Response_200
-    V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValue:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValueType'
-          description: Type of user attribute.
-        val:
-          type: string
-          description: Value of the user attribute.
-      required:
-      - type
-      - val
-      description: Default value of the user attribute.
-      title: V2UserAttributesUserAttributeIdGetResponsesContentApplicationJsonSchemaDefaultValue
-    V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValue:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValueType'
-          description: Type of user attribute.
-        val:
-          type: string
-          description: Value of the user attribute.
-      required:
-      - type
-      - val
-      description: Default value of the user attribute.
-      title: V2UserAttributesPostResponsesContentApplicationJsonSchemaDefaultValue
+      title: userAttributes_setUserAttributeForTenants_Response_200
+    V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2UserAttributesUserAttributeIdTeamsGetResponsesContentApplicationJsonSchemaEntriesItemsValueType

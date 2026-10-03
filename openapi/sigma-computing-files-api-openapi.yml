@@ -917,216 +917,6 @@ components:
               requestId:
                 type: string
   schemas:
-    V2FilesGetParametersPermissionFilter1:
-      type: string
-      enum:
-      - view
-      - explore
-      - organize
-      - edit
-      description: Choose **organize** for Can Contribute permissions or **edit** for Can Manage permissions.
-      title: V2FilesGetParametersPermissionFilter1
-    FilesCreateRequest1:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf1Type'
-        name:
-          type: string
-        description:
-          type: string
-        ownerId:
-          type: string
-        parentId:
-          type: string
-      required:
-      - type
-      - name
-      description: Folder to create
-      title: FilesCreateRequest1
-    V2FilesGetParametersPermissionFilter0:
-      type: string
-      enum:
-      - view
-      - explore
-      - edit
-      title: V2FilesGetParametersPermissionFilter0
-    FilesCreateRequest0:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf0Type'
-        name:
-          type: string
-      required:
-      - type
-      - name
-      description: Workspace to create
-      title: FilesCreateRequest0
-    V2FilesGetParametersTypeFilters0:
-      type: array
-      items:
-        $ref: '#/components/schemas/V2FilesGetParametersTypeFiltersSchemaOneOf0Items'
-      description: '**Note**: Workspaces are not returned as part of the response. To retrieve a workspace, use the **Single Document Type**.'
-      title: V2FilesGetParametersTypeFilters0
-    V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaType:
-      type: string
-      enum:
-      - workspace
-      - folder
-      - workbook
-      - dataset
-      - data-model
-      - sql
-      - worksheet
-      - dashboard
-      - template
-      - table
-      - symlink
-      - report
-      title: V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaType
-    V2FilesInodeIdGetResponsesContentApplicationJsonSchemaType:
-      type: string
-      enum:
-      - workspace
-      - folder
-      - workbook
-      - dataset
-      - data-model
-      - sql
-      - worksheet
-      - dashboard
-      - template
-      - table
-      - symlink
-      - report
-      title: V2FilesInodeIdGetResponsesContentApplicationJsonSchemaType
-    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf3Type:
-      type: string
-      enum:
-      - report
-      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf3Type
-    V2FilesGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        id:
-          type: string
-        urlId:
-          type: string
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsType'
-        parentId:
-          type: string
-        parentUrlId:
-          type: string
-        permission:
-          $ref: '#/components/schemas/V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
-        path:
-          type: string
-        badge:
-          type:
-          - string
-          - 'null'
-        isArchived:
-          type: boolean
-        description:
-          type: string
-        ownerId:
-          type:
-          - string
-          - 'null'
-        parentSourceUrlId:
-          type: string
-          description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
-        createdBy:
-          type: string
-          description: The identifier of the user who created this object.
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this object.
-        createdAt:
-          type: string
-          format: date-time
-          description: When the object was created.
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the object was last updated.
-      required:
-      - id
-      - urlId
-      - name
-      - type
-      - parentId
-      - parentUrlId
-      - permission
-      - path
-      - badge
-      - isArchived
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: V2FilesGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
-      type: string
-      enum:
-      - create
-      - annotate
-      - organize
-      - explore
-      - view
-      - edit
-      - apply
-      title: V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
-    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Type:
-      type: string
-      enum:
-      - workbook
-      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Type
-    V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsType:
-      type: string
-      enum:
-      - workspace
-      - folder
-      - workbook
-      - dataset
-      - data-model
-      - sql
-      - worksheet
-      - dashboard
-      - template
-      - table
-      - symlink
-      - report
-      title: V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsType
-    FilesCreateRequest2:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Type'
-        name:
-          type: string
-        description:
-          type: string
-        ownerId:
-          type: string
-        parentId:
-          type: string
-        source:
-          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Source'
-      required:
-      - type
-      - name
-      description: Workbook to create
-      title: FilesCreateRequest2
-    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf0Type:
-      type: string
-      enum:
-      - workspace
-      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf0Type
     V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Source:
       type: object
       properties:
@@ -1139,68 +929,6 @@ components:
       - inodeId
       - version
       title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Source
-    V2FilesPostResponsesContentApplicationJsonSchemaPermission:
-      type: string
-      enum:
-      - create
-      - annotate
-      - organize
-      - explore
-      - view
-      - edit
-      - apply
-      title: V2FilesPostResponsesContentApplicationJsonSchemaPermission
-    files_delete_Response_200:
-      type: object
-      properties: {}
-      title: files_delete_Response_200
-    V2FilesPostResponsesContentApplicationJsonSchemaType:
-      type: string
-      enum:
-      - workspace
-      - folder
-      - workbook
-      - dataset
-      - data-model
-      - sql
-      - worksheet
-      - dashboard
-      - template
-      - table
-      - symlink
-      - report
-      title: V2FilesPostResponsesContentApplicationJsonSchemaType
-    files_list_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2FilesGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: files_list_Response_200
-    files_create_Request:
-      oneOf:
-      - $ref: '#/components/schemas/FilesCreateRequest0'
-      - $ref: '#/components/schemas/FilesCreateRequest1'
-      - $ref: '#/components/schemas/FilesCreateRequest2'
-      - $ref: '#/components/schemas/FilesCreateRequest3'
-      title: files_create_Request
     files_update_Response_200:
       type: object
       properties:
@@ -1265,24 +993,86 @@ components:
       - createdAt
       - updatedAt
       title: files_update_Response_200
-    FilesCreateRequest3:
+    V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsType:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsType
+    V2FilesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
-        type:
-          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf3Type'
+        id:
+          type: string
+        urlId:
+          type: string
         name:
           type: string
+        type:
+          $ref: '#/components/schemas/V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsType'
+        parentId:
+          type: string
+        parentUrlId:
+          type: string
+        permission:
+          $ref: '#/components/schemas/V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsPermission'
+        path:
+          type: string
+        badge:
+          type:
+          - string
+          - 'null'
+        isArchived:
+          type: boolean
         description:
           type: string
         ownerId:
+          type:
+          - string
+          - 'null'
+        parentSourceUrlId:
           type: string
-        parentId:
+          description: For a document deployed to a tenant organization, the `urlId` of the source document in the parent organization. Only present when the document was deployed from a parent organization. The source document can be a workbook, template, data model, dataset, or report.
+        createdBy:
           type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
       required:
-      - type
+      - id
+      - urlId
       - name
-      description: Report to create
-      title: FilesCreateRequest3
+      - type
+      - parentId
+      - parentUrlId
+      - permission
+      - path
+      - badge
+      - isArchived
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2FilesGetResponsesContentApplicationJsonSchemaEntriesItems
     files_get_Response_200:
       type: object
       properties:
@@ -1347,6 +1137,58 @@ components:
       - createdAt
       - updatedAt
       title: files_get_Response_200
+    FilesCreateRequest2:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Type'
+        name:
+          type: string
+        description:
+          type: string
+        ownerId:
+          type: string
+        parentId:
+          type: string
+        source:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Source'
+      required:
+      - type
+      - name
+      description: Workbook to create
+      title: FilesCreateRequest2
+    V2FilesGetParametersTypeFilters1:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesGetParametersTypeFilters1
+    V2FilesGetParametersTypeFilters:
+      oneOf:
+      - $ref: '#/components/schemas/V2FilesGetParametersTypeFilters0'
+      - $ref: '#/components/schemas/V2FilesGetParametersTypeFilters1'
+      title: V2FilesGetParametersTypeFilters
+    V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsPermission:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      title: V2FilesGetResponsesContentApplicationJsonSchemaEntriesItemsPermission
     files_create_Response_200:
       type: object
       properties:
@@ -1411,33 +1253,13 @@ components:
       - createdAt
       - updatedAt
       title: files_create_Response_200
-    V2FilesGetParametersTypeFilters1:
+    V2FilesGetParametersPermissionFilter0:
       type: string
       enum:
-      - workspace
-      - folder
-      - workbook
-      - dataset
-      - data-model
-      - sql
-      - worksheet
-      - dashboard
-      - template
-      - table
-      - symlink
-      - report
-      title: V2FilesGetParametersTypeFilters1
-    V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaPermission:
-      type: string
-      enum:
-      - create
-      - annotate
-      - organize
-      - explore
       - view
+      - explore
       - edit
-      - apply
-      title: V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaPermission
+      title: V2FilesGetParametersPermissionFilter0
     V2FilesGetParametersTypeFiltersSchemaOneOf0Items:
       type: string
       enum:
@@ -1454,21 +1276,130 @@ components:
       - symlink
       - report
       title: V2FilesGetParametersTypeFiltersSchemaOneOf0Items
-    V2FilesGetParametersPermissionFilter:
-      oneOf:
-      - $ref: '#/components/schemas/V2FilesGetParametersPermissionFilter0'
-      - $ref: '#/components/schemas/V2FilesGetParametersPermissionFilter1'
-      title: V2FilesGetParametersPermissionFilter
-    V2FilesGetParametersTypeFilters:
-      oneOf:
-      - $ref: '#/components/schemas/V2FilesGetParametersTypeFilters0'
-      - $ref: '#/components/schemas/V2FilesGetParametersTypeFilters1'
-      title: V2FilesGetParametersTypeFilters
-    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf1Type:
+    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf0Type:
       type: string
       enum:
+      - workspace
+      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf0Type
+    V2FilesInodeIdGetResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - workspace
       - folder
-      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf1Type
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesInodeIdGetResponsesContentApplicationJsonSchemaType
+    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Type:
+      type: string
+      enum:
+      - workbook
+      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf2Type
+    files_list_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2FilesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: files_list_Response_200
+    V2FilesGetParametersTypeFilters0:
+      type: array
+      items:
+        $ref: '#/components/schemas/V2FilesGetParametersTypeFiltersSchemaOneOf0Items'
+      description: '**Note**: Workspaces are not returned as part of the response. To retrieve a workspace, use the **Single Document Type**.'
+      title: V2FilesGetParametersTypeFilters0
+    FilesCreateRequest0:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf0Type'
+        name:
+          type: string
+      required:
+      - type
+      - name
+      description: Workspace to create
+      title: FilesCreateRequest0
+    V2FilesPostResponsesContentApplicationJsonSchemaPermission:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      title: V2FilesPostResponsesContentApplicationJsonSchemaPermission
+    V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaPermission:
+      type: string
+      enum:
+      - create
+      - annotate
+      - organize
+      - explore
+      - view
+      - edit
+      - apply
+      title: V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaPermission
+    V2FilesPostResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesPostResponsesContentApplicationJsonSchemaType
+    FilesCreateRequest1:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf1Type'
+        name:
+          type: string
+        description:
+          type: string
+        ownerId:
+          type: string
+        parentId:
+          type: string
+      required:
+      - type
+      - name
+      description: Folder to create
+      title: FilesCreateRequest1
     V2FilesInodeIdGetResponsesContentApplicationJsonSchemaPermission:
       type: string
       enum:
@@ -1480,6 +1411,75 @@ components:
       - edit
       - apply
       title: V2FilesInodeIdGetResponsesContentApplicationJsonSchemaPermission
+    V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - workspace
+      - folder
+      - workbook
+      - dataset
+      - data-model
+      - sql
+      - worksheet
+      - dashboard
+      - template
+      - table
+      - symlink
+      - report
+      title: V2FilesInodeIdPatchResponsesContentApplicationJsonSchemaType
+    V2FilesGetParametersPermissionFilter1:
+      type: string
+      enum:
+      - view
+      - explore
+      - organize
+      - edit
+      description: Choose **organize** for Can Contribute permissions or **edit** for Can Manage permissions.
+      title: V2FilesGetParametersPermissionFilter1
+    V2FilesGetParametersPermissionFilter:
+      oneOf:
+      - $ref: '#/components/schemas/V2FilesGetParametersPermissionFilter0'
+      - $ref: '#/components/schemas/V2FilesGetParametersPermissionFilter1'
+      title: V2FilesGetParametersPermissionFilter
+    FilesCreateRequest3:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf3Type'
+        name:
+          type: string
+        description:
+          type: string
+        ownerId:
+          type: string
+        parentId:
+          type: string
+      required:
+      - type
+      - name
+      description: Report to create
+      title: FilesCreateRequest3
+    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf1Type:
+      type: string
+      enum:
+      - folder
+      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf1Type
+    V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf3Type:
+      type: string
+      enum:
+      - report
+      title: V2FilesPostRequestBodyContentApplicationJsonSchemaOneOf3Type
+    files_delete_Response_200:
+      type: object
+      properties: {}
+      title: files_delete_Response_200
+    files_create_Request:
+      oneOf:
+      - $ref: '#/components/schemas/FilesCreateRequest0'
+      - $ref: '#/components/schemas/FilesCreateRequest1'
+      - $ref: '#/components/schemas/FilesCreateRequest2'
+      - $ref: '#/components/schemas/FilesCreateRequest3'
+      title: files_create_Request
   securitySchemes:
     basicAuth:
       type: http

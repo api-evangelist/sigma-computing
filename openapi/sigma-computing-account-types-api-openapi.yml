@@ -395,23 +395,22 @@ components:
               requestId:
                 type: string
   schemas:
-    V2AccountTypesAccountTypeIdPermissionsGetResponsesContentApplicationJsonSchemaItems:
+    accountTypes_listAccountTypes_Response_200:
       type: object
       properties:
-        permission:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2AccountTypesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
           type: string
-          description: The permission name. For example, "view-worksheet".
-        description:
-          type: string
-          description: A human-readable description of what this permission allows.
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
       required:
-      - permission
-      - description
-      title: V2AccountTypesAccountTypeIdPermissionsGetResponsesContentApplicationJsonSchemaItems
-    accountTypes_deleteAccountType_Response_200:
-      type: object
-      properties: {}
-      title: accountTypes_deleteAccountType_Response_200
+      - entries
+      title: accountTypes_listAccountTypes_Response_200
     accountTypes_createAccountType_Response_201:
       type: object
       properties:
@@ -454,22 +453,23 @@ components:
       - description
       - isCustom
       title: V2AccountTypesGetResponsesContentApplicationJsonSchemaEntriesItems
-    accountTypes_listAccountTypes_Response_200:
+    accountTypes_deleteAccountType_Response_200:
+      type: object
+      properties: {}
+      title: accountTypes_deleteAccountType_Response_200
+    V2AccountTypesAccountTypeIdPermissionsGetResponsesContentApplicationJsonSchemaItems:
       type: object
       properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2AccountTypesGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
+        permission:
           type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
+          description: The permission name. For example, "view-worksheet".
+        description:
+          type: string
+          description: A human-readable description of what this permission allows.
       required:
-      - entries
-      title: accountTypes_listAccountTypes_Response_200
+      - permission
+      - description
+      title: V2AccountTypesAccountTypeIdPermissionsGetResponsesContentApplicationJsonSchemaItems
   securitySchemes:
     basicAuth:
       type: http

@@ -588,6 +588,14 @@ components:
               requestId:
                 type: string
   schemas:
+    translations_createOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_createOrgTranslation_Response_200
+    translations_updateOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_updateOrgTranslation_Response_200
     translations_getOrgTranslationsWithVariant_Response_200:
       type: object
       properties:
@@ -599,22 +607,34 @@ components:
       required:
       - translations
       title: translations_getOrgTranslationsWithVariant_Response_200
-    translations_updateOrgTranslationWithVariant_Response_200:
+    translations_deleteOrgTranslationWithVariant_Response_200:
       type: object
       properties: {}
-      title: translations_updateOrgTranslationWithVariant_Response_200
-    translations_createOrgTranslation_Response_200:
+      title: translations_deleteOrgTranslationWithVariant_Response_200
+    translations_listOrgLocales_Response_200:
       type: object
-      properties: {}
-      title: translations_createOrgTranslation_Response_200
-    translations_deleteOrgTranslation_Response_200:
-      type: object
-      properties: {}
-      title: translations_deleteOrgTranslation_Response_200
-    translations_updateOrgTranslation_Response_200:
-      type: object
-      properties: {}
-      title: translations_updateOrgTranslation_Response_200
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: translations_listOrgLocales_Response_200
     V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -652,34 +672,10 @@ components:
       - createdAt
       - updatedAt
       title: V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems
-    translations_deleteOrgTranslationWithVariant_Response_200:
+    translations_deleteOrgTranslation_Response_200:
       type: object
       properties: {}
-      title: translations_deleteOrgTranslationWithVariant_Response_200
-    translations_listOrgLocales_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: translations_listOrgLocales_Response_200
+      title: translations_deleteOrgTranslation_Response_200
     translations_getOrgTranslations_Response_200:
       type: object
       properties:
@@ -691,6 +687,10 @@ components:
       required:
       - translations
       title: translations_getOrgTranslations_Response_200
+    translations_updateOrgTranslationWithVariant_Response_200:
+      type: object
+      properties: {}
+      title: translations_updateOrgTranslationWithVariant_Response_200
   securitySchemes:
     basicAuth:
       type: http

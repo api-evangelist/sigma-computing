@@ -1074,48 +1074,21 @@ components:
               requestId:
                 type: string
   schemas:
-    deploymentPolicies_addInodesToDeployment_Response_200:
-      type: object
-      properties: {}
-      title: deploymentPolicies_addInodesToDeployment_Response_200
-    deploymentPolicies_updateDeployment_Response_200:
+    deploymentPolicies_createDeployment_Response_200:
       type: object
       properties:
         deploymentPolicyId:
           type: string
-        name:
-          type: string
-          description: Name of the deployment policy
-        nameInTenant:
-          type: string
-          description: Name to use for the workspace created by the deployment policy in the receiving tenant.
-        versionTagId:
-          type:
-          - string
-          - 'null'
-        sourceSwapPolicies:
-          type: array
-          items:
-            type: string
-          description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
-        copyInputTableData:
-          type: boolean
-          description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
       required:
       - deploymentPolicyId
-      - name
-      - nameInTenant
-      - versionTagId
-      - sourceSwapPolicies
-      - copyInputTableData
-      title: deploymentPolicies_updateDeployment_Response_200
-    deploymentPolicies_listInodesForDeployment_Response_200:
+      title: deploymentPolicies_createDeployment_Response_200
+    deploymentPolicies_listDeployableTenants_Response_200:
       type: object
       properties:
         entries:
           type: array
           items:
-            $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems'
+            $ref: '#/components/schemas/V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems'
           description: Array of results returned by the endpoint
         nextPageToken:
           type: string
@@ -1124,24 +1097,33 @@ components:
             **Must be treated as an opaque string.**'
       required:
       - entries
-      title: deploymentPolicies_listInodesForDeployment_Response_200
-    deploymentPolicies_archiveDeployment_Response_200:
+      title: deploymentPolicies_listDeployableTenants_Response_200
+    V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
-      properties: {}
-      title: deploymentPolicies_archiveDeployment_Response_200
-    deploymentPolicies_removeInodesFromDeployment_Response_200:
-      type: object
-      properties: {}
-      title: deploymentPolicies_removeInodesFromDeployment_Response_200
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type:
+      properties:
+        tenantOrganizationId:
+          type: string
+          description: Unique identifier of a tenant organization that can be deployed to.
+        tenantOrganizationSlug:
+          type: string
+          description: URL identifier for the tenant organization.
+        tenantOrganizationName:
+          type: string
+          description: Display name of the tenant organization.
+      required:
+      - tenantOrganizationId
+      - tenantOrganizationSlug
+      - tenantOrganizationName
+      title: V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type:
       type: string
       enum:
-      - dataModel
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type
-    deploymentPolicies_removeTenantFromDeployment_Response_200:
+      - report
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type
+    deploymentPolicies_addTenantToDeployment_Response_200:
       type: object
       properties: {}
-      title: deploymentPolicies_removeTenantFromDeployment_Response_200
+      title: deploymentPolicies_addTenantToDeployment_Response_200
     V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1158,11 +1140,75 @@ components:
       - inode
       - deploymentPolicyId
       title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type'
+        workbookId:
+          type: string
+      required:
+      - name
+      - type
+      - workbookId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0
+    deploymentPolicies_listInodesForDeployment_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: deploymentPolicies_listInodesForDeployment_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type:
+      type: string
+      enum:
+      - dataModel
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type
+    deploymentPolicies_addInodesToDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_addInodesToDeployment_Response_200
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode:
+      oneOf:
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0'
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1'
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2'
+      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3'
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode
     V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type:
       type: string
       enum:
       - workbook
       title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type'
+        folderId:
+          type: string
+      required:
+      - name
+      - type
+      - folderId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3
+    deploymentPolicies_archiveDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_archiveDeployment_Response_200
     V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1194,87 +1240,6 @@ components:
       - sourceSwapPolicies
       - copyInputTableData
       title: V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type:
-      type: string
-      enum:
-      - folder
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type
-    deploymentPolicies_addTenantToDeployment_Response_200:
-      type: object
-      properties: {}
-      title: deploymentPolicies_addTenantToDeployment_Response_200
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type'
-        folderId:
-          type: string
-      required:
-      - name
-      - type
-      - folderId
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type'
-        dataModelId:
-          type: string
-      required:
-      - name
-      - type
-      - dataModelId
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type:
-      type: string
-      enum:
-      - report
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type'
-        reportId:
-          type: string
-      required:
-      - name
-      - type
-      - reportId
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2
-    V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        tenantOrganizationId:
-          type: string
-          description: Unique identifier of a tenant organization that can be deployed to.
-        tenantOrganizationSlug:
-          type: string
-          description: URL identifier for the tenant organization.
-        tenantOrganizationName:
-          type: string
-          description: Display name of the tenant organization.
-      required:
-      - tenantOrganizationId
-      - tenantOrganizationSlug
-      - tenantOrganizationName
-      title: V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems
-    deploymentPolicies_createDeployment_Response_200:
-      type: object
-      properties:
-        deploymentPolicyId:
-          type: string
-      required:
-      - deploymentPolicyId
-      title: deploymentPolicies_createDeployment_Response_200
     deploymentPolicies_listTenantsForDeployment_Response_200:
       type: object
       properties:
@@ -1291,20 +1256,72 @@ components:
       required:
       - entries
       title: deploymentPolicies_listTenantsForDeployment_Response_200
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0:
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type:
+      type: string
+      enum:
+      - folder
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf3Type
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2:
       type: object
       properties:
         name:
           type: string
         type:
-          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf0Type'
-        workbookId:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf2Type'
+        reportId:
           type: string
       required:
       - name
       - type
-      - workbookId
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0
+      - reportId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2
+    deploymentPolicies_updateDeployment_Response_200:
+      type: object
+      properties:
+        deploymentPolicyId:
+          type: string
+        name:
+          type: string
+          description: Name of the deployment policy
+        nameInTenant:
+          type: string
+          description: Name to use for the workspace created by the deployment policy in the receiving tenant.
+        versionTagId:
+          type:
+          - string
+          - 'null'
+        sourceSwapPolicies:
+          type: array
+          items:
+            type: string
+          description: Unique identifiers of the source swap policies used to swap connections when deploying documents.
+        copyInputTableData:
+          type: boolean
+          description: Whether input table data is copied to receiving tenant organizations when deploying documents. Only applies to input tables that are editable in draft mode.
+      required:
+      - deploymentPolicyId
+      - name
+      - nameInTenant
+      - versionTagId
+      - sourceSwapPolicies
+      - copyInputTableData
+      title: deploymentPolicies_updateDeployment_Response_200
+    deploymentPolicies_listDeployments_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: deploymentPolicies_listDeployments_Response_200
     deploymentPolicies_getDeployment_Response_200:
       type: object
       properties:
@@ -1336,45 +1353,28 @@ components:
       - sourceSwapPolicies
       - copyInputTableData
       title: deploymentPolicies_getDeployment_Response_200
-    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode:
-      oneOf:
-      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode0'
-      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1'
-      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode2'
-      - $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode3'
-      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode
-    deploymentPolicies_listDeployableTenants_Response_200:
+    V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1:
       type: object
       properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DeploymentPoliciesTenantsGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
+        name:
           type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
+        type:
+          $ref: '#/components/schemas/V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInodeOneOf1Type'
+        dataModelId:
+          type: string
       required:
-      - entries
-      title: deploymentPolicies_listDeployableTenants_Response_200
-    deploymentPolicies_listDeployments_Response_200:
+      - name
+      - type
+      - dataModelId
+      title: V2DeploymentPoliciesDeploymentPolicyIdFilesGetResponsesContentApplicationJsonSchemaEntriesItemsInode1
+    deploymentPolicies_removeTenantFromDeployment_Response_200:
       type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DeploymentPoliciesGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: deploymentPolicies_listDeployments_Response_200
+      properties: {}
+      title: deploymentPolicies_removeTenantFromDeployment_Response_200
+    deploymentPolicies_removeInodesFromDeployment_Response_200:
+      type: object
+      properties: {}
+      title: deploymentPolicies_removeInodesFromDeployment_Response_200
   securitySchemes:
     basicAuth:
       type: http

@@ -552,40 +552,72 @@ components:
               requestId:
                 type: string
   schemas:
-    V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor:
-      type: string
-      enum:
-      - cyan
-      - grass
-      - violet
-      - plum
-      - amber
-      - bronze
-      title: V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor
-    tags_listVersionTag_Response_200:
+    V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
       type: object
       properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
+        versionTagId:
+          type: string
+          description: Unique identifier of the tag.
+        name:
+          type: string
+        sourceWorkbookVersion:
           type: number
           format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
+        taggedWorkbookId:
+          type: string
+          description: Unique identifier of the tagged workbook.
+        workbookTaggedAt:
+          type: string
+          format: date-time
       required:
-      - entries
-      - nextPage
-      title: tags_listVersionTag_Response_200
+      - versionTagId
+      - name
+      - sourceWorkbookVersion
+      - taggedWorkbookId
+      - workbookTaggedAt
+      title: V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
+    V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+        name:
+          type: string
+        ownerId:
+          type: string
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        isArchived:
+          type: boolean
+        description:
+          type: string
+        color:
+          $ref: '#/components/schemas/V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor'
+      required:
+      - versionTagId
+      - name
+      - ownerId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems
+    tags_deleteVersionTag_Response_200:
+      type: object
+      properties: {}
+      title: tags_deleteVersionTag_Response_200
     V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -643,34 +675,6 @@ components:
       - createdAt
       - updatedAt
       title: V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItems
-    tags_deleteVersionTag_Response_200:
-      type: object
-      properties: {}
-      title: tags_deleteVersionTag_Response_200
-    tags_listWorkbooksForTag_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: tags_listWorkbooksForTag_Response_200
     tags_updateVersionTag_Response_200:
       type: object
       properties:
@@ -719,30 +723,30 @@ components:
       - amber
       - bronze
       title: V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor
-    V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
+    tags_listWorkbooksForTag_Response_200:
       type: object
       properties:
-        versionTagId:
-          type: string
-          description: Unique identifier of the tag.
-        name:
-          type: string
-        sourceWorkbookVersion:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
           type: number
           format: double
-        taggedWorkbookId:
-          type: string
-          description: Unique identifier of the tagged workbook.
-        workbookTaggedAt:
-          type: string
-          format: date-time
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
       required:
-      - versionTagId
-      - name
-      - sourceWorkbookVersion
-      - taggedWorkbookId
-      - workbookTaggedAt
-      title: V2TagsTagIdWorkbooksGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
+      - entries
+      - nextPage
+      title: tags_listWorkbooksForTag_Response_200
     tags_createVersionTag_Response_200:
       type: object
       properties:
@@ -754,6 +758,30 @@ components:
       - name
       - versionTagId
       title: tags_createVersionTag_Response_200
+    tags_listVersionTag_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: tags_listVersionTag_Response_200
     V2TagsPostRequestBodyContentApplicationJsonSchemaColor:
       type: string
       enum:
@@ -765,44 +793,16 @@ components:
       - bronze
       description: Color to associate with the tag in Sigma
       title: V2TagsPostRequestBodyContentApplicationJsonSchemaColor
-    V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-        name:
-          type: string
-        ownerId:
-          type: string
-        createdBy:
-          type: string
-          description: The identifier of the user who created this object.
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this object.
-        createdAt:
-          type: string
-          format: date-time
-          description: When the object was created.
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the object was last updated.
-        isArchived:
-          type: boolean
-        description:
-          type: string
-        color:
-          $ref: '#/components/schemas/V2TagsGetResponsesContentApplicationJsonSchemaEntriesItemsColor'
-      required:
-      - versionTagId
-      - name
-      - ownerId
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: V2TagsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor:
+      type: string
+      enum:
+      - cyan
+      - grass
+      - violet
+      - plum
+      - amber
+      - bronze
+      title: V2TagsTagIdPatchResponsesContentApplicationJsonSchemaColor
   securitySchemes:
     basicAuth:
       type: http

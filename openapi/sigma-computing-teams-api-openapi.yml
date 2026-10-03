@@ -1103,6 +1103,67 @@ components:
               requestId:
                 type: string
   schemas:
+    V2TeamsTeamIdGetResponsesContentApplicationJsonSchemaVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsTeamIdGetResponsesContentApplicationJsonSchemaVisibility
+    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems:
+      type: object
+      properties:
+        teamId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItemsVisibility'
+        isArchived:
+          type: boolean
+      required:
+      - teamId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - visibility
+      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems
+    V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
+          description: Type of user attribute.
+        val:
+          type: string
+          description: Value of the user attribute.
+      required:
+      - type
+      - val
+      description: The value of the user attribute
+      title: V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
+    V2TeamsTeamIdPatchResponsesContentApplicationJsonSchemaVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsTeamIdPatchResponsesContentApplicationJsonSchemaVisibility
     teams_getTeamMembers_Response_200:
       type: object
       properties:
@@ -1127,133 +1188,6 @@ components:
       - entries
       - nextPage
       title: teams_getTeamMembers_Response_200
-    V2TeamsGetParametersVisibility:
-      type: string
-      enum:
-      - public
-      - private
-      title: V2TeamsGetParametersVisibility
-    TeamsListTeamsResponse2001:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems'
-        nextPage:
-          type:
-          - string
-          - 'null'
-      required:
-      - entries
-      - nextPage
-      description: Multiple pages of results
-      title: TeamsListTeamsResponse2001
-    V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType'
-          description: Type of user attribute.
-        val:
-          type: string
-          description: Value of the user attribute.
-      required:
-      - type
-      - val
-      description: The value of the user attribute
-      title: V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue
-    V2TeamsTeamIdGetResponsesContentApplicationJsonSchemaVisibility:
-      type: string
-      enum:
-      - public
-      - private
-      title: V2TeamsTeamIdGetResponsesContentApplicationJsonSchemaVisibility
-    teams_updateTeam_Response_200:
-      type: object
-      properties:
-        teamId:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        visibility:
-          $ref: '#/components/schemas/V2TeamsTeamIdPatchResponsesContentApplicationJsonSchemaVisibility'
-        isArchived:
-          type: boolean
-      required:
-      - teamId
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      - name
-      - description
-      - visibility
-      title: teams_updateTeam_Response_200
-    V21TeamsGetParametersVisibility:
-      type: string
-      enum:
-      - public
-      - private
-      title: V21TeamsGetParametersVisibility
-    V2TeamsTeamIdPatchRequestBodyContentApplicationJsonSchemaVisibility:
-      type: string
-      enum:
-      - public
-      - private
-      title: V2TeamsTeamIdPatchRequestBodyContentApplicationJsonSchemaVisibility
-    teams_v2_1_listTeams_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: teams_v2_1_listTeams_Response_200
-    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0ItemsVisibility:
-      type: string
-      enum:
-      - public
-      - private
-      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0ItemsVisibility
-    teams_assignUserAttributesToTeam_Response_200:
-      type: object
-      properties: {}
-      title: teams_assignUserAttributesToTeam_Response_200
-    teams_updateTeamMembers_Response_200:
-      type: object
-      properties: {}
-      title: teams_updateTeamMembers_Response_200
     teams_createTeam_Response_200:
       type: object
       properties:
@@ -1299,41 +1233,131 @@ components:
       - members
       - workspaceId
       title: teams_createTeam_Response_200
-    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems:
+    V2TeamsGetParametersVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsGetParametersVisibility
+    teams_getTeamUserAttributeAssignments_Response_200:
       type: object
       properties:
-        teamId:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        name:
-          type: string
-        description:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
           type:
           - string
           - 'null'
-        visibility:
-          $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItemsVisibility'
-        isArchived:
-          type: boolean
+        total:
+          type: number
+          format: double
       required:
-      - teamId
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      - name
-      - description
-      - visibility
-      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems
+      - entries
+      - nextPage
+      title: teams_getTeamUserAttributeAssignments_Response_200
+    TeamsListTeamsResponse2000:
+      type: array
+      items:
+        $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0Items'
+      description: One page of results
+      title: TeamsListTeamsResponse2000
+    V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        userAttributeId:
+          type: string
+          description: ID of the user attribute.
+        userAttributeName:
+          type: string
+          description: Name of the user attribute.
+        value:
+          $ref: '#/components/schemas/V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
+          description: Value for the user attribute assigned to the team.
+      required:
+      - userAttributeId
+      - userAttributeName
+      - value
+      title: V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
+      type: object
+      properties:
+        userAttributeId:
+          type: string
+          description: Unique identifier of the user attribute.
+        value:
+          $ref: '#/components/schemas/V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
+          description: The value of the user attribute
+      required:
+      - userAttributeId
+      - value
+      title: V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
+    V2TeamsTeamIdMembersGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: User ID, equivalent to Member ID
+        isTeamAdmin:
+          type: boolean
+        addedBy:
+          type: string
+          description: User ID of the user who added this member to the team
+      required:
+      - userId
+      - isTeamAdmin
+      - addedBy
+      title: V2TeamsTeamIdMembersGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
+    V2TeamsPostRequestBodyContentApplicationJsonSchemaVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      description: Whether to make a public or private team. Defaults to private.
+      title: V2TeamsPostRequestBodyContentApplicationJsonSchemaVisibility
+    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItemsVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItemsVisibility
+    teams_v2_1_listTeams_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: teams_v2_1_listTeams_Response_200
+    V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
+      type: string
+      enum:
+      - string
+      description: Type of user attribute.
+      title: V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
     V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -1369,6 +1393,90 @@ components:
       - description
       - visibility
       title: V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItems
+    teams_listTeams_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/TeamsListTeamsResponse2000'
+      - $ref: '#/components/schemas/TeamsListTeamsResponse2001'
+      title: teams_listTeams_Response_200
+    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0Items:
+      type: object
+      properties:
+        teamId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0ItemsVisibility'
+        isArchived:
+          type: boolean
+      required:
+      - teamId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - visibility
+      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0Items
+    V21TeamsGetParametersVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V21TeamsGetParametersVisibility
+    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0ItemsVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0ItemsVisibility
+    teams_deleteTeam_Response_200:
+      type: object
+      properties: {}
+      title: teams_deleteTeam_Response_200
+    V2TeamsPostResponsesContentApplicationJsonSchemaVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V2TeamsPostResponsesContentApplicationJsonSchemaVisibility
+    TeamsListTeamsResponse2001:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+      required:
+      - entries
+      - nextPage
+      description: Multiple pages of results
+      title: TeamsListTeamsResponse2001
+    V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItemsVisibility:
+      type: string
+      enum:
+      - public
+      - private
+      title: V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItemsVisibility
     V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValue:
       type: object
       properties:
@@ -1383,28 +1491,47 @@ components:
       - val
       description: Value for the user attribute assigned to the team.
       title: V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValue
-    V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValueType
-    TeamsListTeamsResponse2000:
-      type: array
-      items:
-        $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0Items'
-      description: One page of results
-      title: TeamsListTeamsResponse2000
-    teams_deleteTeam_Response_200:
-      type: object
-      properties: {}
-      title: teams_deleteTeam_Response_200
-    V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItemsVisibility:
+    V2TeamsTeamIdPatchRequestBodyContentApplicationJsonSchemaVisibility:
       type: string
       enum:
       - public
       - private
-      title: V21TeamsGetResponsesContentApplicationJsonSchemaEntriesItemsVisibility
+      title: V2TeamsTeamIdPatchRequestBodyContentApplicationJsonSchemaVisibility
+    teams_updateTeam_Response_200:
+      type: object
+      properties:
+        teamId:
+          type: string
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          $ref: '#/components/schemas/V2TeamsTeamIdPatchResponsesContentApplicationJsonSchemaVisibility'
+        isArchived:
+          type: boolean
+      required:
+      - teamId
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      - name
+      - description
+      - visibility
+      title: teams_updateTeam_Response_200
     teams_getTeam_Response_200:
       type: object
       properties:
@@ -1445,141 +1572,14 @@ components:
       - visibility
       - members
       title: teams_getTeam_Response_200
-    V2TeamsPostResponsesContentApplicationJsonSchemaVisibility:
-      type: string
-      enum:
-      - public
-      - private
-      title: V2TeamsPostResponsesContentApplicationJsonSchemaVisibility
-    V2TeamsTeamIdMembersGetResponsesContentApplicationJsonSchemaEntriesItems:
+    teams_assignUserAttributesToTeam_Response_200:
       type: object
-      properties:
-        userId:
-          type: string
-          description: User ID, equivalent to Member ID
-        isTeamAdmin:
-          type: boolean
-        addedBy:
-          type: string
-          description: User ID of the user who added this member to the team
-      required:
-      - userId
-      - isTeamAdmin
-      - addedBy
-      title: V2TeamsTeamIdMembersGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0Items:
+      properties: {}
+      title: teams_assignUserAttributesToTeam_Response_200
+    teams_updateTeamMembers_Response_200:
       type: object
-      properties:
-        teamId:
-          type: string
-        createdBy:
-          type: string
-        updatedBy:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        visibility:
-          $ref: '#/components/schemas/V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0ItemsVisibility'
-        isArchived:
-          type: boolean
-      required:
-      - teamId
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      - name
-      - description
-      - visibility
-      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf0Items
-    V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        userAttributeId:
-          type: string
-          description: ID of the user attribute.
-        userAttributeName:
-          type: string
-          description: Name of the user attribute.
-        value:
-          $ref: '#/components/schemas/V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItemsValue'
-          description: Value for the user attribute assigned to the team.
-      required:
-      - userAttributeId
-      - userAttributeName
-      - value
-      title: V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItems:
-      type: object
-      properties:
-        userAttributeId:
-          type: string
-          description: Unique identifier of the user attribute.
-        value:
-          $ref: '#/components/schemas/V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValue'
-          description: The value of the user attribute
-      required:
-      - userAttributeId
-      - value
-      title: V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItems
-    V2TeamsPostRequestBodyContentApplicationJsonSchemaVisibility:
-      type: string
-      enum:
-      - public
-      - private
-      description: Whether to make a public or private team. Defaults to private.
-      title: V2TeamsPostRequestBodyContentApplicationJsonSchemaVisibility
-    V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItemsVisibility:
-      type: string
-      enum:
-      - public
-      - private
-      title: V2TeamsGetResponsesContentApplicationJsonSchemaOneOf1EntriesItemsVisibility
-    V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType:
-      type: string
-      enum:
-      - string
-      description: Type of user attribute.
-      title: V2TeamsTeamIdAssignedUserAttributesPostRequestBodyContentApplicationJsonSchemaAssignmentsItemsValueType
-    teams_listTeams_Response_200:
-      oneOf:
-      - $ref: '#/components/schemas/TeamsListTeamsResponse2000'
-      - $ref: '#/components/schemas/TeamsListTeamsResponse2001'
-      title: teams_listTeams_Response_200
-    V2TeamsTeamIdPatchResponsesContentApplicationJsonSchemaVisibility:
-      type: string
-      enum:
-      - public
-      - private
-      title: V2TeamsTeamIdPatchResponsesContentApplicationJsonSchemaVisibility
-    teams_getTeamUserAttributeAssignments_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TeamsTeamIdUserAttributesGetResponsesContentApplicationJsonSchemaEntriesItems'
-        nextPage:
-          type:
-          - string
-          - 'null'
-        total:
-          type: number
-          format: double
-      required:
-      - entries
-      - nextPage
-      title: teams_getTeamUserAttributeAssignments_Response_200
+      properties: {}
+      title: teams_updateTeamMembers_Response_200
   securitySchemes:
     basicAuth:
       type: http

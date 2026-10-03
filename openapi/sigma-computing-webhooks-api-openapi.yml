@@ -222,13 +222,6 @@ components:
       type: object
       properties: {}
       title: V2WebhooksWorkbookIdSequenceIdSchemaGetResponsesContentApplicationJsonSchemaVariables
-    webhooks_Response_202:
-      type: object
-      properties:
-        traceId:
-          type: string
-          description: The action trace ID.
-      title: webhooks_Response_202
     webhooks_getWebhookSchema_Response_200:
       type: object
       properties:
@@ -240,6 +233,13 @@ components:
       required:
       - variables
       title: webhooks_getWebhookSchema_Response_200
+    webhooks_Response_202:
+      type: object
+      properties:
+        traceId:
+          type: string
+          description: The action trace ID.
+      title: webhooks_Response_202
   securitySchemes:
     basicAuth:
       type: http
