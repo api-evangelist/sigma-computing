@@ -403,15 +403,6 @@ components:
               requestId:
                 type: string
   schemas:
-    organizations_getPublicEmbedsSetting_Response_200:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the setting is enabled for the organization.
-      required:
-      - enabled
-      title: organizations_getPublicEmbedsSetting_Response_200
     organizations_updateLicenseUpgradeRequestsSetting_Response_200:
       type: object
       properties:
@@ -421,33 +412,6 @@ components:
       required:
       - enabled
       title: organizations_updateLicenseUpgradeRequestsSetting_Response_200
-    organizations_updateBulkCopySetting_Response_200:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the setting is enabled for the organization.
-      required:
-      - enabled
-      title: organizations_updateBulkCopySetting_Response_200
-    organizations_getLicenseUpgradeRequestsSetting_Response_200:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the setting is enabled for the organization.
-      required:
-      - enabled
-      title: organizations_getLicenseUpgradeRequestsSetting_Response_200
-    organizations_getBulkCopySetting_Response_200:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the setting is enabled for the organization.
-      required:
-      - enabled
-      title: organizations_getBulkCopySetting_Response_200
     organizations_updatePublicEmbedsSetting_Response_200:
       type: object
       properties:
@@ -469,6 +433,42 @@ components:
       required:
       - organizationId
       title: organizations_updateOrganizationSettings_Response_200
+    organizations_updateBulkCopySetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_updateBulkCopySetting_Response_200
+    organizations_getBulkCopySetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_getBulkCopySetting_Response_200
+    organizations_getLicenseUpgradeRequestsSetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_getLicenseUpgradeRequestsSetting_Response_200
+    organizations_getPublicEmbedsSetting_Response_200:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the setting is enabled for the organization.
+      required:
+      - enabled
+      title: organizations_getPublicEmbedsSetting_Response_200
   securitySchemes:
     basicAuth:
       type: http

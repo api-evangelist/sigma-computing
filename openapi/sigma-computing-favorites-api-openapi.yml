@@ -398,10 +398,30 @@ components:
               requestId:
                 type: string
   schemas:
-    favorites_addFavorite_Response_200:
+    favorites_listFavorites_Response_200:
       type: object
-      properties: {}
-      title: favorites_addFavorite_Response_200
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: favorites_listFavorites_Response_200
     V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -466,30 +486,10 @@ components:
       - createdAt
       - updatedAt
       title: V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItems
-    favorites_listFavorites_Response_200:
+    favorites_addFavorite_Response_200:
       type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: favorites_listFavorites_Response_200
+      properties: {}
+      title: favorites_addFavorite_Response_200
     V2FavoritesMemberMemberIdGetResponsesContentApplicationJsonSchemaEntriesItemsType:
       type: string
       enum:

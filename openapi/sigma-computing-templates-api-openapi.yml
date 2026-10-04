@@ -613,14 +613,34 @@ components:
               requestId:
                 type: string
   schemas:
-    templates_saveWorkbookFromTemplate_Response_200:
+    templates_sourceSwapTemplate_Response_200:
       type: object
       properties:
-        workbookId:
-          type: string
+        unswappedSources:
+          type: array
+          items:
+            type: string
+          description: IDs of sources in the workbook that were not swapped.
+        unswappedConnections:
+          type: array
+          items:
+            type: string
+          description: IDs of custom SQL connections in the workbook that were not swapped.
       required:
-      - workbookId
-      title: templates_saveWorkbookFromTemplate_Response_200
+      - unswappedSources
+      - unswappedConnections
+      title: templates_sourceSwapTemplate_Response_200
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems:
+      type: object
+      properties:
+        fromColumn:
+          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn'
+        toColumn:
+          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn'
+      required:
+      - fromColumn
+      - toColumn
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems
     V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -669,6 +689,24 @@ components:
       - createdAt
       - updatedAt
       title: V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+        name:
+          type: string
+      required:
+      - versionTagId
+      - name
+      title: V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn:
+      oneOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn
     V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems:
       type: object
       properties:
@@ -686,6 +724,68 @@ components:
       - fromPath
       - toPath
       title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems
+    templates_listTemplates_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: templates_listTemplates_Response_200
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems:
+      type: object
+      properties:
+        fromId:
+          type: string
+          description: ID of the connection to swap from.
+        toId:
+          type: string
+          description: ID of the connection to swap to.
+        swapTables:
+          type: boolean
+          description: Whether to swap all tables in the connection
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems'
+      required:
+      - fromId
+      - toId
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems
+    V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+        name:
+          type: string
+      required:
+      - versionTagId
+      - name
+      title: V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems
+    V2TemplatesGetParametersSource:
+      type: string
+      enum:
+      - internal
+      - external
+      description: Filters results to templates based on their source. Set to internal to only retrieve templates created within your organization. Set to external to only retrieve templates shared to your organization. Do not specify a source to list all templates regardless of their source.
+      title: V2TemplatesGetParametersSource
     V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems:
       type: object
       properties:
@@ -699,13 +799,42 @@ components:
       - fromMetric
       - toMetric
       title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems
-    V2TemplatesGetParametersSource:
-      type: string
-      enum:
-      - internal
-      - external
-      description: Filters results to templates based on their source. Set to internal to only retrieve templates created within your organization. Set to external to only retrieve templates shared to your organization. Do not specify a source to list all templates regardless of their source.
-      title: V2TemplatesGetParametersSource
+    templates_saveWorkbookFromTemplate_Response_200:
+      type: object
+      properties:
+        workbookId:
+          type: string
+      required:
+      - workbookId
+      title: templates_saveWorkbookFromTemplate_Response_200
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems:
+      type: object
+      properties:
+        fromId:
+          type: string
+          description: ID of the dataset (deprecated) or table to swap from.
+        toId:
+          type: string
+          description: ID of the dataset (deprecated) or table to swap to.
+        metricMapping:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems'
+        columnMapping:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems'
+      required:
+      - fromId
+      - toId
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems
+    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn:
+      oneOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn
     templates_getTemplate_Response_200:
       type: object
       properties:
@@ -754,135 +883,6 @@ components:
       - createdAt
       - updatedAt
       title: templates_getTemplate_Response_200
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems:
-      type: object
-      properties:
-        fromColumn:
-          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn'
-        toColumn:
-          $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn'
-      required:
-      - fromColumn
-      - toColumn
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems:
-      type: object
-      properties:
-        fromId:
-          type: string
-          description: ID of the dataset (deprecated) or table to swap from.
-        toId:
-          type: string
-          description: ID of the dataset (deprecated) or table to swap to.
-        metricMapping:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems'
-        columnMapping:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems'
-      required:
-      - fromId
-      - toId
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems
-    V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-        name:
-          type: string
-      required:
-      - versionTagId
-      - name
-      title: V2TemplatesTemplateIdGetResponsesContentApplicationJsonSchemaTagsItems
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn:
-      oneOf:
-      - type: string
-      - type: array
-        items:
-          type: string
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn:
-      oneOf:
-      - type: string
-      - type: array
-        items:
-          type: string
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn
-    V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems:
-      type: object
-      properties:
-        fromId:
-          type: string
-          description: ID of the connection to swap from.
-        toId:
-          type: string
-          description: ID of the connection to swap to.
-        swapTables:
-          type: boolean
-          description: Whether to swap all tables in the connection
-        paths:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems'
-      required:
-      - fromId
-      - toId
-      title: V2TemplatesTemplateIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems
-    V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-        name:
-          type: string
-      required:
-      - versionTagId
-      - name
-      title: V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
-    templates_sourceSwapTemplate_Response_200:
-      type: object
-      properties:
-        unswappedSources:
-          type: array
-          items:
-            type: string
-          description: IDs of sources in the workbook that were not swapped.
-        unswappedConnections:
-          type: array
-          items:
-            type: string
-          description: IDs of custom SQL connections in the workbook that were not swapped.
-      required:
-      - unswappedSources
-      - unswappedConnections
-      title: templates_sourceSwapTemplate_Response_200
-    templates_listTemplates_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2TemplatesGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: templates_listTemplates_Response_200
   securitySchemes:
     basicAuth:
       type: http

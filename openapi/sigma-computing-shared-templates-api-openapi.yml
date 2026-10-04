@@ -297,6 +297,20 @@ components:
       scheme: bearer
       description: OAuth 2.0 authentication
   schemas:
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps1:
+      oneOf:
+      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps10'
+      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11'
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps1
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf1Type:
+      type: string
+      enum:
+      - connection
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf1Type
+    sharedTemplates_acceptTemplateShare_Response_200:
+      type: object
+      properties: {}
+      title: sharedTemplates_acceptTemplateShare_Response_200
     V2SharedTemplatesSharedWithYouGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -320,6 +334,42 @@ components:
       - shareId
       - createdAt
       title: V2SharedTemplatesSharedWithYouGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf0Type:
+      type: string
+      enum:
+      - connection
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf0Type
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps:
+      oneOf:
+      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps0'
+      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps1'
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf0Type:
+      type: string
+      enum:
+      - table
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf0Type
+    sharedTemplates_listTemplatesSharedWithYou_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2SharedTemplatesSharedWithYouGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: sharedTemplates_listTemplatesSharedWithYou_Response_200
     V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps10:
       type: object
       properties:
@@ -331,37 +381,10 @@ components:
       - newConnectionId
       - type
       title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps10
-    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf0Type:
-      type: string
-      enum:
-      - connection
-      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf0Type
-    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11:
+    sharedTemplates_deleteExternalShare_Response_200:
       type: object
-      properties:
-        newConnectionName:
-          type: string
-        type:
-          $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf1Type'
-      required:
-      - newConnectionName
-      - type
-      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11
-    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps:
-      oneOf:
-      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps0'
-      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps1'
-      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps
-    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf1Type:
-      type: string
-      enum:
-      - connection
-      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf1Type
-    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps1:
-      oneOf:
-      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps10'
-      - $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11'
-      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps1
+      properties: {}
+      title: sharedTemplates_deleteExternalShare_Response_200
     V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps0:
       type: object
       properties:
@@ -385,37 +408,14 @@ components:
       - columns
       - metrics
       title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps0
-    sharedTemplates_deleteExternalShare_Response_200:
-      type: object
-      properties: {}
-      title: sharedTemplates_deleteExternalShare_Response_200
-    sharedTemplates_listTemplatesSharedWithYou_Response_200:
+    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11:
       type: object
       properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2SharedTemplatesSharedWithYouGetResponsesContentApplicationJsonSchemaEntriesItems'
-        nextPage:
-          type:
-          - string
-          - 'null'
-        total:
-          type: number
-          format: double
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
+        newConnectionName:
+          type: string
+        type:
+          $ref: '#/components/schemas/V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf1OneOf1Type'
       required:
-      - entries
-      - nextPage
-      title: sharedTemplates_listTemplatesSharedWithYou_Response_200
-    V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf0Type:
-      type: string
-      enum:
-      - table
-      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwapsOneOf0Type
-    sharedTemplates_acceptTemplateShare_Response_200:
-      type: object
-      properties: {}
-      title: sharedTemplates_acceptTemplateShare_Response_200
+      - newConnectionName
+      - type
+      title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11

@@ -696,109 +696,6 @@ components:
               requestId:
                 type: string
   schemas:
-    V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose:
-      type: string
-      enum:
-      - signing
-      - encryption
-      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
-      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose
-    saml_listSamlServiceProviders_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: saml_listSamlServiceProviders_Response_200
-    saml_createSamlServiceProviderCertificate_Response_201:
-      type: object
-      properties:
-        samlServiceProviderId:
-          type: string
-          description: Unique identifier of the SAML service provider
-        samlServiceProviderCertificateId:
-          type: string
-          description: Unique identifier of the SAML service provider certificate
-      required:
-      - samlServiceProviderId
-      - samlServiceProviderCertificateId
-      title: saml_createSamlServiceProviderCertificate_Response_201
-    saml_getSamlServiceProviderCertificate_Response_200:
-      type: object
-      properties:
-        samlServiceProviderCertificateId:
-          type: string
-          description: Unique identifier of the SAML service provider certificate
-        samlServiceProviderId:
-          type: string
-          description: Unique identifier of the SAML service provider
-        purpose:
-          $ref: '#/components/schemas/V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose'
-          description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
-        publicKeyCertificate:
-          type: string
-          description: PEM-encoded X.509 certificate
-        isActive:
-          type: boolean
-          description: Whether the certificate is currently active
-        notBefore:
-          type: string
-          format: date-time
-          description: Date and time when the certificate becomes valid
-        notAfter:
-          type: string
-          format: date-time
-          description: Date and time when the certificate expires
-        createdAt:
-          type: string
-          format: date-time
-          description: When the certificate was created
-        createdBy:
-          type: string
-          description: Identifier of the user who created the certificate
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the certificate was last updated
-        updatedBy:
-          type: string
-          description: Identifier of the user who last updated the certificate
-      required:
-      - samlServiceProviderCertificateId
-      - samlServiceProviderId
-      - purpose
-      - publicKeyCertificate
-      - isActive
-      - notBefore
-      - notAfter
-      - createdAt
-      - createdBy
-      - updatedAt
-      - updatedBy
-      title: saml_getSamlServiceProviderCertificate_Response_200
-    ? V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
-    : type: string
-      enum:
-      - signing
-      - encryption
-      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
-      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
-    V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose:
-      type: string
-      enum:
-      - signing
-      - encryption
-      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
-      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose
     saml_listSamlServiceProviderCertificates_Response_200:
       type: object
       properties:
@@ -815,6 +712,19 @@ components:
       required:
       - entries
       title: saml_listSamlServiceProviderCertificates_Response_200
+    saml_createSamlServiceProviderCertificate_Response_201:
+      type: object
+      properties:
+        samlServiceProviderId:
+          type: string
+          description: Unique identifier of the SAML service provider
+        samlServiceProviderCertificateId:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+      required:
+      - samlServiceProviderId
+      - samlServiceProviderCertificateId
+      title: saml_createSamlServiceProviderCertificate_Response_201
     V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -877,6 +787,96 @@ components:
       required:
       - samlServiceProviderId
       title: V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems
+    saml_listSamlServiceProviders_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2SamlServiceProvidersGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: saml_listSamlServiceProviders_Response_200
+    ? V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
+    : type: string
+      enum:
+      - signing
+      - encryption
+      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose
+    V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose:
+      type: string
+      enum:
+      - signing
+      - encryption
+      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesPostRequestBodyContentApplicationJsonSchemaPurpose
+    saml_getSamlServiceProviderCertificate_Response_200:
+      type: object
+      properties:
+        samlServiceProviderCertificateId:
+          type: string
+          description: Unique identifier of the SAML service provider certificate
+        samlServiceProviderId:
+          type: string
+          description: Unique identifier of the SAML service provider
+        purpose:
+          $ref: '#/components/schemas/V2SamlServiceProvidersSamlServiceProviderIdCertificatesSamlServiceProviderCertificateIdGetResponsesContentApplicationJsonSchemaPurpose'
+          description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+        publicKeyCertificate:
+          type: string
+          description: PEM-encoded X.509 certificate
+        isActive:
+          type: boolean
+          description: Whether the certificate is currently active
+        notBefore:
+          type: string
+          format: date-time
+          description: Date and time when the certificate becomes valid
+        notAfter:
+          type: string
+          format: date-time
+          description: Date and time when the certificate expires
+        createdAt:
+          type: string
+          format: date-time
+          description: When the certificate was created
+        createdBy:
+          type: string
+          description: Identifier of the user who created the certificate
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the certificate was last updated
+        updatedBy:
+          type: string
+          description: Identifier of the user who last updated the certificate
+      required:
+      - samlServiceProviderCertificateId
+      - samlServiceProviderId
+      - purpose
+      - publicKeyCertificate
+      - isActive
+      - notBefore
+      - notAfter
+      - createdAt
+      - createdBy
+      - updatedAt
+      - updatedBy
+      title: saml_getSamlServiceProviderCertificate_Response_200
+    V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose:
+      type: string
+      enum:
+      - signing
+      - encryption
+      description: Purpose of the certificate. Use `signing` for signing SAML requests and `encryption` for encrypting SAML responses.
+      title: V2SamlServiceProvidersSamlServiceProviderIdCertificatesGetResponsesContentApplicationJsonSchemaEntriesItemsPurpose
   securitySchemes:
     basicAuth:
       type: http

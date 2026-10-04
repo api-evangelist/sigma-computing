@@ -19106,132 +19106,16 @@ components:
               requestId:
                 type: string
   schemas:
-    dataModels_swapDataModelSources_Response_200:
+    V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPostResponsesContentApplicationJsonSchemaSchedule:
       type: object
       properties:
-        unswappedSources:
-          type: array
-          items:
-            type: string
-          description: IDs of sources in the workbook that were not swapped.
-        unswappedConnections:
-          type: array
-          items:
-            type: string
-          description: IDs of custom SQL connections in the workbook that were not swapped.
-      required:
-      - unswappedSources
-      - unswappedConnections
-      title: dataModels_swapDataModelSources_Response_200
-    V2DataModelsDataModelIdElementsGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        elementId:
+        cronSpec:
           type: string
-        name:
+          description: Cron expression to use for the schedule
+        timezone:
           type: string
-        type:
-          type: string
-        columns:
-          type: array
-          items:
-            type: string
-        vizualizationType:
-          type: string
-        error:
-          type: string
-      required:
-      - elementId
-      title: V2DataModelsDataModelIdElementsGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems:
-      type: object
-      properties:
-        fromPath:
-          type: array
-          items:
-            type: string
-          description: Connection path of the form ['DATABASE', 'SCHEMA', 'TABLE']
-        toPath:
-          type: array
-          items:
-            type: string
-          description: Connection path of the form ['DATABASE', 'SCHEMA', 'TABLE']
-      required:
-      - fromPath
-      - toPath
-      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems
-    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type:
-      type: string
-      enum:
-      - custom-sql
-      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems2:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type'
-        connectionId:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        inodeId:
-          type: string
-      required:
-      - type
-      - connectionId
-      - name
-      - inodeId
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems2
-    dataModels_getDataModelElementQuery_Response_200:
-      type: object
-      properties:
-        elementId:
-          type: string
-        name:
-          type: string
-        sql:
-          type: string
-        error:
-          type: string
-      required:
-      - elementId
-      title: dataModels_getDataModelElementQuery_Response_200
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems3:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type'
-        connectionId:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        definition:
-          type: string
-      required:
-      - type
-      - connectionId
-      - name
-      - definition
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems3
-    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems1:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type'
-        datasetId:
-          type: string
-      required:
-      - type
-      - datasetId
-      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems1
+          description: Timezone code, for example, PST
+      title: V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPostResponsesContentApplicationJsonSchemaSchedule
     V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf5Type:
       type: string
       enum:
@@ -19245,7 +19129,109 @@ components:
       - sql-document
       - worksheet
       title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf5Type
-    V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPatchRequestBodyContentApplicationJsonSchemaSchedule:
+    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems:
+      type: object
+      properties:
+        fromMetric:
+          type: string
+          description: Metric in the data source.
+        toMetric:
+          type: string
+          description: Metric in the data source.
+      required:
+      - fromMetric
+      - toMetric
+      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems
+    V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItemsType:
+      type: object
+      properties: {}
+      description: The column's data type, represented as a recursive type object.
+      title: V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItemsType
+    dataModels_listDataModelLineageTree_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: dataModels_listDataModelLineageTree_Response_200
+    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type:
+      type: string
+      enum:
+      - table
+      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type
+    V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItems:
+      type: object
+      properties:
+        fromConnectionId:
+          type: string
+        toConnectionId:
+          type: string
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItemsPathsItems'
+      required:
+      - fromConnectionId
+      - toConnectionId
+      - paths
+      title: V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItems
+    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      oneOf:
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems0'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems1'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems2'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems3'
+      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        sheetId:
+          type: string
+          description: Identifier of the materialization schedule for the element
+        elementId:
+          type: string
+          description: Identifier of the element being materialized
+        elementName:
+          type: string
+        schedule:
+          oneOf:
+          - $ref: '#/components/schemas/V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItemsSchedule'
+          - type: 'null'
+        configuredAt:
+          type: string
+          format: date-time
+        paused:
+          type: boolean
+      required:
+      - sheetId
+      - elementId
+      - elementName
+      - schedule
+      - configuredAt
+      - paused
+      title: V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItemsSchedule:
+      type: object
+      properties:
+        cronSpec:
+          type: string
+          description: Cron expression to use for the schedule
+        timezone:
+          type: string
+          description: Timezone code, for example, PST
+      title: V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItemsSchedule
+    V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPostRequestBodyContentApplicationJsonSchemaSchedule:
       type: object
       properties:
         cronSpec:
@@ -19257,7 +19243,54 @@ components:
       required:
       - cronSpec
       description: When to run the materialization.
-      title: V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPatchRequestBodyContentApplicationJsonSchemaSchedule
+      title: V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPostRequestBodyContentApplicationJsonSchemaSchedule
+    V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        columnId:
+          type: string
+          description: Column ID
+        name:
+          type: string
+          description: Column name
+        formula:
+          type: string
+          description: Column formula or source column reference.
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItemsType'
+          description: The column's data type, represented as a recursive type object.
+        elementId:
+          type: string
+          description: Element ID
+      required:
+      - columnId
+      - name
+      - formula
+      - type
+      - elementId
+      title: V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems7:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf7Type'
+        connectionId:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        worksheetId:
+          type: string
+          description: Unique identifier of the worksheet
+      required:
+      - type
+      - connectionId
+      - name
+      - worksheetId
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems7
     V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaDataModelSourceTaggedVersionsItems:
       type: object
       properties:
@@ -19276,55 +19309,6 @@ components:
       - fromVersionTagId
       - toVersionTagId
       title: V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaDataModelSourceTaggedVersionsItems
-    V2DataModelsDataModelIdTagsGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-          description: Unique identifier of the tag.
-        tagName:
-          type: string
-        sourceVersion:
-          type: number
-          format: double
-        taggedAt:
-          type: string
-          format: date-time
-      required:
-      - versionTagId
-      - tagName
-      - sourceVersion
-      - taggedAt
-      title: V2DataModelsDataModelIdTagsGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPatchResponsesContentApplicationJsonSchemaSchedule:
-      type: object
-      properties:
-        cronSpec:
-          type: string
-          description: Cron expression to use for the schedule
-        timezone:
-          type: string
-          description: Timezone code, for example, PST
-      title: V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPatchResponsesContentApplicationJsonSchemaSchedule
-    dataModels_materializeDataModelElement_Response_200:
-      type: object
-      properties:
-        materializationId:
-          type: string
-      required:
-      - materializationId
-      title: dataModels_materializeDataModelElement_Response_200
-    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems:
-      type: object
-      properties:
-        fromColumn:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn'
-        toColumn:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn'
-      required:
-      - fromColumn
-      - toColumn
-      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems
     V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type:
       type: string
       enum:
@@ -19338,19 +19322,24 @@ components:
       - sql-document
       - worksheet
       title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type
-    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems:
-      type: object
-      properties:
-        fromMetric:
+    ? V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn
+    : oneOf:
+      - type: string
+      - type: array
+        items:
           type: string
-          description: Metric in the data source.
-        toMetric:
-          type: string
-          description: Metric in the data source.
-      required:
-      - fromMetric
-      - toMetric
-      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems
+      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems:
+      oneOf:
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems0'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems1'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems2'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems3'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems4'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems5'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems6'
+      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems7'
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems
     dataModels_getDataModelMaterialization_Response_200:
       type: object
       properties:
@@ -19373,22 +19362,6 @@ components:
       - materializationId
       - status
       title: dataModels_getDataModelMaterialization_Response_200
-    dataModels_tagDataModel_Response_200:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-        taggedDataModelId:
-          type: string
-          description: Unique identifier of the data model.
-        taggedDataModelVersion:
-          type: number
-          format: double
-      required:
-      - versionTagId
-      - taggedDataModelId
-      - taggedDataModelVersion
-      title: dataModels_tagDataModel_Response_200
     V2DataModelsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
@@ -19441,145 +19414,17 @@ components:
       - createdAt
       - updatedAt
       title: V2DataModelsGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems0:
+    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems1:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf0Type'
-        dataModelId:
-          type: string
-        elementIds:
-          type: array
-          items:
-            type: string
-          description: IDs of elements that make up this data model’s sources.
-        versionTagId:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type'
+        datasetId:
           type: string
       required:
       - type
-      - dataModelId
-      - elementIds
-      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems0
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems7:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf7Type'
-        connectionId:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        worksheetId:
-          type: string
-          description: Unique identifier of the worksheet
-      required:
-      - type
-      - connectionId
-      - name
-      - worksheetId
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems7
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems4:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf4Type'
-        connectionId:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        csvId:
-          type: string
-          description: Unique identifier of the uploaded CSV file
-      required:
-      - type
-      - connectionId
-      - name
-      - csvId
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems4
-    V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItemsSchedule:
-      type: object
-      properties:
-        cronSpec:
-          type: string
-          description: Cron expression to use for the schedule
-        timezone:
-          type: string
-          description: Timezone code, for example, PST
-      title: V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItemsSchedule
-    ? V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn
-    : oneOf:
-      - type: string
-      - type: array
-        items:
-          type: string
-      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn
-    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn:
-      oneOf:
-      - type: string
-      - type: array
-        items:
-          type: string
-      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn
-    V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        sheetId:
-          type: string
-          description: Identifier of the materialization schedule for the element
-        elementId:
-          type: string
-          description: Identifier of the element being materialized
-        elementName:
-          type: string
-        schedule:
-          oneOf:
-          - $ref: '#/components/schemas/V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItemsSchedule'
-          - type: 'null'
-        configuredAt:
-          type: string
-          format: date-time
-        paused:
-          type: boolean
-      required:
-      - sheetId
-      - elementId
-      - elementName
-      - schedule
-      - configuredAt
-      - paused
-      title: V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItems
-    dataModels_listDataModels_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DataModelsGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPage:
-          type:
-          - string
-          - 'null'
-          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
-        total:
-          type: number
-          format: double
-          description: Total number of results. Useful to determine if there is a need to paginate.
-        hasMore:
-          type: boolean
-          description: '**[Deprecated]** Indicates whether more results are available.'
-      required:
-      - entries
-      - nextPage
-      title: dataModels_listDataModels_Response_200
+      - datasetId
+      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems1
     dataModels_listDataModelElements_Response_200:
       type: object
       properties:
@@ -19598,11 +19443,99 @@ components:
       - entries
       - nextPage
       title: dataModels_listDataModelElements_Response_200
+    V2DataModelsGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+          description: Unique identifier of the tag.
+        tagName:
+          type: string
+        sourceVersion:
+          type: number
+          format: double
+        taggedAt:
+          type: string
+          format: date-time
+      required:
+      - versionTagId
+      - tagName
+      - sourceVersion
+      - taggedAt
+      title: V2DataModelsGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
+    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type:
+      type: string
+      enum:
+      - dataset
+      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type
+    dataModels_listDataModelMaterializationSchedules_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: dataModels_listDataModelMaterializationSchedules_Response_200
+    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type:
+      type: string
+      enum:
+      - custom-sql
+      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems1:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type'
+        connectionId:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        dataModelId:
+          type: string
+      required:
+      - type
+      - connectionId
+      - name
+      - dataModelId
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems1
     V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf0Type:
       type: string
       enum:
       - data-model
       title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf0Type
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems6:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf6Type'
+        connectionId:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        sqlDocumentId:
+          type: string
+      required:
+      - type
+      - connectionId
+      - name
+      - sqlDocumentId
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems6
     dataModels_patchDataModelMaterializationSchedule_Response_200:
       type: object
       properties:
@@ -19631,22 +19564,100 @@ components:
       - configuredAt
       - paused
       title: dataModels_patchDataModelMaterializationSchedule_Response_200
-    V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItems:
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems3:
       type: object
       properties:
-        fromConnectionId:
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type'
+        connectionId:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        definition:
           type: string
-        toConnectionId:
-          type: string
-        paths:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItemsPathsItems'
       required:
-      - fromConnectionId
-      - toConnectionId
-      - paths
-      title: V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItems
+      - type
+      - connectionId
+      - name
+      - definition
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems3
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems5:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf5Type'
+        connectionId:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        semanticViewId:
+          type: string
+          description: Unique identifier of the semantic view
+        semanticViewTable:
+          type: string
+          description: Name of the table within the semantic view
+      required:
+      - type
+      - connectionId
+      - name
+      - semanticViewId
+      - semanticViewTable
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems5
+    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn:
+      oneOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn
+    V2DataModelsDataModelIdTagsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+          description: Unique identifier of the tag.
+        tagName:
+          type: string
+        sourceVersion:
+          type: number
+          format: double
+        taggedAt:
+          type: string
+          format: date-time
+      required:
+      - versionTagId
+      - tagName
+      - sourceVersion
+      - taggedAt
+      title: V2DataModelsDataModelIdTagsGetResponsesContentApplicationJsonSchemaEntriesItems
+    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems3:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type'
+        connectionId:
+          type: string
+          description: ID of the connection where the custom SQL element is run.
+        definition:
+          type: string
+          description: Raw SQL definition for the custom SQL element.
+        customSqlId:
+          type: string
+          description: Element ID of the custom SQL.
+      required:
+      - type
+      - connectionId
+      - definition
+      - customSqlId
+      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems3
     dataModels_getDataModel_Response_200:
       type: object
       properties:
@@ -19699,57 +19710,17 @@ components:
       - createdAt
       - updatedAt
       title: dataModels_getDataModel_Response_200
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type:
-      type: string
-      enum:
-      - table
-      - dataset
-      - data-model
-      - element
-      - customSQL
-      - csv-upload
-      - semantic-view
-      - sql-document
-      - worksheet
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type
-    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems:
+    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems:
       type: object
       properties:
-        fromId:
-          type: string
-          description: ID of the connection to swap from.
-        toId:
-          type: string
-          description: ID of the connection to swap to.
-        swapTables:
-          type: boolean
-          description: Whether to swap all tables in the connection
-        paths:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems'
+        fromColumn:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsFromColumn'
+        toColumn:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItemsToColumn'
       required:
-      - fromId
-      - toId
-      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems
-    V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItemsType:
-      type: object
-      properties: {}
-      description: The column's data type, represented as a recursive type object.
-      title: V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItemsType
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf4Type:
-      type: string
-      enum:
-      - table
-      - dataset
-      - data-model
-      - element
-      - customSQL
-      - csv-upload
-      - semantic-view
-      - sql-document
-      - worksheet
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf4Type
+      - fromColumn
+      - toColumn
+      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems
     V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf6Type:
       type: string
       enum:
@@ -19763,44 +19734,6 @@ components:
       - sql-document
       - worksheet
       title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf6Type
-    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type:
-      type: string
-      enum:
-      - dataset
-      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type
-    V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItemsPathsItems:
-      type: object
-      properties:
-        fromPath:
-          type: array
-          items:
-            type: string
-        toPath:
-          type: array
-          items:
-            type: string
-      required:
-      - fromPath
-      - toPath
-      title: V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItemsPathsItems
-    dataModels_getDataModelColumns_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItems'
-        nextPage:
-          type:
-          - string
-          - 'null'
-        total:
-          type: number
-          format: double
-      required:
-      - entries
-      - nextPage
-      title: dataModels_getDataModelColumns_Response_200
     V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems0:
       type: object
       properties:
@@ -19829,31 +19762,258 @@ components:
       - elementId
       - dataSourceIds
       title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems0
-    V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItems:
+    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems2:
       type: object
       properties:
-        columnId:
-          type: string
-          description: Column ID
-        name:
-          type: string
-          description: Column name
-        formula:
-          type: string
-          description: Column formula or source column reference.
         type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItemsType'
-          description: The column's data type, represented as a recursive type object.
+          $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type'
+        tableId:
+          type: string
+      required:
+      - type
+      - tableId
+      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems2
+    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems0:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf0Type'
+        dataModelId:
+          type: string
+        elementIds:
+          type: array
+          items:
+            type: string
+          description: IDs of elements that make up this data model’s sources.
+        versionTagId:
+          type: string
+      required:
+      - type
+      - dataModelId
+      - elementIds
+      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems0
+    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems:
+      type: object
+      properties:
+        fromId:
+          type: string
+          description: ID of the connection to swap from.
+        toId:
+          type: string
+          description: ID of the connection to swap to.
+        swapTables:
+          type: boolean
+          description: Whether to swap all tables in the connection
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems'
+      required:
+      - fromId
+      - toId
+      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItems
+    V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPatchResponsesContentApplicationJsonSchemaSchedule:
+      type: object
+      properties:
+        cronSpec:
+          type: string
+          description: Cron expression to use for the schedule
+        timezone:
+          type: string
+          description: Timezone code, for example, PST
+      title: V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPatchResponsesContentApplicationJsonSchemaSchedule
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf0Type:
+      type: string
+      enum:
+      - table
+      - dataset
+      - data-model
+      - element
+      - customSQL
+      - csv-upload
+      - semantic-view
+      - sql-document
+      - worksheet
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf0Type
+    dataModels_getDataModelElementQuery_Response_200:
+      type: object
+      properties:
         elementId:
           type: string
-          description: Element ID
+        name:
+          type: string
+        sql:
+          type: string
+        error:
+          type: string
       required:
-      - columnId
-      - name
-      - formula
-      - type
       - elementId
-      title: V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItems
+      title: dataModels_getDataModelElementQuery_Response_200
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf7Type:
+      type: string
+      enum:
+      - table
+      - dataset
+      - data-model
+      - element
+      - customSQL
+      - csv-upload
+      - semantic-view
+      - sql-document
+      - worksheet
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf7Type
+    dataModels_tagDataModel_Response_200:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+        taggedDataModelId:
+          type: string
+          description: Unique identifier of the data model.
+        taggedDataModelVersion:
+          type: number
+          format: double
+      required:
+      - versionTagId
+      - taggedDataModelId
+      - taggedDataModelVersion
+      title: dataModels_tagDataModel_Response_200
+    dataModels_listDataModelSources_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: dataModels_listDataModelSources_Response_200
+    V2DataModelsDataModelIdGetResponsesContentApplicationJsonSchemaTagsItems:
+      type: object
+      properties:
+        versionTagId:
+          type: string
+          description: Unique identifier of the tag.
+        tagName:
+          type: string
+        sourceVersion:
+          type: number
+          format: double
+        taggedAt:
+          type: string
+          format: date-time
+      required:
+      - versionTagId
+      - tagName
+      - sourceVersion
+      - taggedAt
+      title: V2DataModelsDataModelIdGetResponsesContentApplicationJsonSchemaTagsItems
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems2:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type'
+        connectionId:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        inodeId:
+          type: string
+      required:
+      - type
+      - connectionId
+      - name
+      - inodeId
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems2
+    V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItemsPathsItems:
+      type: object
+      properties:
+        fromPath:
+          type: array
+          items:
+            type: string
+        toPath:
+          type: array
+          items:
+            type: string
+      required:
+      - fromPath
+      - toPath
+      title: V2DataModelsTagPostRequestBodyContentApplicationJsonSchemaSourceMappingConfigItemsPathsItems
+    dataModels_listDataModels_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPage:
+          type:
+          - string
+          - 'null'
+          description: Returns a string that can be used as the `page` parameter in the next request to fetch the next page of results. The last page of results returns `null`.
+        total:
+          type: number
+          format: double
+          description: Total number of results. Useful to determine if there is a need to paginate.
+        hasMore:
+          type: boolean
+          description: '**[Deprecated]** Indicates whether more results are available.'
+      required:
+      - entries
+      - nextPage
+      title: dataModels_listDataModels_Response_200
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems4:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf4Type'
+        connectionId:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        csvId:
+          type: string
+          description: Unique identifier of the uploaded CSV file
+      required:
+      - type
+      - connectionId
+      - name
+      - csvId
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems4
+    dataModels_listDataModelTags_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsDataModelIdTagsGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: dataModels_listDataModelTags_Response_200
     V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type:
       type: string
       enum:
@@ -19867,32 +20027,112 @@ components:
       - sql-document
       - worksheet
       title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems5:
+    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems:
       type: object
       properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf5Type'
-        connectionId:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        semanticViewId:
+        fromId:
           type: string
-          description: Unique identifier of the semantic view
-        semanticViewTable:
+          description: ID of the dataset (deprecated) or table to swap from.
+        toId:
           type: string
-          description: Name of the table within the semantic view
+          description: ID of the dataset (deprecated) or table to swap to.
+        metricMapping:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems'
+        columnMapping:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems'
       required:
-      - type
-      - connectionId
-      - name
-      - semanticViewId
-      - semanticViewTable
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems5
+      - fromId
+      - toId
+      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems
+    V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPatchRequestBodyContentApplicationJsonSchemaSchedule:
+      type: object
+      properties:
+        cronSpec:
+          type: string
+          description: A [cron expression](https://en.wikipedia.org/wiki/Cron). For example, `0 0 * * *`.
+        timezone:
+          type: string
+          description: An [IANA timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For example, `America/Los_Angeles`. Defaults to the organization timezone.
+      required:
+      - cronSpec
+      description: When to run the materialization.
+      title: V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPatchRequestBodyContentApplicationJsonSchemaSchedule
+    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems:
+      type: object
+      properties:
+        fromPath:
+          type: array
+          items:
+            type: string
+          description: Connection path of the form ['DATABASE', 'SCHEMA', 'TABLE']
+        toPath:
+          type: array
+          items:
+            type: string
+          description: Connection path of the form ['DATABASE', 'SCHEMA', 'TABLE']
+      required:
+      - fromPath
+      - toPath
+      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaConnectionMappingItemsPathsItems
+    dataModels_getDataModelColumns_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2DataModelsDataModelIdColumnsGetResponsesContentApplicationJsonSchemaEntriesItems'
+        nextPage:
+          type:
+          - string
+          - 'null'
+        total:
+          type: number
+          format: double
+      required:
+      - entries
+      - nextPage
+      title: dataModels_getDataModelColumns_Response_200
+    dataModels_deleteDataModelMaterializationSchedule_Response_200:
+      type: object
+      properties: {}
+      title: dataModels_deleteDataModelMaterializationSchedule_Response_200
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type:
+      type: string
+      enum:
+      - table
+      - dataset
+      - data-model
+      - element
+      - customSQL
+      - csv-upload
+      - semantic-view
+      - sql-document
+      - worksheet
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type
+    V2DataModelsDataModelIdElementsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        elementId:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        columns:
+          type: array
+          items:
+            type: string
+        vizualizationType:
+          type: string
+        error:
+          type: string
+      required:
+      - elementId
+      title: V2DataModelsDataModelIdElementsGetResponsesContentApplicationJsonSchemaEntriesItems
     dataModels_createDataModelMaterializationSchedule_Response_201:
       type: object
       properties:
@@ -19921,78 +20161,32 @@ components:
       - configuredAt
       - paused
       title: dataModels_createDataModelMaterializationSchedule_Response_201
-    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems:
-      oneOf:
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems0'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems1'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems2'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems3'
-      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems1:
+    dataModels_swapDataModelSources_Response_200:
       type: object
       properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf1Type'
-        connectionId:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        dataModelId:
-          type: string
-      required:
-      - type
-      - connectionId
-      - name
-      - dataModelId
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems1
-    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems3:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf3Type'
-        connectionId:
-          type: string
-          description: ID of the connection where the custom SQL element is run.
-        definition:
-          type: string
-          description: Raw SQL definition for the custom SQL element.
-        customSqlId:
-          type: string
-          description: Element ID of the custom SQL.
-      required:
-      - type
-      - connectionId
-      - definition
-      - customSqlId
-      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems3
-    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type:
-      type: string
-      enum:
-      - table
-      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type
-    dataModels_listDataModelLineageTree_Response_200:
-      type: object
-      properties:
-        entries:
+        unswappedSources:
           type: array
           items:
-            $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems'
-        nextPage:
-          type:
-          - string
-          - 'null'
-        total:
-          type: number
-          format: double
+            type: string
+          description: IDs of sources in the workbook that were not swapped.
+        unswappedConnections:
+          type: array
+          items:
+            type: string
+          description: IDs of custom SQL connections in the workbook that were not swapped.
       required:
-      - entries
-      - nextPage
-      title: dataModels_listDataModelLineageTree_Response_200
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf0Type:
+      - unswappedSources
+      - unswappedConnections
+      title: dataModels_swapDataModelSources_Response_200
+    dataModels_materializeDataModelElement_Response_200:
+      type: object
+      properties:
+        materializationId:
+          type: string
+      required:
+      - materializationId
+      title: dataModels_materializeDataModelElement_Response_200
+    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf4Type:
       type: string
       enum:
       - table
@@ -20004,201 +20198,7 @@ components:
       - semantic-view
       - sql-document
       - worksheet
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf0Type
-    V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems:
-      type: object
-      properties:
-        fromId:
-          type: string
-          description: ID of the dataset (deprecated) or table to swap from.
-        toId:
-          type: string
-          description: ID of the dataset (deprecated) or table to swap to.
-        metricMapping:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsMetricMappingItems'
-        columnMapping:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItemsColumnMappingItems'
-      required:
-      - fromId
-      - toId
-      title: V2DataModelsDataModelIdSwapSourcesPostRequestBodyContentApplicationJsonSchemaSourceMappingItems
-    V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems2:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf2Type'
-        tableId:
-          type: string
-      required:
-      - type
-      - tableId
-      title: V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems2
-    dataModels_listDataModelTags_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DataModelsDataModelIdTagsGetResponsesContentApplicationJsonSchemaEntriesItems'
-        nextPage:
-          type:
-          - string
-          - 'null'
-        total:
-          type: number
-          format: double
-      required:
-      - entries
-      - nextPage
-      title: dataModels_listDataModelTags_Response_200
-    V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPostResponsesContentApplicationJsonSchemaSchedule:
-      type: object
-      properties:
-        cronSpec:
-          type: string
-          description: Cron expression to use for the schedule
-        timezone:
-          type: string
-          description: Timezone code, for example, PST
-      title: V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPostResponsesContentApplicationJsonSchemaSchedule
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems6:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf6Type'
-        connectionId:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        sqlDocumentId:
-          type: string
-      required:
-      - type
-      - connectionId
-      - name
-      - sqlDocumentId
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems6
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf7Type:
-      type: string
-      enum:
-      - table
-      - dataset
-      - data-model
-      - element
-      - customSQL
-      - csv-upload
-      - semantic-view
-      - sql-document
-      - worksheet
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf7Type
-    dataModels_deleteDataModelMaterializationSchedule_Response_200:
-      type: object
-      properties: {}
-      title: dataModels_deleteDataModelMaterializationSchedule_Response_200
-    dataModels_listDataModelMaterializationSchedules_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DataModelsDataModelIdMaterializationSchedulesGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: dataModels_listDataModelMaterializationSchedules_Response_200
-    V2DataModelsDataModelIdGetResponsesContentApplicationJsonSchemaTagsItems:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-          description: Unique identifier of the tag.
-        tagName:
-          type: string
-        sourceVersion:
-          type: number
-          format: double
-        taggedAt:
-          type: string
-          format: date-time
-      required:
-      - versionTagId
-      - tagName
-      - sourceVersion
-      - taggedAt
-      title: V2DataModelsDataModelIdGetResponsesContentApplicationJsonSchemaTagsItems
-    dataModels_listDataModelSources_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2DataModelsDataModelIdSourcesGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: dataModels_listDataModelSources_Response_200
-    V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPostRequestBodyContentApplicationJsonSchemaSchedule:
-      type: object
-      properties:
-        cronSpec:
-          type: string
-          description: A [cron expression](https://en.wikipedia.org/wiki/Cron). For example, `0 0 * * *`.
-        timezone:
-          type: string
-          description: An [IANA timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For example, `America/Los_Angeles`. Defaults to the organization timezone.
-      required:
-      - cronSpec
-      description: When to run the materialization.
-      title: V2DataModelsDataModelIdElementsElementIdMaterializationSchedulesPostRequestBodyContentApplicationJsonSchemaSchedule
-    V2DataModelsGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems:
-      type: object
-      properties:
-        versionTagId:
-          type: string
-          description: Unique identifier of the tag.
-        tagName:
-          type: string
-        sourceVersion:
-          type: number
-          format: double
-        taggedAt:
-          type: string
-          format: date-time
-      required:
-      - versionTagId
-      - tagName
-      - sourceVersion
-      - taggedAt
-      title: V2DataModelsGetResponsesContentApplicationJsonSchemaEntriesItemsTagsItems
-    V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems:
-      oneOf:
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems0'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems1'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems2'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems3'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems4'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems5'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems6'
-      - $ref: '#/components/schemas/V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems7'
-      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItems
+      title: V2DataModelsDataModelIdLineageGetResponsesContentApplicationJsonSchemaEntriesItemsOneOf4Type
   securitySchemes:
     basicAuth:
       type: http

@@ -470,6 +470,48 @@ components:
               requestId:
                 type: string
   schemas:
+    V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType:
+      type: string
+      enum:
+      - element
+      title: V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType
+    V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType:
+      type: string
+      enum:
+      - element
+      title: V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType
+    V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems:
+      type: object
+      properties:
+        pluginId:
+          type: string
+          description: Unique identifier (UUID) of the plugin.
+        name:
+          type: string
+          description: Display name of the plugin.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the plugin.
+        url:
+          type: string
+          description: Production URL where the plugin is hosted. Sigma loads the plugin from this URL when it is added to a workbook. An empty string indicates that no production URL has been set for the plugin yet.
+        devUrl:
+          type:
+          - string
+          - 'null'
+          description: Development URL for the plugin. Sigma loads the plugin from this URL when the plugin runs in development mode.
+        type:
+          $ref: '#/components/schemas/V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType'
+      required:
+      - pluginId
+      - name
+      - description
+      - url
+      - devUrl
+      - type
+      title: V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems
     plugins_updateCustomPlugin_Response_200:
       type: object
       properties:
@@ -502,11 +544,6 @@ components:
       - devUrl
       - type
       title: plugins_updateCustomPlugin_Response_200
-    V2PluginsPluginIdGetResponsesContentApplicationJsonSchemaType:
-      type: string
-      enum:
-      - element
-      title: V2PluginsPluginIdGetResponsesContentApplicationJsonSchemaType
     plugins_createCustomPlugin_Response_200:
       type: object
       properties:
@@ -571,47 +608,6 @@ components:
       - devUrl
       - type
       title: plugins_getCustomPlugin_Response_200
-    V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType:
-      type: string
-      enum:
-      - element
-      title: V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType
-    V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        pluginId:
-          type: string
-          description: Unique identifier (UUID) of the plugin.
-        name:
-          type: string
-          description: Display name of the plugin.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the plugin.
-        url:
-          type: string
-          description: Production URL where the plugin is hosted. Sigma loads the plugin from this URL when it is added to a workbook. An empty string indicates that no production URL has been set for the plugin yet.
-        devUrl:
-          type:
-          - string
-          - 'null'
-          description: Development URL for the plugin. Sigma loads the plugin from this URL when the plugin runs in development mode.
-        type:
-          $ref: '#/components/schemas/V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItemsType'
-      required:
-      - pluginId
-      - name
-      - description
-      - url
-      - devUrl
-      - type
-      title: V2PluginsGetResponsesContentApplicationJsonSchemaEntriesItems
-    plugins_deleteCustomPlugin_Response_200:
-      type: object
-      properties: {}
-      title: plugins_deleteCustomPlugin_Response_200
     plugins_listCustomPlugins_Response_200:
       type: object
       properties:
@@ -628,16 +624,20 @@ components:
       required:
       - entries
       title: plugins_listCustomPlugins_Response_200
-    V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType:
+    V2PluginsPluginIdGetResponsesContentApplicationJsonSchemaType:
       type: string
       enum:
       - element
-      title: V2PluginsPluginIdPatchResponsesContentApplicationJsonSchemaType
+      title: V2PluginsPluginIdGetResponsesContentApplicationJsonSchemaType
     V2PluginsPostResponsesContentApplicationJsonSchemaType:
       type: string
       enum:
       - element
       title: V2PluginsPostResponsesContentApplicationJsonSchemaType
+    plugins_deleteCustomPlugin_Response_200:
+      type: object
+      properties: {}
+      title: plugins_deleteCustomPlugin_Response_200
   securitySchemes:
     basicAuth:
       type: http

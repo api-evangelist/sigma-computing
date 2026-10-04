@@ -1594,7 +1594,17 @@ components:
       - type: object
         required: []
         properties: {}
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsMethod:
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRedirects:
+      type: object
+      properties:
+        maxRedirects:
+          type: number
+          format: double
+      required:
+      - maxRedirects
+      description: HTTP redirect handling.
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRedirects
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsMethod:
       type: string
       enum:
       - GET
@@ -1605,148 +1615,7 @@ components:
       - OPTIONS
       - HEAD
       description: HTTP method to invoke.
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsMethod
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRateLimit:
-      type: object
-      properties:
-        maxRequestsPerWindow:
-          type: number
-          format: double
-      required:
-      - maxRequestsPerWindow
-      description: Rate limit applied to outbound requests from this connector.
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRateLimit
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRetry:
-      type: object
-      properties:
-        maxRetries:
-          type: number
-          format: double
-        retryableStatusCodes:
-          type: array
-          items:
-            type: number
-            format: double
-      required:
-      - maxRetries
-      - retryableStatusCodes
-      description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRetry
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItems
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigTimeout:
-      type: object
-      properties:
-        requestSec:
-          type: number
-          format: double
-      required:
-      - requestSec
-      description: Per-request timeout configuration.
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigTimeout
-    ParamShapeNode2:
-      type: object
-      properties:
-        type:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParamShapeNodeOneOf2TypeItems'
-      required:
-      - type
-      title: ParamShapeNode2
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsType
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItems
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfig:
-      type: object
-      properties:
-        timeout:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigTimeout'
-          description: Per-request timeout configuration.
-        retry:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRetry'
-          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
-        redirects:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRedirects'
-          description: HTTP redirect handling.
-        rateLimit:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRateLimit'
-          description: Rate limit applied to outbound requests from this connector.
-      required:
-      - timeout
-      - retry
-      - redirects
-      - rateLimit
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfig
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsMethod
     V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRetry:
       type: object
       properties:
@@ -1763,28 +1632,12 @@ components:
       - retryableStatusCodes
       description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
       title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRetry
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItems
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType:
+    ParamShapeNodeOneOf2TypeItems:
+      type: string
+      enum:
+      - boolean
+      title: ParamShapeNodeOneOf2TypeItems
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType:
       type: string
       enum:
       - array
@@ -1793,7 +1646,152 @@ components:
       - object
       - raw
       - string
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType
+    api-connectors_listApiConnectors_Response_200:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsGetResponsesContentApplicationJsonSchemaEntriesItems'
+          description: Array of results returned by the endpoint
+        nextPageToken:
+          type: string
+          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
+
+            **Must be treated as an opaque string.**'
+      required:
+      - entries
+      title: api-connectors_listApiConnectors_Response_200
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigTimeout:
+      type: object
+      properties:
+        requestSec:
+          type: number
+          format: double
+      required:
+      - requestSec
+      description: Per-request timeout configuration.
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigTimeout
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRateLimit:
+      type: object
+      properties:
+        maxRequestsPerWindow:
+          type: number
+          format: double
+      required:
+      - maxRequestsPerWindow
+      description: Rate limit applied to outbound requests from this connector.
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRateLimit
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRetry:
+      type: object
+      properties:
+        maxRetries:
+          type: number
+          format: double
+        retryableStatusCodes:
+          type: array
+          items:
+            type: number
+            format: double
+      required:
+      - maxRetries
+      - retryableStatusCodes
+      description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRetry
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfig:
+      type: object
+      properties:
+        timeout:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigTimeout'
+          description: Per-request timeout configuration.
+        retry:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRetry'
+          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
+        redirects:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRedirects'
+          description: HTTP redirect handling.
+        rateLimit:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRateLimit'
+          description: Rate limit applied to outbound requests from this connector.
+      required:
+      - timeout
+      - retry
+      - redirects
+      - rateLimit
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfig
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigTimeout:
+      type: object
+      properties:
+        requestSec:
+          type: number
+          format: double
+      required:
+      - requestSec
+      description: Per-request timeout configuration.
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigTimeout
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRateLimit:
+      type: object
+      properties:
+        maxRequestsPerWindow:
+          type: number
+          format: double
+      required:
+      - maxRequestsPerWindow
+      description: Rate limit applied to outbound requests from this connector.
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRateLimit
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsType
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsMode
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRedirects:
+      type: object
+      properties:
+        maxRedirects:
+          type: number
+          format: double
+      required:
+      - maxRedirects
+      description: HTTP redirect handling.
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRedirects
     api-connectors_updateApiConnector_Response_200:
       type: object
       properties:
@@ -1839,250 +1837,20 @@ components:
       - createdAt
       - updatedAt
       title: api-connectors_updateApiConnector_Response_200
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItems
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsMethod:
-      type: string
-      enum:
-      - GET
-      - POST
-      - DELETE
-      - PATCH
-      - PUT
-      - OPTIONS
-      - HEAD
-      description: HTTP method to invoke.
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsMethod
-    api-connectors_createApiConnector_Response_200:
+    V2ApiConnectorsGetResponsesContentApplicationJsonSchemaEntriesItems:
       type: object
       properties:
         apiConnectorId:
           type: string
-          description: Unique identifier of the API connector.
         name:
           type: string
-          description: Display name of the connector.
-        params:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParams'
-        config:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfig'
-        createdBy:
-          type: string
-          description: The identifier of the user who created this object.
-        updatedBy:
-          type: string
-          description: The identifier of the user or process that last updated this object.
-        createdAt:
-          type: string
-          format: date-time
-          description: When the object was created.
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the object was last updated.
         description:
           type: string
-          description: Human-readable description.
-        authId:
-          type:
-          - string
-          - 'null'
-          description: Identifier of the API credential (`apiCredentialId`) used to authenticate requests. `null` if unauthenticated.
       required:
       - apiConnectorId
       - name
-      - params
-      - config
-      - createdBy
-      - updatedBy
-      - createdAt
-      - updatedAt
-      title: api-connectors_createApiConnector_Response_200
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItems
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRedirects:
-      type: object
-      properties:
-        maxRedirects:
-          type: number
-          format: double
-      required:
-      - maxRedirects
-      description: HTTP redirect handling.
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRedirects
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType
-    ParamShapeNodeOneOf1TypeItems:
-      type: string
-      enum:
-      - number
-      title: ParamShapeNodeOneOf1TypeItems
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRateLimit:
-      type: object
-      properties:
-        maxRequestsPerWindow:
-          type: number
-          format: double
-      required:
-      - maxRequestsPerWindow
-      description: Rate limit applied to outbound requests from this connector.
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRateLimit
-    ParamShapeNodeOneOf4TypeItems:
-      type: string
-      enum:
-      - array
-      title: ParamShapeNodeOneOf4TypeItems
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsMode
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParams:
-      type: object
-      properties:
-        method:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsMethod'
-          description: HTTP method to invoke.
-        url:
-          type: string
-          description: Request URL. Must resolve to a hostname matching the associated credential's allowlist.
-        headers:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItems'
-          description: Static or dynamic request headers.
-        pathParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItems'
-          description: Path parameter placeholders resolved into the URL.
-        queryParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems'
-          description: Query string parameters.
-        body:
-          type: string
-          description: Raw request body template.
-      required:
-      - method
-      - url
-      - headers
-      - pathParams
-      - queryParams
-      - body
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParams
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfig:
-      type: object
-      properties:
-        timeout:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigTimeout'
-          description: Per-request timeout configuration.
-        retry:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRetry'
-          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
-        redirects:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRedirects'
-          description: HTTP redirect handling.
-        rateLimit:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRateLimit'
-          description: Rate limit applied to outbound requests from this connector.
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfig
+      - description
+      title: V2ApiConnectorsGetResponsesContentApplicationJsonSchemaEntriesItems
     V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParams:
       type: object
       properties:
@@ -2118,34 +1886,7 @@ components:
       - queryParams
       - body
       title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParams
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItems
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsType:
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType:
       type: string
       enum:
       - array
@@ -2154,22 +1895,8 @@ components:
       - object
       - raw
       - string
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsType
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigTimeout:
-      type: object
-      properties:
-        requestSec:
-          type: number
-          format: double
-      required:
-      - requestSec
-      description: Per-request timeout configuration.
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigTimeout
-    api-connectors_deleteApiConnector_Response_200:
-      type: object
-      properties: {}
-      title: api-connectors_deleteApiConnector_Response_200
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsType:
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsType:
       type: string
       enum:
       - array
@@ -2178,77 +1905,17 @@ components:
       - object
       - raw
       - string
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsType
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRetry:
-      type: object
-      properties:
-        maxRetries:
-          type: number
-          format: double
-        retryableStatusCodes:
-          type: array
-          items:
-            type: number
-            format: double
-      required:
-      - maxRetries
-      - retryableStatusCodes
-      description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRetry
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParams:
-      type: object
-      properties:
-        method:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsMethod'
-          description: HTTP method to invoke.
-        url:
-          type: string
-          description: Request URL. Must resolve to a hostname matching the associated credential's allowlist.
-        headers:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItems'
-          description: Static or dynamic request headers.
-        pathParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItems'
-          description: Path parameter placeholders resolved into the URL.
-        queryParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItems'
-          description: Query string parameters.
-        body:
-          type: string
-          description: Raw request body template.
-        bodyParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItems'
-          description: Dynamic parameters extracted from `body`.
-      required:
-      - method
-      - url
-      - headers
-      - pathParams
-      - queryParams
-      - body
-      - bodyParams
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParams
-    ParamShapeNode4:
-      type: object
-      properties:
-        type:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParamShapeNodeOneOf4TypeItems'
-        items:
-          $ref: '#/components/schemas/ParamShapeNode'
-      required:
-      - type
-      - items
-      title: ParamShapeNode4
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsType
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType
     api-connectors_getApiConnector_Response_200:
       type: object
       properties:
@@ -2294,416 +1961,10 @@ components:
       - createdAt
       - updatedAt
       title: api-connectors_getApiConnector_Response_200
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsType
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItems:
+    api-connectors_deleteApiConnector_Response_200:
       type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItems
-    ParamShapeNodeOneOf3TypeItems:
-      type: string
-      enum:
-      - object
-      title: ParamShapeNodeOneOf3TypeItems
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRetry:
-      type: object
-      properties:
-        maxRetries:
-          type: number
-          format: double
-        retryableStatusCodes:
-          type: array
-          items:
-            type: number
-            format: double
-      required:
-      - maxRetries
-      - retryableStatusCodes
-      description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRetry
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItems
-    api-connectors_listApiConnectors_Response_200:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsGetResponsesContentApplicationJsonSchemaEntriesItems'
-          description: Array of results returned by the endpoint
-        nextPageToken:
-          type: string
-          description: 'A string that can be passed to the `pageToken` parameter in the next request to fetch the next page of results. Not present in the last page of results.
-
-            **Must be treated as an opaque string.**'
-      required:
-      - entries
-      title: api-connectors_listApiConnectors_Response_200
-    ParamShapeNode3:
-      type: object
-      properties:
-        type:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParamShapeNodeOneOf3TypeItems'
-        properties:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ParamShapeNode'
-      required:
-      - type
-      - properties
-      title: ParamShapeNode3
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRateLimit:
-      type: object
-      properties:
-        maxRequestsPerWindow:
-          type: number
-          format: double
-      required:
-      - maxRequestsPerWindow
-      description: Rate limit applied to outbound requests from this connector.
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRateLimit
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRedirects:
-      type: object
-      properties:
-        maxRedirects:
-          type: number
-          format: double
-      required:
-      - maxRedirects
-      description: HTTP redirect handling.
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRedirects
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsMode
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsType
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigTimeout:
-      type: object
-      properties:
-        requestSec:
-          type: number
-          format: double
-      required:
-      - requestSec
-      description: Per-request timeout configuration.
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigTimeout
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRetry:
-      type: object
-      properties:
-        maxRetries:
-          type: number
-          format: double
-        retryableStatusCodes:
-          type: array
-          items:
-            type: number
-            format: double
-      required:
-      - maxRetries
-      - retryableStatusCodes
-      description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRetry
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfig:
-      type: object
-      properties:
-        timeout:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigTimeout'
-          description: Per-request timeout configuration.
-        retry:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRetry'
-          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
-        redirects:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRedirects'
-          description: HTTP redirect handling.
-        rateLimit:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRateLimit'
-          description: Rate limit applied to outbound requests from this connector.
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfig
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItems
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItems
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsMethod:
-      type: string
-      enum:
-      - GET
-      - POST
-      - DELETE
-      - PATCH
-      - PUT
-      - OPTIONS
-      - HEAD
-      description: HTTP method to invoke.
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsMethod
-    V2ApiConnectorsGetResponsesContentApplicationJsonSchemaEntriesItems:
-      type: object
-      properties:
-        apiConnectorId:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-      required:
-      - apiConnectorId
-      - name
-      - description
-      title: V2ApiConnectorsGetResponsesContentApplicationJsonSchemaEntriesItems
-    ParamShapeNode0:
-      type: object
-      properties:
-        type:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParamShapeNodeOneOf0TypeItems'
-      required:
-      - type
-      title: ParamShapeNode0
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItems
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsType
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsMode
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigTimeout:
-      type: object
-      properties:
-        requestSec:
-          type: number
-          format: double
-      required:
-      - requestSec
-      description: Per-request timeout configuration.
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigTimeout
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRateLimit:
-      type: object
-      properties:
-        maxRequestsPerWindow:
-          type: number
-          format: double
-      required:
-      - maxRequestsPerWindow
-      description: Rate limit applied to outbound requests from this connector.
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRateLimit
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode:
-      type: string
-      enum:
-      - static
-      - dynamic
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode
+      properties: {}
+      title: api-connectors_deleteApiConnector_Response_200
     V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItems:
       type: object
       properties:
@@ -2725,19 +1986,19 @@ components:
       - key
       - mode
       title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItems
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItems:
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItems:
       type: object
       properties:
         key:
           type: string
         mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsMode'
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode'
         value:
           type:
           - string
           - 'null'
         type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsType'
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType'
         shape:
           oneOf:
           - $ref: '#/components/schemas/ParamShapeNode'
@@ -2745,277 +2006,13 @@ components:
       required:
       - key
       - mode
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItems
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRateLimit:
-      type: object
-      properties:
-        maxRequestsPerWindow:
-          type: number
-          format: double
-      required:
-      - maxRequestsPerWindow
-      description: Rate limit applied to outbound requests from this connector.
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRateLimit
-    ParamShapeNodeOneOf2TypeItems:
-      type: string
-      enum:
-      - boolean
-      title: ParamShapeNodeOneOf2TypeItems
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRedirects:
-      type: object
-      properties:
-        maxRedirects:
-          type: number
-          format: double
-      required:
-      - maxRedirects
-      description: HTTP redirect handling.
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRedirects
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRedirects:
-      type: object
-      properties:
-        maxRedirects:
-          type: number
-          format: double
-      required:
-      - maxRedirects
-      description: HTTP redirect handling.
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRedirects
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsMethod:
-      type: string
-      enum:
-      - GET
-      - POST
-      - DELETE
-      - PATCH
-      - PUT
-      - OPTIONS
-      - HEAD
-      description: HTTP method to invoke.
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsMethod
-    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParams:
-      type: object
-      properties:
-        method:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsMethod'
-          description: HTTP method to invoke.
-        url:
-          type: string
-          description: Request URL. Must resolve to a hostname matching the associated credential's allowlist.
-        headers:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItems'
-          description: Static or dynamic request headers.
-        pathParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItems'
-          description: Path parameter placeholders resolved into the URL.
-        queryParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItems'
-          description: Query string parameters.
-        body:
-          type: string
-          description: Raw request body template.
-        bodyParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItems'
-          description: Dynamic parameters extracted from `body`.
-      required:
-      - method
-      - url
-      - headers
-      - pathParams
-      - queryParams
-      - body
-      - bodyParams
-      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParams
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItems
-    ParamShapeNode1:
-      type: object
-      properties:
-        type:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParamShapeNodeOneOf1TypeItems'
-      required:
-      - type
-      title: ParamShapeNode1
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItems
     V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode:
       type: string
       enum:
       - static
       - dynamic
       title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType:
-      type: string
-      enum:
-      - array
-      - boolean
-      - number
-      - object
-      - raw
-      - string
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItems
-    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfig:
-      type: object
-      properties:
-        timeout:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigTimeout'
-          description: Per-request timeout configuration.
-        retry:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRetry'
-          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
-        redirects:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRedirects'
-          description: HTTP redirect handling.
-        rateLimit:
-          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRateLimit'
-          description: Rate limit applied to outbound requests from this connector.
-      required:
-      - timeout
-      - retry
-      - redirects
-      - rateLimit
-      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfig
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItems:
-      type: object
-      properties:
-        key:
-          type: string
-        mode:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode'
-        value:
-          type:
-          - string
-          - 'null'
-        type:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType'
-        shape:
-          oneOf:
-          - $ref: '#/components/schemas/ParamShapeNode'
-          - type: 'null'
-      required:
-      - key
-      - mode
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItems
-    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfig:
-      type: object
-      properties:
-        timeout:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigTimeout'
-          description: Per-request timeout configuration.
-        retry:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRetry'
-          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
-        redirects:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRedirects'
-          description: HTTP redirect handling.
-        rateLimit:
-          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRateLimit'
-          description: Rate limit applied to outbound requests from this connector.
-      required:
-      - timeout
-      - retry
-      - redirects
-      - rateLimit
-      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfig
-    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRedirects:
-      type: object
-      properties:
-        maxRedirects:
-          type: number
-          format: double
-      required:
-      - maxRedirects
-      description: HTTP redirect handling.
-      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRedirects
     V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParams:
       type: object
       properties:
@@ -3057,21 +2054,137 @@ components:
       - body
       - bodyParams
       title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParams
-    ParamShapeNodeOneOf0TypeItems:
-      type: string
-      enum:
-      - string
-      title: ParamShapeNodeOneOf0TypeItems
-    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigTimeout:
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRedirects:
       type: object
       properties:
-        requestSec:
+        maxRedirects:
           type: number
           format: double
       required:
-      - requestSec
-      description: Per-request timeout configuration.
-      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigTimeout
+      - maxRedirects
+      description: HTTP redirect handling.
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRedirects
+    ParamShapeNode0:
+      type: object
+      properties:
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParamShapeNodeOneOf0TypeItems'
+      required:
+      - type
+      title: ParamShapeNode0
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParams:
+      type: object
+      properties:
+        method:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsMethod'
+          description: HTTP method to invoke.
+        url:
+          type: string
+          description: Request URL. Must resolve to a hostname matching the associated credential's allowlist.
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItems'
+          description: Static or dynamic request headers.
+        pathParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItems'
+          description: Path parameter placeholders resolved into the URL.
+        queryParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItems'
+          description: Query string parameters.
+        body:
+          type: string
+          description: Raw request body template.
+        bodyParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItems'
+          description: Dynamic parameters extracted from `body`.
+      required:
+      - method
+      - url
+      - headers
+      - pathParams
+      - queryParams
+      - body
+      - bodyParams
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParams
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRateLimit:
+      type: object
+      properties:
+        maxRequestsPerWindow:
+          type: number
+          format: double
+      required:
+      - maxRequestsPerWindow
+      description: Rate limit applied to outbound requests from this connector.
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRateLimit
+    ParamShapeNodeOneOf3TypeItems:
+      type: string
+      enum:
+      - object
+      title: ParamShapeNodeOneOf3TypeItems
+    ParamShapeNode4:
+      type: object
+      properties:
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParamShapeNodeOneOf4TypeItems'
+        items:
+          $ref: '#/components/schemas/ParamShapeNode'
+      required:
+      - type
+      - items
+      title: ParamShapeNode4
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItems
     V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsMethod:
       type: string
       enum:
@@ -3084,12 +2197,899 @@ components:
       - HEAD
       description: HTTP method to invoke.
       title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsMethod
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRedirects:
+      type: object
+      properties:
+        maxRedirects:
+          type: number
+          format: double
+      required:
+      - maxRedirects
+      description: HTTP redirect handling.
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRedirects
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigTimeout:
+      type: object
+      properties:
+        requestSec:
+          type: number
+          format: double
+      required:
+      - requestSec
+      description: Per-request timeout configuration.
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigTimeout
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRateLimit:
+      type: object
+      properties:
+        maxRequestsPerWindow:
+          type: number
+          format: double
+      required:
+      - maxRequestsPerWindow
+      description: Rate limit applied to outbound requests from this connector.
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRateLimit
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItems
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRetry:
+      type: object
+      properties:
+        maxRetries:
+          type: number
+          format: double
+        retryableStatusCodes:
+          type: array
+          items:
+            type: number
+            format: double
+      required:
+      - maxRetries
+      - retryableStatusCodes
+      description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRetry
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsMethod:
+      type: string
+      enum:
+      - GET
+      - POST
+      - DELETE
+      - PATCH
+      - PUT
+      - OPTIONS
+      - HEAD
+      description: HTTP method to invoke.
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsMethod
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRetry:
+      type: object
+      properties:
+        maxRetries:
+          type: number
+          format: double
+        retryableStatusCodes:
+          type: array
+          items:
+            type: number
+            format: double
+      required:
+      - maxRetries
+      - retryableStatusCodes
+      description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRetry
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsMode
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRetry:
+      type: object
+      properties:
+        maxRetries:
+          type: number
+          format: double
+        retryableStatusCodes:
+          type: array
+          items:
+            type: number
+            format: double
+      required:
+      - maxRetries
+      - retryableStatusCodes
+      description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRetry
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItems
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType
+    ParamShapeNode2:
+      type: object
+      properties:
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParamShapeNodeOneOf2TypeItems'
+      required:
+      - type
+      title: ParamShapeNode2
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItems
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItems
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigTimeout:
+      type: object
+      properties:
+        requestSec:
+          type: number
+          format: double
+      required:
+      - requestSec
+      description: Per-request timeout configuration.
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigTimeout
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItems
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItems
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfig:
+      type: object
+      properties:
+        timeout:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigTimeout'
+          description: Per-request timeout configuration.
+        retry:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRetry'
+          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
+        redirects:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRedirects'
+          description: HTTP redirect handling.
+        rateLimit:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfigRateLimit'
+          description: Rate limit applied to outbound requests from this connector.
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaConfig
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType
+    api-connectors_createApiConnector_Response_200:
+      type: object
+      properties:
+        apiConnectorId:
+          type: string
+          description: Unique identifier of the API connector.
+        name:
+          type: string
+          description: Display name of the connector.
+        params:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParams'
+        config:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfig'
+        createdBy:
+          type: string
+          description: The identifier of the user who created this object.
+        updatedBy:
+          type: string
+          description: The identifier of the user or process that last updated this object.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the object was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the object was last updated.
+        description:
+          type: string
+          description: Human-readable description.
+        authId:
+          type:
+          - string
+          - 'null'
+          description: Identifier of the API credential (`apiCredentialId`) used to authenticate requests. `null` if unauthenticated.
+      required:
+      - apiConnectorId
+      - name
+      - params
+      - config
+      - createdBy
+      - updatedBy
+      - createdAt
+      - updatedAt
+      title: api-connectors_createApiConnector_Response_200
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsMethod:
+      type: string
+      enum:
+      - GET
+      - POST
+      - DELETE
+      - PATCH
+      - PUT
+      - OPTIONS
+      - HEAD
+      description: HTTP method to invoke.
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsMethod
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsHeadersItemsMode
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsPathParamsItems
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItems
     V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode:
       type: string
       enum:
       - static
       - dynamic
       title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsType
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItems
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsHeadersItemsMode
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsQueryParamsItems
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItemsMode
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsType
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfig:
+      type: object
+      properties:
+        timeout:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigTimeout'
+          description: Per-request timeout configuration.
+        retry:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRetry'
+          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
+        redirects:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRedirects'
+          description: HTTP redirect handling.
+        rateLimit:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfigRateLimit'
+          description: Rate limit applied to outbound requests from this connector.
+      required:
+      - timeout
+      - retry
+      - redirects
+      - rateLimit
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaConfig
+    ParamShapeNodeOneOf4TypeItems:
+      type: string
+      enum:
+      - array
+      title: ParamShapeNodeOneOf4TypeItems
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfig:
+      type: object
+      properties:
+        timeout:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigTimeout'
+          description: Per-request timeout configuration.
+        retry:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRetry'
+          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
+        redirects:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRedirects'
+          description: HTTP redirect handling.
+        rateLimit:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigRateLimit'
+          description: Rate limit applied to outbound requests from this connector.
+      required:
+      - timeout
+      - retry
+      - redirects
+      - rateLimit
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfig
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsType
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsType
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsType
+    ParamShapeNode1:
+      type: object
+      properties:
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParamShapeNodeOneOf1TypeItems'
+      required:
+      - type
+      title: ParamShapeNode1
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItems
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode
+    ParamShapeNode3:
+      type: object
+      properties:
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParamShapeNodeOneOf3TypeItems'
+        properties:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ParamShapeNode'
+      required:
+      - type
+      - properties
+      title: ParamShapeNode3
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsMethod:
+      type: string
+      enum:
+      - GET
+      - POST
+      - DELETE
+      - PATCH
+      - PUT
+      - OPTIONS
+      - HEAD
+      description: HTTP method to invoke.
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsMethod
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsType
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigTimeout:
+      type: object
+      properties:
+        requestSec:
+          type: number
+          format: double
+      required:
+      - requestSec
+      description: Per-request timeout configuration.
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaConfigTimeout
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItemsMode
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItemsMode
+    ParamShapeNodeOneOf1TypeItems:
+      type: string
+      enum:
+      - number
+      title: ParamShapeNodeOneOf1TypeItems
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsPathParamsItems
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParams:
+      type: object
+      properties:
+        method:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsMethod'
+          description: HTTP method to invoke.
+        url:
+          type: string
+          description: Request URL. Must resolve to a hostname matching the associated credential's allowlist.
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItems'
+          description: Static or dynamic request headers.
+        pathParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsPathParamsItems'
+          description: Path parameter placeholders resolved into the URL.
+        queryParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsQueryParamsItems'
+          description: Query string parameters.
+        body:
+          type: string
+          description: Raw request body template.
+        bodyParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItems'
+          description: Dynamic parameters extracted from `body`.
+      required:
+      - method
+      - url
+      - headers
+      - pathParams
+      - queryParams
+      - body
+      - bodyParams
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParams
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRateLimit:
+      type: object
+      properties:
+        maxRequestsPerWindow:
+          type: number
+          format: double
+      required:
+      - maxRequestsPerWindow
+      description: Rate limit applied to outbound requests from this connector.
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRateLimit
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRedirects:
+      type: object
+      properties:
+        maxRedirects:
+          type: number
+          format: double
+      required:
+      - maxRedirects
+      description: HTTP redirect handling.
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaConfigRedirects
+    V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType:
+      type: string
+      enum:
+      - array
+      - boolean
+      - number
+      - object
+      - raw
+      - string
+      title: V2ApiConnectorsApiConnectorIdPatchRequestBodyContentApplicationJsonSchemaParamsHeadersItemsType
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParams:
+      type: object
+      properties:
+        method:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsMethod'
+          description: HTTP method to invoke.
+        url:
+          type: string
+          description: Request URL. Must resolve to a hostname matching the associated credential's allowlist.
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsHeadersItems'
+          description: Static or dynamic request headers.
+        pathParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsPathParamsItems'
+          description: Path parameter placeholders resolved into the URL.
+        queryParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParamsQueryParamsItems'
+          description: Query string parameters.
+        body:
+          type: string
+          description: Raw request body template.
+      required:
+      - method
+      - url
+      - headers
+      - pathParams
+      - queryParams
+      - body
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaParams
+    V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfig:
+      type: object
+      properties:
+        timeout:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigTimeout'
+          description: Per-request timeout configuration.
+        retry:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRetry'
+          description: Retry policy. `retryableStatusCodes` are HTTP codes that should trigger a retry.
+        redirects:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRedirects'
+          description: HTTP redirect handling.
+        rateLimit:
+          $ref: '#/components/schemas/V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfigRateLimit'
+          description: Rate limit applied to outbound requests from this connector.
+      title: V2ApiConnectorsPostRequestBodyContentApplicationJsonSchemaConfig
+    V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItems:
+      type: object
+      properties:
+        key:
+          type: string
+        mode:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsMode'
+        value:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItemsType'
+        shape:
+          oneOf:
+          - $ref: '#/components/schemas/ParamShapeNode'
+          - type: 'null'
+      required:
+      - key
+      - mode
+      title: V2ApiConnectorsApiConnectorIdGetResponsesContentApplicationJsonSchemaParamsHeadersItems
+    V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsPostResponsesContentApplicationJsonSchemaParamsBodyParamsItemsMode
+    V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode:
+      type: string
+      enum:
+      - static
+      - dynamic
+      title: V2ApiConnectorsApiConnectorIdPatchResponsesContentApplicationJsonSchemaParamsPathParamsItemsMode
+    ParamShapeNodeOneOf0TypeItems:
+      type: string
+      enum:
+      - string
+      title: ParamShapeNodeOneOf0TypeItems
   securitySchemes:
     basicAuth:
       type: http

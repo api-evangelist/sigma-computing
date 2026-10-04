@@ -588,25 +588,6 @@ components:
               requestId:
                 type: string
   schemas:
-    translations_createOrgTranslation_Response_200:
-      type: object
-      properties: {}
-      title: translations_createOrgTranslation_Response_200
-    translations_updateOrgTranslation_Response_200:
-      type: object
-      properties: {}
-      title: translations_updateOrgTranslation_Response_200
-    translations_getOrgTranslationsWithVariant_Response_200:
-      type: object
-      properties:
-        translations:
-          type: object
-          additionalProperties:
-            type: string
-          description: A JSON object with phrases as keys and their translations as values
-      required:
-      - translations
-      title: translations_getOrgTranslationsWithVariant_Response_200
     translations_deleteOrgTranslationWithVariant_Response_200:
       type: object
       properties: {}
@@ -672,10 +653,6 @@ components:
       - createdAt
       - updatedAt
       title: V2TranslationsOrganizationGetResponsesContentApplicationJsonSchemaEntriesItems
-    translations_deleteOrgTranslation_Response_200:
-      type: object
-      properties: {}
-      title: translations_deleteOrgTranslation_Response_200
     translations_getOrgTranslations_Response_200:
       type: object
       properties:
@@ -687,6 +664,29 @@ components:
       required:
       - translations
       title: translations_getOrgTranslations_Response_200
+    translations_updateOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_updateOrgTranslation_Response_200
+    translations_createOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_createOrgTranslation_Response_200
+    translations_getOrgTranslationsWithVariant_Response_200:
+      type: object
+      properties:
+        translations:
+          type: object
+          additionalProperties:
+            type: string
+          description: A JSON object with phrases as keys and their translations as values
+      required:
+      - translations
+      title: translations_getOrgTranslationsWithVariant_Response_200
+    translations_deleteOrgTranslation_Response_200:
+      type: object
+      properties: {}
+      title: translations_deleteOrgTranslation_Response_200
     translations_updateOrgTranslationWithVariant_Response_200:
       type: object
       properties: {}

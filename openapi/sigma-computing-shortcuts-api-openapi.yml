@@ -223,6 +223,42 @@ components:
               requestId:
                 type: string
   schemas:
+    V2ShortcutsPostRequestBodyContentApplicationJsonSchemaTarget:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the workbook, data model, report, dataset, folder, or database object the shortcut points to.
+      required:
+      - id
+      description: The item the shortcut points to.
+      title: V2ShortcutsPostRequestBodyContentApplicationJsonSchemaTarget
+    V2ShortcutsPostResponsesContentApplicationJsonSchemaTarget:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType'
+          description: The type of the item this shortcut points to. For database targets, `table` also covers views, and `scope` covers schemas and databases.
+        id:
+          type: string
+          description: The ID of the item this shortcut points to.
+      required:
+      - type
+      - id
+      title: V2ShortcutsPostResponsesContentApplicationJsonSchemaTarget
+    V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType:
+      type: string
+      enum:
+      - workbook
+      - data-model
+      - dataset
+      - report
+      - folder
+      - table
+      - scope
+      - stored-procedure
+      description: The type of the item this shortcut points to. For database targets, `table` also covers views, and `scope` covers schemas and databases.
+      title: V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType
     shortcuts_create_Response_200:
       type: object
       properties:
@@ -271,42 +307,6 @@ components:
       - createdAt
       - updatedAt
       title: shortcuts_create_Response_200
-    V2ShortcutsPostResponsesContentApplicationJsonSchemaTarget:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType'
-          description: The type of the item this shortcut points to. For database targets, `table` also covers views, and `scope` covers schemas and databases.
-        id:
-          type: string
-          description: The ID of the item this shortcut points to.
-      required:
-      - type
-      - id
-      title: V2ShortcutsPostResponsesContentApplicationJsonSchemaTarget
-    V2ShortcutsPostRequestBodyContentApplicationJsonSchemaTarget:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the workbook, data model, report, dataset, folder, or database object the shortcut points to.
-      required:
-      - id
-      description: The item the shortcut points to.
-      title: V2ShortcutsPostRequestBodyContentApplicationJsonSchemaTarget
-    V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType:
-      type: string
-      enum:
-      - workbook
-      - data-model
-      - dataset
-      - report
-      - folder
-      - table
-      - scope
-      - stored-procedure
-      description: The type of the item this shortcut points to. For database targets, `table` also covers views, and `scope` covers schemas and databases.
-      title: V2ShortcutsPostResponsesContentApplicationJsonSchemaTargetType
   securitySchemes:
     basicAuth:
       type: http
