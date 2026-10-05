@@ -1,0 +1,12 @@
+{
+ "url": "https://help.sigmacomputing.com/openapi/sigma-rest-api.yaml",
+ "requested_url": "https://help.sigmacomputing.com/openapi/sigma-rest-api.yaml",
+ "status": 200,
+ "content_type": "application/x-yaml; charset=utf-8",
+ "bytes": 29415993,
+ "sha256": "f14186a1cb4713bb25faed160194daa3f95ab1fc0d082c4e5ba4123b671d7c5b",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.913), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
