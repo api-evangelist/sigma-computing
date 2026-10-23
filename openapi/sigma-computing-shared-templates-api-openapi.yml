@@ -419,3 +419,9 @@ components:
       - newConnectionName
       - type
       title: V2SharedTemplatesAcceptPostRequestBodyContentApplicationJsonSchemaSourceSwaps11
+x-provenance:
+  method: harvested
+  publisher: Sigma Computing
+  source: https://help.sigmacomputing.com/openapi/sigma-rest-api.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
